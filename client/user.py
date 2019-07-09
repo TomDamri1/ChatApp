@@ -15,7 +15,7 @@ class User():
         r = requests.post(url=User.URL, params=PARAMS)
         data = r.json()
 
-    def getMessage(self,friend_id):
+    def getMessage(self, friend_id):
         pass
     def getFriends(self):
         pass
