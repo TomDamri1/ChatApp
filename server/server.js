@@ -1,6 +1,6 @@
 const express = require('express');
 const connectDB = require('./config/db');
-const chat = require('./routes/api/chatAPI');
+const chat=require('./routes/api/ChatAPI');
 const app = express();
 
 //connect Database

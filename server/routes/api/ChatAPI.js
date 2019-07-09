@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const Chat = require('../../models/Chat');
+const Chat=require('../../models/Chat');
 
 router.get('/:id/:otherid', async (req, res) => {
+  console.log("getting req");
   try {
     const chat1 = await Chat.findOne({
       otherID: req.params.otherid,
@@ -24,6 +25,7 @@ router.get('/:id/:otherid', async (req, res) => {
   }
 });
 router.post('/', async (req, res) => {
+  console.log(req.body);
   const chat1 = await Chat.findOne({
     otherID: req.body.otherID,
     ID: req.body.ID
@@ -33,9 +35,6 @@ router.post('/', async (req, res) => {
     ID: req.body.otherID
   });
   if (chat1) {
-    req.body.chat.map(chat => {
-      chat.text = encrypt(chat.text);
-    });
     chat1.chat = [...req.body.chat];
     chat1.save();
   } else if (chat2) {
@@ -52,6 +51,8 @@ router.post('/', async (req, res) => {
       .then(post => res.json(post))
       .catch(err => console.log(err));
   }
+  console.log("responding");
+  res.status(200).json({post:"success"});  
 });
 router.delete('/:id', (req, res) => {
   Profile.findOne({ user: req.user.id }).then(profile => {
