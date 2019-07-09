@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'chatWindow_ui.ui'
-#
-# Created by: PyQt5 UI code generator 5.10.1
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_friend_msgBox(object):
@@ -115,7 +107,7 @@ class Ui_friend_msgBox(object):
         self.label_13.setText(_translate("friend_msgBox", "Friend Details:"))
 
 
-if __name__ == "__main__":
+def startChat(id):
     import sys
     app = QtWidgets.QApplication(sys.argv)
     friend_msgBox = QtWidgets.QMainWindow()
@@ -124,3 +116,4 @@ if __name__ == "__main__":
     friend_msgBox.show()
     sys.exit(app.exec_())
 
+startChat(5)

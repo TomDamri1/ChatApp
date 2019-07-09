@@ -92,3 +92,14 @@ class Ui_mainWindow(object):
         self.lastName_label.setText(_translate("mainWindow", "Last Name:"))
         self.addFriend_button.setText(_translate("mainWindow", "ADD"))
 
+
+def ac():
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_mainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec_())
+
+ac()
