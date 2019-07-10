@@ -21,9 +21,6 @@
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
      <layout class="QGridLayout" name="userDetails_grid">
-      <item row="10" column="1" colspan="2">
-       <widget class="QListView" name="listView"/>
-      </item>
       <item row="3" column="1">
        <widget class="QLabel" name="motherBoard_label">
         <property name="text">
@@ -31,10 +28,31 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="2">
-       <widget class="QLabel" name="lastName_text">
+      <item row="0" column="2">
+       <widget class="QLabel" name="Jtag_text">
         <property name="text">
          <string>-----</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="lastName_label">
+        <property name="text">
+         <string>Last Name:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="Jtag_label">
+        <property name="text">
+         <string>Jtag:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <widget class="QLabel" name="searchFriend_label">
+        <property name="text">
+         <string>Search Friend:</string>
         </property>
        </widget>
       </item>
@@ -52,10 +70,17 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="Jtag_label">
+      <item row="2" column="2">
+       <widget class="QLabel" name="lastName_text">
         <property name="text">
-         <string>Jtag:</string>
+         <string>-----</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="2">
+       <widget class="QPushButton" name="addFriend_button">
+        <property name="text">
+         <string>ADD</string>
         </property>
        </widget>
       </item>
@@ -66,22 +91,12 @@
         </property>
        </widget>
       </item>
-      <item row="9" column="1">
-       <widget class="QLabel" name="searchFriend_label">
-        <property name="text">
-         <string>Search Friend:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QLabel" name="Jtag_text">
+      <item row="1" column="2">
+       <widget class="QLabel" name="name_text">
         <property name="text">
          <string>-----</string>
         </property>
        </widget>
-      </item>
-      <item row="9" column="2">
-       <widget class="QLineEdit" name="lineEdit"/>
       </item>
       <item row="5" column="1">
        <widget class="QLabel" name="addFriend_label">
@@ -90,26 +105,11 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="2">
-       <widget class="QLabel" name="name_text">
-        <property name="text">
-         <string>-----</string>
-        </property>
-       </widget>
+      <item row="9" column="2">
+       <widget class="QLineEdit" name="lineEdit"/>
       </item>
-      <item row="2" column="1">
-       <widget class="QLabel" name="lastName_label">
-        <property name="text">
-         <string>Last Name:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="2">
-       <widget class="QPushButton" name="addFriend_button">
-        <property name="text">
-         <string>ADD</string>
-        </property>
-       </widget>
+      <item row="10" column="1" colspan="2">
+       <widget class="QListWidget" name="listWidget"/>
       </item>
      </layout>
     </item>

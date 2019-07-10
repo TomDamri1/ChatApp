@@ -5,11 +5,14 @@
 # Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
-
+import os
+from multiprocessing import Process
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 import threading
+from gui.controlled.mainWindow_ui import Ui_mainWindow
+
 
 
 class Ui_LoginPage(object):
@@ -76,11 +79,20 @@ class Ui_LoginPage(object):
 
 
     def login(self):
+
+        def enter_main_page(userid):
+            main_page = Ui_mainWindow(userid)
+            main_page_process = Process (target= os.system , args=("python3 controlled/mainWindow_ui.py "+str(userid),))
+            main_page_process.start()
+
         user_id = self.user_id = self.username_text.text()
         user_password = self.user_password = self.password_text.text()
         print(user_id , user_password)
         if self.check_login_details(user_id , user_password):
             self.login_flag = True
+            enter_main_page(user_id)
+            self.close()
+
 
     def check_login_details(self,user_id,user_password):
         """
@@ -96,23 +108,5 @@ class Ui_LoginPage(object):
 
 
 
-def loggin_in():
-    login_page = Ui_LoginPage()
-
-
-    def check_if_logged():
-        print("checking")
-        while not login_page.login_flag:
-            pass
-        print("passed")
-        f = open("info.file" , "w")
-        f.write(login_page.user_id)
-        f.close()
-        print("done checking")
-        login_page.close()
-
-    check_log_state = threading.Thread(target=check_if_logged)
-    check_log_state.start()
-    login_page.open()
-
-loggin_in()
+x = Ui_LoginPage()
+x.open()
