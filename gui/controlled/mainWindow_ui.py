@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file 'mainWindow_ui.ui'
 #
-# Created by: PyQt5 UI code generator 5.10.1
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+import sys
 
 class Ui_mainWindow(object):
     def setupUi(self, mainWindow):
@@ -92,14 +94,19 @@ class Ui_mainWindow(object):
         self.lastName_label.setText(_translate("mainWindow", "Last Name:"))
         self.addFriend_button.setText(_translate("mainWindow", "ADD"))
 
+    def __init__(self, user_id):
+        self.user_id = user_id
+        self.app = QtWidgets.QApplication(sys.argv)
+        self.mainPage = QtWidgets.QMainWindow()
+        self.setupUi(self.mainPage)
+        self.Jtag_text.setText(str(user_id))
+        """
+        here we need to get the user details by the id and put it in place.
+        """
 
-def ac():
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_mainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
 
-ac()
+    def open(self):
+        self.mainPage.show()
+        sys.exit(self.app.exec_())
+
+
