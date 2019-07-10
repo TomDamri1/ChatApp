@@ -23,9 +23,9 @@ class Ui_mainWindow(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.userDetails_grid = QtWidgets.QGridLayout()
         self.userDetails_grid.setObjectName("userDetails_grid")
-        self.listView = QtWidgets.QListView(self.centralwidget)
-        self.listView.setObjectName("listView")
-        self.userDetails_grid.addWidget(self.listView, 10, 1, 1, 2)
+        self.listWidget = QtWidgets.QListWidget(self.centralwidget)
+        self.listWidget.setObjectName("listWidget")
+        self.userDetails_grid.addWidget(self.listWidget, 10, 1, 1, 2)
         self.motherBoard_label = QtWidgets.QLabel(self.centralwidget)
         self.motherBoard_label.setObjectName("motherBoard_label")
         self.userDetails_grid.addWidget(self.motherBoard_label, 3, 1, 1, 1)
@@ -78,6 +78,7 @@ class Ui_mainWindow(object):
 
         self.retranslateUi(mainWindow)
         QtCore.QMetaObject.connectSlotsByName(mainWindow)
+        #self.listWidget.itemClicked()
 
     def retranslateUi(self, mainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -100,6 +101,9 @@ class Ui_mainWindow(object):
         self.mainPage = QtWidgets.QMainWindow()
         self.setupUi(self.mainPage)
         self.Jtag_text.setText(str(user_id))
+        for name in get_friends(user_id):
+            self.listWidget.addItem(name)
+
         """
         here we need to get the user details by the id and put it in place.
         """
@@ -108,5 +112,29 @@ class Ui_mainWindow(object):
     def open(self):
         self.mainPage.show()
         sys.exit(self.app.exec_())
+
+
+
+def open_chat(user_id):
+    pass
+
+
+
+def get_friends(user_id):
+    """
+
+    :param user_id:
+    :return:all the user friends
+
+    for each friend - add the friend to the list with his detials.
+    """
+    return ["moshe cohen" , "john dow" , "ice cube" , "Tom Avni"]
+
+
+
+
+if __name__ == '__main__':
+    x = Ui_mainWindow(sys.argv[1])
+    x.open()
 
 
