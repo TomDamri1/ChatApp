@@ -78,7 +78,7 @@ class Ui_mainWindow(object):
 
         self.retranslateUi(mainWindow)
         QtCore.QMetaObject.connectSlotsByName(mainWindow)
-        self.listWidget.itemClicked()
+        #self.listWidget.itemClicked()
 
     def retranslateUi(self, mainWindow):
         _translate = QtCore.QCoreApplication.translate
