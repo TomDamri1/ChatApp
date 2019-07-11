@@ -10,6 +10,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 
+friendList = []
 class Ui_mainWindow(object):
     def setupUi(self, mainWindow):
         mainWindow.setObjectName("mainWindow")
@@ -17,6 +18,7 @@ class Ui_mainWindow(object):
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("../icon/Jicon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         mainWindow.setWindowIcon(icon)
+
         self.centralwidget = QtWidgets.QWidget(mainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
@@ -65,6 +67,7 @@ class Ui_mainWindow(object):
         self.userDetails_grid.addWidget(self.lastName_label, 2, 1, 1, 1)
         self.addFriend_button = QtWidgets.QPushButton(self.centralwidget)
         self.addFriend_button.setObjectName("addFriend_button")
+
         self.userDetails_grid.addWidget(self.addFriend_button, 6, 2, 1, 1)
         self.horizontalLayout.addLayout(self.userDetails_grid)
         mainWindow.setCentralWidget(self.centralwidget)
@@ -96,12 +99,14 @@ class Ui_mainWindow(object):
         self.addFriend_button.setText(_translate("mainWindow", "ADD"))
 
     def __init__(self, user_id):
+
         self.user_id = user_id
         self.app = QtWidgets.QApplication(sys.argv)
         self.mainPage = QtWidgets.QMainWindow()
         self.setupUi(self.mainPage)
         self.Jtag_text.setText(str(user_id))
-        for name in get_friends(user_id):
+        self.addFriend_button.clicked.connect(lambda: self.add_friend(self.addFriend_text.text()))
+        for name in self.get_friends(user_id):
             self.listWidget.addItem(name)
 
         """
@@ -115,26 +120,30 @@ class Ui_mainWindow(object):
 
 
 
-def open_chat(user_id):
-    pass
+
+    def add_friend(self, friend):
+        if friend!="":
+            friendList.append(friend)
+            self.listWidget.addItem(friend)
+    def open_chat(self,user_id):
+         pass
 
 
 
-def get_friends(user_id):
-    """
+    def get_friends(self,user_id):
+        """
 
-    :param user_id:
-    :return:all the user friends
+        :param user_id:
+        :return:all the user friends
 
-    for each friend - add the friend to the list with his detials.
-    """
-    return ["moshe cohen" , "john dow" , "ice cube" , "Tom Avni"]
+        for each friend - add the friend to the list with his detials.
+         """
+        return friendList
 
 
 
 
 if __name__ == '__main__':
-    x = Ui_mainWindow(sys.argv[1])
+    x = Ui_mainWindow("abc")
     x.open()
-
 
