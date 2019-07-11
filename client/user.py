@@ -52,12 +52,16 @@ class User:
         motherBoardProductName = subprocess.check_output('%s|sudo -S %s | grep %s &>/dev/null' % (sudoPassword, command, prodNmane), shell=True)
         return motherBoardManufacturer.decode("utf-8") + motherBoardProductName.decode("utf-8")
 
-    def setmotherBoard(self):
+    def setMotherBoard(self):
         self.motherBoard = self.findMotherBoard()
+        #need to write to data base
 
-    def getmotherBoard(self, friend_id):
+    def getMyMotherBoard(self):
         return self.motherBoard
 
+    def getMyMotherBoard(self, friend_id):
+        # return the friend motherboard
+        pass
     def addFriend(self, friend_id):
         self.friendsList.append(friend_id)
         # need to add the friend to the friends data base
