@@ -8,6 +8,8 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import os
+from multiprocessing import Process
 import sys
 
 friendList = []
@@ -106,6 +108,8 @@ class Ui_mainWindow(object):
         self.setupUi(self.mainPage)
         self.Jtag_text.setText(str(user_id))
         self.addFriend_button.clicked.connect(lambda: self.add_friend(self.addFriend_text.text()))
+        self.listWidget.itemActivated.connect(self.itemActivated_event)
+
         for name in self.get_friends(user_id):
             self.listWidget.addItem(name)
 
@@ -122,9 +126,19 @@ class Ui_mainWindow(object):
 
 
     def add_friend(self, friend):
+        """
+        need to be added by ID!!!!
+
+
+        :param friend: id
+        :return:
+        """
         if friend!="":
-            friendList.append(friend)
-            self.listWidget.addItem(friend)
+            if friend not in friendList:
+                friendList.append(friend)
+                self.listWidget.addItem(friend)
+
+
     def open_chat(self,user_id):
          pass
 
@@ -143,7 +157,18 @@ class Ui_mainWindow(object):
 
 
 
+    def itemActivated_event(self,item):
+        print(item.text())
+        def open_chat_window(friend_id):
+            chat_window_process = Process(target=os.system, args=("python3 chatWindow_ui.py " + str(self.user_id)+" "+str(friend_id),))
+            chat_window_process.start()
+
+        open_chat_window(item.text())
+
+
 if __name__ == '__main__':
+    #for the testing of the page only:
+    #x = Ui_mainWindow(sys.argv[1])s
     x = Ui_mainWindow("abc")
     x.open()
 

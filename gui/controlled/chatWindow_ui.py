@@ -130,3 +130,8 @@ class Ui_friend_msgBox(object):
 
 
 
+if __name__ == '__main__':
+    #for the testing of the page only:
+    #x = Ui_mainWindow(sys.argv[1])s
+    x = Ui_friend_msgBox(sys.argv[1] , sys.argv[2])
+    x.open()

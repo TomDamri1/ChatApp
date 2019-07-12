@@ -81,8 +81,7 @@ class Ui_LoginPage(object):
     def login(self):
 
         def enter_main_page(userid):
-            main_page = Ui_mainWindow(userid)
-            main_page_process = Process (target= os.system , args=("python3 controlled/mainWindow_ui.py "+str(userid),))
+            main_page_process = Process (target= os.system , args=("python3 mainWindow_ui.py "+str(userid),))
             main_page_process.start()
 
         user_id = self.user_id = self.username_text.text()
@@ -107,6 +106,6 @@ class Ui_LoginPage(object):
         self.app.quit()
 
 
-
+os.system("pwd")
 x = Ui_LoginPage()
 x.open()
