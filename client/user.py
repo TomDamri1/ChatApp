@@ -3,6 +3,7 @@ import subprocess
 import os
 import socket
 from time import sleep
+import queue
 import sys
 from threading import Thread
 HEADER_LENGTH = 10
@@ -13,6 +14,7 @@ class User:
     getURL = "http://localhost:5000/api/chat/"
 
     def __init__(self, id, name, lastName, IP, motherBoard, password, friendsList):
+        self.q = queue.Queue()
         self.id = id
         self.name = name
         self.lastName = lastName
@@ -47,14 +49,23 @@ class User:
             print(f"msg size is: {msg_length}")
             msg = self.mySocket.recv(msg_length).decode("utf-8")
             print(msg)
+            self.q.put(msg)
 
 
     def sendMessage(self, msg, friend_id):
         if friend_id in self.friendsList:
+            username = self.name.encode('utf-8')
+            username_header = f"{len(username):<{HEADER_LENGTH}}".encode('utf-8')
+            self.mySocket.send(username_header + username)
+
+            message = msg.encode('utf-8')
+            message_header = f"{len(message):<{HEADER_LENGTH}}".encode('utf-8')
+            self.mySocket.send(message_header + message)
             PARAMS = {'ID': self.id, "otherID": friend_id, 'chat': [{"senderName": self.name, "text": msg}, ]}
             r = requests.post(url=User.postURL, json=PARAMS)
             pastebin_url = r.text
             print(pastebin_url)
+
         else:
             print("ERROR can't to send a message to friend that not in your's friendsList")
 
@@ -138,6 +149,7 @@ class User:
 password = str(input("Enter your password pls:"))
 us1 = User('205509', 'matan', 'davidian', '127.0.0.1', 'intel mother Board', password, ['2312', '12332', '123'])
 us1.connect()
+us1.sendMessage("user 1 send a message", '123')
 '''
 print(us1.findMotherBoard())
 print(us1.findCpu())
