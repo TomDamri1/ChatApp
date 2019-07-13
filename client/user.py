@@ -3,7 +3,9 @@ import subprocess
 import os
 import socket
 from time import sleep
+import sys
 from threading import Thread
+HEADER_LENGTH = 10
 
 
 class User:
@@ -19,11 +21,11 @@ class User:
         self.password = password
         self.motherBoard = motherBoard
         self.friendsList = friendsList
-        self.PORT = 8826
+        self.PORT = 8821
         # open socket with client
         self.mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.mySocket.bind((self.IP, self.PORT))
-        self.mySocket.listen(1)
+        self.mySocket.connect((self.IP, self.PORT))
+
 
     def connect(self):
         # pull the friend list from the server
@@ -32,11 +34,19 @@ class User:
         thread = Thread(target=self.listenToServer)
         thread.start()
 
-
     def listenToServer(self):
         while(True):
-            client_socket, address = self.mySocket.accept()
-            print("client connected")
+            # Receive our "header" containing username length, it's size is defined and constant
+            msg_header = self.mySocket.recv(HEADER_LENGTH)
+            # If we received no data, server gracefully closed a connection, for example using socket.close() or socket.shutdown(socket.SHUT_RDWR)
+            if not len(msg_header):
+                print('Connection closed by the server')
+                sys.exit()
+            # Convert header to int value
+            msg_length = int(msg_header.decode('utf-8').strip())
+            print(f"msg size is: {msg_length}")
+            msg = self.mySocket.recv(msg_length).decode("utf-8")
+            print(msg)
 
 
     def sendMessage(self, msg, friend_id):
@@ -125,14 +135,15 @@ class User:
     def sendFile(self):
         pass
 
-
-us1 = User('205509', 'matan', 'davidian', '0.0.0.0', 'intel mother Board', '1212', ['2312', '12332', '123'])
+password = str(input("Enter your password pls:"))
+us1 = User('205509', 'matan', 'davidian', '127.0.0.1', 'intel mother Board', password, ['2312', '12332', '123'])
+us1.connect()
+'''
 print(us1.findMotherBoard())
 print(us1.findCpu())
 print("choose field to screen shot")
 us1.takeScreenShot()
 print(us1.executeCommand("ls -l"))
-
 #us1.sendMessage("hello my name is matan third try", '123')
 #print(us1.findMotherBoard('123'))
-
+'''
