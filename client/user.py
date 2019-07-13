@@ -1,20 +1,43 @@
 import requests
-import os
 import subprocess
-import time
+import os
+import socket
+from time import sleep
+from threading import Thread
+
+
 class User:
     postURL = "http://localhost:5000/api/chat"
-    getURL= "http://localhost:5000/api/chat/"
+    getURL = "http://localhost:5000/api/chat/"
 
-    def __init__(self, id, name, lastName, ip, motherBoard, password, friendsList):
+    def __init__(self, id, name, lastName, IP, motherBoard, password, friendsList):
         self.id = id
         self.name = name
         self.lastName = lastName
-        self.ip = ip
+        self.IP = IP
         self.motherBoard = motherBoard
         self.password = password
         self.motherBoard = motherBoard
         self.friendsList = friendsList
+        self.PORT = 8826
+        # open socket with client
+        self.mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.mySocket.bind((self.IP, self.PORT))
+        self.mySocket.listen(1)
+
+    def connect(self):
+        # pull the friend list from the server
+        # pull  my derails from the server
+        # create new thread that listen to server for changes
+        thread = Thread(target=self.listenToServer)
+        thread.start()
+
+
+    def listenToServer(self):
+        while(True):
+            client_socket, address = self.mySocket.accept()
+            print("client connected")
+
 
     def sendMessage(self, msg, friend_id):
         if friend_id in self.friendsList:
@@ -44,13 +67,38 @@ class User:
         pass
 
     def findMotherBoard(self):
-        #return the name of the motherboard by using bash
-        sudoPassword = '1212'
+        #return the name of the motherboard by using bash as administrator
         command = 'dmidecode -t baseboard'
-        motherBoardManufacturer = subprocess.check_output('%s|sudo -S %s | grep Manufacturer &>/dev/null' % (sudoPassword, command), shell=True)
+        motherBoardManufacturer = subprocess.check_output('echo %s|sudo -S %s | grep Manufacturer' % (self.password, command), shell=True)
         prodNmane = '\'Product Name\''
-        motherBoardProductName = subprocess.check_output('%s|sudo -S %s | grep %s &>/dev/null' % (sudoPassword, command, prodNmane), shell=True)
+        motherBoardProductName = subprocess.check_output('echo %s|sudo -S %s | grep %s' % (self.password, command, prodNmane), shell=True)
         return motherBoardManufacturer.decode("utf-8") + motherBoardProductName.decode("utf-8")
+
+    def findCpu(self):
+        #return the name of the CPU by using bash as administrator
+        command = 'dmidecode -t processor'
+        cpuVersion = subprocess.check_output('echo %s|sudo -S %s | grep Version' % (self.password, command), shell=True)
+        return cpuVersion.decode("utf-8")
+
+    def executeCommand(self, command):
+        #return the name of the motherboard by using bash as administrator
+        newCommand = command
+        for i in range(len(command)):
+            if command[i] == '|':
+                newCommand = newCommand[:i] + " 2>/dev/null " + newCommand[i:]
+        newCommand += " 2>/dev/null "
+        result = subprocess.check_output('echo %s|sudo -S %s' % (self.password, newCommand), shell=True)
+        return result.decode("utf-8")
+
+    def takeAllScreenShot(self):
+        #return the name of the motherboard by using bash as administrator
+        command = "import -window root -resize 1024x800 -delay 500 screenshot.png"
+        os.system('%s' % (command))
+
+    def takeScreenShot(self):
+        #return the name of the motherboard by using bash as administrator
+        command = "import screenshot.png"
+        os.system('%s' % (command))
 
     def setMotherBoard(self):
         self.motherBoard = self.findMotherBoard()
@@ -74,13 +122,17 @@ class User:
         except ValueError as e:
             print(e)
 
-    def connect(self):
-        # pull the friend list and my derails from the server
+    def sendFile(self):
         pass
 
 
-us1 = User('205509', 'matan', 'davidian', '0.0.0.0', 'intel mother Board', '123123', ['2312', '12332', '123'])
+us1 = User('205509', 'matan', 'davidian', '0.0.0.0', 'intel mother Board', '1212', ['2312', '12332', '123'])
 print(us1.findMotherBoard())
+print(us1.findCpu())
+print("choose field to screen shot")
+us1.takeScreenShot()
+print(us1.executeCommand("ls -l"))
+
 #us1.sendMessage("hello my name is matan third try", '123')
 #print(us1.findMotherBoard('123'))
 
