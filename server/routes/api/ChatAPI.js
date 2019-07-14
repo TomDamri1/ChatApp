@@ -35,10 +35,10 @@ router.post('/', async (req, res) => {
     ID: req.body.otherID
   });
   if (chat1) {
-    chat1.chat = [...req.body.chat];
+    chat1.chat = [...chat1.chat,req.body.chat];
     chat1.save();
   } else if (chat2) {
-    chat2.chat = [...req.body.chat];
+    chat2.chat = [...chat2.chat,req.body.chat];
     chat2.save();
   } else {
     const newChat = new Chat({
@@ -51,6 +51,7 @@ router.post('/', async (req, res) => {
       .then(post => res.json(post))
       .catch(err => console.log(err));
   }
+  io.emit('message', req.body);
   console.log("responding");
   res.status(200).json({post:"success"});  
 });
