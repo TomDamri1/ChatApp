@@ -109,6 +109,7 @@ class Ui_mainWindow(object):
         self.Jtag_text.setText(str(user_id))
         self.addFriend_button.clicked.connect(lambda: self.add_friend(self.addFriend_text.text()))
         self.listWidget.itemActivated.connect(self.itemActivated_event)
+        #self.user
 
         for name in self.get_friends(user_id):
             self.listWidget.addItem(name)

@@ -1,4 +1,5 @@
 import requests
+import socketio
 import subprocess
 import os
 import socket
@@ -6,13 +7,45 @@ from time import sleep
 import queue
 import sys
 from threading import Thread
+import URL
 HEADER_LENGTH = 10
 
+def connect(user_id , password , sudo_password):
+    """
+    send to alex
+    1. check if exist
+    2. pull the user data
+    3. init User , and return it
+    :param user_id:
+    :param password:
+    :return:
+    """
+    def sudo_password_check():
+        command = 'dmidecode -t baseboard'
+        try:
+            result = subprocess.check_output(
+            'echo %s|sudo -S %s 2>/dev/null' % (sudo_password, command), shell=True)
+            result = "right password"
+
+        except:
+            result = "wrong password"
+        finally:
+            return result
+
+    def user_password_check():
+        """
+        check if user exsist - w8 for alex.
+        :return:
+        """
+        pass
+    #return User()
+
+if __name__ == '__main__':
+    print(connect(1,2,'A134601'))
 
 class User:
-    postURL = "http://localhost:5000/api/chat"
-    getURL = "http://localhost:5000/api/chat/"
-
+    postURL = URL.postURL
+    getURL = URL.getURL
     def __init__(self, id, name, lastName, IP, motherBoard, password, friendsList):
         self.q = queue.Queue()
         self.id = id
@@ -21,20 +54,26 @@ class User:
         self.IP = IP
         self.motherBoard = motherBoard
         self.password = password
-        self.motherBoard = motherBoard
         self.friendsList = friendsList
+        self.motherBoard = self.findMotherBoard()
+        self.cpu = self.findCpu()
         self.PORT = 8821
         # open socket with client
-        '''
-        self.mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.mySocket.connect((self.IP, self.PORT))
-        '''
+        #self.sio = socketio.Client()
+        #self.sio.connect("http://localhost:5000/")
+        #print('my sid is', self.sio.sid)
+        #self.connect()
+
 
 
     def connect(self):
         # pull the friend list from the server
         # pull  my derails from the server
         # create new thread that listen to server for changes
+        usersURL = URL.usersURL+self.id
+        ans = requests.get(url=usersURL)
+        data = ans.json()
+        self.friendsList = data['friends']
         thread = Thread(target=self.listenToServer)
         thread.start()
 
@@ -147,13 +186,13 @@ class User:
 
     def sendFile(self):
         pass
-
+'''
 password = str(input("Enter your password pls:"))
 us1 = User('205509', 'matan', 'davidian', '127.0.0.1', 'intel mother Board', password, ['2312', '12332', '123'])
-'''
+
 us1.connect()
 us1.sendMessage("user 1 send a message", '123')
-'''
+
 print(us1.findMotherBoard())
 print(us1.findCpu())
 print("choose field to screen shot")
@@ -161,4 +200,4 @@ us1.takeScreenShot()
 print(us1.executeCommand("ls -l"))
 #us1.sendMessage("hello my name is matan third try", '123')
 #print(us1.findMotherBoard('123'))
-
+'''

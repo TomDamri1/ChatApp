@@ -7,7 +7,7 @@ URL = "http://localhost:5000/api/chat"
 try:
     msg = sys.argv[1]
 except:
-    msg = 'defaultMSG fourth time'
+    msg = 'this is default message'
 
 PARAMS = {'ID': "99", "otherID": "87", 'chat': {"senderName": "tom", "text": msg}}
 
