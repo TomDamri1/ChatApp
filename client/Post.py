@@ -7,9 +7,9 @@ URL = "http://localhost:5000/api/chat"
 try:
     msg = sys.argv[1]
 except:
-    msg = 'defaultMSG -!!'
+    msg = 'defaultMSG fourth time'
 
-PARAMS = {'ID': "99", "otherID": "87", 'chat': [{"senderName": "tom", "text": msg}]}
+PARAMS = {'ID': "99", "otherID": "87", 'chat': {"senderName": "tom", "text": msg}}
 
 r = requests.post(url=URL, json=PARAMS)#sending data to the server
 pastebin_url = r.text

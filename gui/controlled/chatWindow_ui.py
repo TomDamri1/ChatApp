@@ -84,9 +84,14 @@ class Ui_friend_msgBox(object):
         self.checkBox.setText("")
         self.checkBox.setObjectName("checkBox")
         self.gridLayout.addWidget(self.checkBox, 6, 1, 1, 1)
+        """
         self.chat_text = QtWidgets.QListView(self.centralwidget)
         self.chat_text.setGeometry(QtCore.QRect(10, 10, 451, 341))
         self.chat_text.setObjectName("chat_text")
+        """
+        self.chat_text = QtWidgets.QListWidget(self.centralwidget)
+        self.chat_text.setObjectName("chat_text")
+        self.chat_text.setGeometry(QtCore.QRect(10, 10, 451, 341))
         friend_msgBox.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(friend_msgBox)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 704, 22))
@@ -126,8 +131,19 @@ class Ui_friend_msgBox(object):
         self.setupUi(self.friend_msgBox)
 
         def get_messages_process(user_id , friend_id):
-            new_messages_process = Process(target=os.system, args=("python3 ../../client/Get.py",))
-            new_messages_process.start()
+            from multiprocessing.pool import ThreadPool
+            import client.Get as cg
+            pool = ThreadPool(processes=1)
+            async_result = pool.apply_async(cg.get_messages, (user_id, friend_id))  # tuple of args for foo
+            # do some other stuff in the main process
+            return_val = async_result.get()  # get the return value from your function.
+            return return_val
+
+        self.messages = get_messages_process(user_id , friend_id)
+        for msg in self.messages:
+            self.chat_text.addItem(msg[0]+" : "+msg[1])
+
+
 
     def open(self):
         self.friend_msgBox.show()
@@ -138,5 +154,13 @@ class Ui_friend_msgBox(object):
 if __name__ == '__main__':
     #for the testing of the page only:
     #x = Ui_mainWindow(sys.argv[1])s
-    x = Ui_friend_msgBox(sys.argv[1] , sys.argv[2])
+    default_id1 = '87'
+    default_id2 = '99'
+    try:
+        x = Ui_friend_msgBox(sys.argv[1] , sys.argv[2])
+    except:
+        x = Ui_friend_msgBox(default_id1 , default_id2)
+
+    print(x.messages)
+
     x.open()

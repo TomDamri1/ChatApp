@@ -11,11 +11,11 @@ def get_messages(id1 , id2):
     ans = requests.get(url=URL)
     data = ans.json()
     l = []
-    print(get_messages(id1, id2)['chat'])
-    for i in get_messages(id1, id2)['chat']:
+    print(data)
+    for i in data['chat']:
         if 'senderName' in i.keys():
-            print(i['senderName'], ':', i['text'])
-            l.append(i)
+            msg = [i['senderName'] , i['text']]
+            l.append(msg)
 
     return l
 
