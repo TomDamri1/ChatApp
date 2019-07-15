@@ -63,7 +63,7 @@ class Ui_LoginPage(object):
         _translate = QtCore.QCoreApplication.translate
         LoginPage.setWindowTitle(_translate("LoginPage", "Login"))
         self.pushButton.setText(_translate("LoginPage", "Login"))
-        self.username_label.setText(_translate("LoginPage", "Email:"))
+        self.username_label.setText(_translate("LoginPage", "ID:"))
         self.username_label_2.setText(_translate("LoginPage", "Password:"))
 
 
@@ -84,12 +84,17 @@ class Ui_LoginPage(object):
             main_page_process = Process (target= os.system , args=("python3 mainWindow_ui.py "+str(userid),))
             main_page_process.start()
 
+        def open_new_socket(userid):
+            new_socket_process = Process (target= os.system , args=("python3 ../../client/socketClient.py",))
+            new_socket_process.start()
+
         user_id = self.user_id = self.username_text.text()
         user_password = self.user_password = self.password_text.text()
         print(user_id , user_password)
         if self.check_login_details(user_id , user_password):
             self.login_flag = True
             enter_main_page(user_id)
+            open_new_socket(user_id)
             self.close()
 
 

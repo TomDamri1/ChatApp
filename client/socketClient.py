@@ -5,7 +5,7 @@ print('my sid is', sio.sid)
 
 @sio.event
 def message(data):
-    print('I received a messagea!')
+    print('I received a message!')
     print(data);
 
 

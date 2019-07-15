@@ -25,8 +25,10 @@ class User:
         self.friendsList = friendsList
         self.PORT = 8821
         # open socket with client
+        '''
         self.mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.mySocket.connect((self.IP, self.PORT))
+        '''
 
 
     def connect(self):
@@ -148,6 +150,7 @@ class User:
 
 password = str(input("Enter your password pls:"))
 us1 = User('205509', 'matan', 'davidian', '127.0.0.1', 'intel mother Board', password, ['2312', '12332', '123'])
+'''
 us1.connect()
 us1.sendMessage("user 1 send a message", '123')
 '''
@@ -158,4 +161,4 @@ us1.takeScreenShot()
 print(us1.executeCommand("ls -l"))
 #us1.sendMessage("hello my name is matan third try", '123')
 #print(us1.findMotherBoard('123'))
-'''
+

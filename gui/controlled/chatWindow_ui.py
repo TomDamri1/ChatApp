@@ -5,7 +5,8 @@
 # Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
-
+import os
+from multiprocessing import Process
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
@@ -123,6 +124,10 @@ class Ui_friend_msgBox(object):
         self.app = QtWidgets.QApplication(sys.argv)
         self.friend_msgBox = QtWidgets.QMainWindow()
         self.setupUi(self.friend_msgBox)
+
+        def get_messages_process(user_id , friend_id):
+            new_messages_process = Process(target=os.system, args=("python3 ../../client/Get.py",))
+            new_messages_process.start()
 
     def open(self):
         self.friend_msgBox.show()
