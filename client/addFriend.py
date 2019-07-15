@@ -3,14 +3,16 @@ import sys
 
 
 print("started2")
-URL = "http://localhost:5000/api/users/register"
+URL = "http://localhost:5000/api/users/addfriend/1"
 try:
     msg = sys.argv[1]
 except:
     msg = 'defaultMSG fourth time'
 
-PARAMS = {'name': 'tomer','lastname':'leon', 'id':'1','motherboard':'intel','cpu':'i5','password':'22'}
+PARAMS = {'friend':'tom'}
 
 r = requests.post(url=URL, json=PARAMS)#sending data to the server
 pastebin_url = r.text
+
+
 

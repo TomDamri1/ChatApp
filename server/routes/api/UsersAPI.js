@@ -8,13 +8,35 @@ router.get('/:id', async (req, res) => {
     const user=await User.findOne({
         id: req.params.id,
 
+
     })
+
+    res.json('user');
+
 }
 
 catch(err){
     console.log(err);
 }
+
 });
+
+router.post('/addfriend/:id', async (req, res) => {
+    console.log("getting req");
+    try{
+      const user=await User.findOne({
+          id: req.params.id,
+  
+      })
+      user.friends.push(req.body.friend)
+  }
+  
+  catch(err){
+      console.log(err);
+  }
+  });
+
+
 router.post('/register', async (req, res) => {
   const newUser=new User({
       name: req.body.name,
@@ -22,7 +44,8 @@ router.post('/register', async (req, res) => {
       ID: req.body.id,
       motherboard: req.body.motherboard,
       cpu: req.body.cpu,
-      password: req.body.password
+      password: req.body.password,
+      friends:[]
   })
    newUser.save()
    .then(post=>res.json(post))
