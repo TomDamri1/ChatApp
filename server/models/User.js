@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const Userchema = new Schema({
+const UserSchema = new Schema({
   ID: {
     type: String,
     required: true
@@ -25,9 +25,9 @@ motherboard: {
   },
   friends: [{
     type: String,
-    required: true
-  },]
+    
+  }]
 
 });
 
-module.exports = Post = mongoose.model('chat', ChatSchema);
+module.exports = Post = mongoose.model('user', UserSchema);
