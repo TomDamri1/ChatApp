@@ -14,26 +14,26 @@ HEADER_LENGTH = 10
 class User:
     postURL = URL.postURL
     getURL = URL.getURL
-    def __init__(self, id,password,sudo_password):
+    def __init__(self, id, password, sudo_password):
         self.q = queue.Queue()
         self.id = id
         self.password = password
         self.sudo_password = sudo_password
-        #self.externalIP = self.findExternalIp()
-        #self.internalIP = self.findInternalIp()
-        #self.motherBoard = self.findMotherBoard()
-        #self.cpu = self.findCpu()
+        self.externalIP = self.findExternalIp()
+        self.internalIP = self.findInternalIp()
+        self.motherBoard = self.findMotherBoard()
+        self.cpu = self.findCpu()
         self.PORT = 8831
         # open socket with client
-        self.mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.mySocket.connect(('127.0.0.1',8823))
+        #self.mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        #self.mySocket.connect(('127.0.0.1',8823))
 
         #self.sio = socketio.Client()
         #self.sio.connect(URL.URL)
         #print('my sid is', sio.sid)
         #self.connect()
-
-
+    def __str__(self):
+        return 'str'
 
     def connect(self):
         # pull the friend list from the server
@@ -183,34 +183,42 @@ def connect(user_id , password , sudo_password):
         try:
             result = subprocess.check_output(
             'echo %s|sudo -S %s 2>/dev/null' % (sudo_password, command), shell=True)
-            result = "right password"
+            return True
 
         except:
-            result = "wrong password"
-        finally:
-            return result
+            return False
 
     def user_password_check():
         """
-        check if user exsist - w8 for alex.
-        :return:
+        check if user exist
+        :return: False if doesn't exist or True if exist
         """
-        pass
+        PARAMS = {'id': user_id, 'password': password}
+        r = requests.post(url=URL.loginURL, json=PARAMS)  # sending data to the server
+        if r.json()['Login'] == 'Login Failed Wrong password':
+            return False
+        return True
 
-    result=sudo_password_check(sudo_password)
-    print(result)
-    if(result == "wrong password"):
-        return result
+    if not user_password_check():
+        return 'Wrong username or password'
+    elif not sudo_password_check(sudo_password):
+        return 'wrong sudo password'
+
     usr = User(user_id, password, sudo_password)
     return usr
 
-#connect(1,2,'2323')
-
-us1 = User('matan', '123123', 2323)
-
+results = connect('user', '22', '2323')
+if results == "Wrong username or password":
+    print(results)
+elif results == "Wrong username or password":
+    print(results)
+else:
+    print(results)
+#us1 = User('matan', '12312', 233)
+'''
 #us1.connect()
 us1.sendMessage("user 1 send a message", '123')
-'''
+
 print(us1.findMotherBoard())
 print(us1.findCpu())
 print("choose field to screen shot")
