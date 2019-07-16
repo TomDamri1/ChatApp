@@ -23,7 +23,6 @@ class User:
         self.internalIP = self.findInternalIp()
         self.motherBoard = self.findMotherBoard()
         self.cpu = self.findCpu()
-        self.PORT = 8831
         # open socket with client
         #self.mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         #self.mySocket.connect(('127.0.0.1',8823))
