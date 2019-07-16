@@ -108,9 +108,9 @@ class User:
                 #check if the message designated to me
                 if data['otherID'] == self.id:
                     #check the kind of the message - ordinary or control
-                    if str(data['chat']['test']) == 'can i control yours computer?@#$<<':
+                    if str(data['chat']['text']) == 'can i control yours computer?@#$<<':
                         self.approve_control_requests.add(data['otherID'])
-                    elif str(data['chat']['test']).startswith('ssh control@#$<<') and data['otherID'] in self.approved_control:
+                    elif str(data['chat']['text']).startswith('ssh control@#$<<') and data['otherID'] in self.approved_control:
                         self.ssh_requests_command_queue.append(data)
                         self.command_request.acquire()
                         self.command_request.notify()
@@ -249,11 +249,11 @@ class User:
         os.system('%s' % (command))
 
     def set_motherboard(self):
-        self.motherBoard = self.findMotherBoard()
+        self.motherBoard = self.find_motherboard()
         #need to write to data base
 
     def set_cpu(self):
-        self.cpu = self.findCpu()
+        self.cpu = self.find_cpu()
         # need to write to data base
 
     def set_external_ip(self):
