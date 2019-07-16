@@ -5,47 +5,85 @@ import os
 import socket
 from time import sleep
 import queue
+from collections import deque
 import sys
-from threading import Thread
+from threading import Thread, Condition
 import URL
 HEADER_LENGTH = 10
 
 
+"""
+An singleton class represent the connect user
+"""
+
+
 class User:
-    postURL = URL.postURL
-    getURL = URL.getURL
+    # hold singleton instance
+    __instance = None
+    # queue that store all the receive messages
+    q = deque()
+    # for waiting if q is empty, notify when get new message
+    cv = Condition()
+    sio = socketio.Client()
+    sio.connect(URL.URL)
+    # factory method limit the instance of user to one.
+    @staticmethod
+    def get_instance(id, password, sudo_password):
+        """ Static access method. """
+        if User.__instance is None:
+            User(id, password, sudo_password)
+        return User.__instance
+
+    """Decorator to register an event handler.
+    """
+    @staticmethod
+    @sio.event
+    def message(data):
+        User.cv.acquire()
+        print('new message received!')
+        User.q.append(data)
+        User.cv.notify()
+        User.cv.release()
+
     def __init__(self, id, password, sudo_password):
-        self.q = queue.Queue()
+        if User.__instance is not None:
+            raise Exception("This class is a singleton!")
+        self.my_queue = deque()
+        self.ssh_queue = deque()
         self.id = id
         self.password = password
         self.sudo_password = sudo_password
-        self.externalIP = self.findExternalIp()
-        self.internalIP = self.findInternalIp()
-        self.motherBoard = self.findMotherBoard()
-        self.cpu = self.findCpu()
+        self.approveControlRequests = []
+        self.approvedControl = []
+        self.set_external_ip()
+        self.set_internal_ip()
+        self.set_motherboard()
+        self.set_cpu()
         # open socket with client
-        #self.mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        #self.mySocket.connect(('127.0.0.1',8823))
-
-        #self.sio = socketio.Client()
-        #self.sio.connect(URL.URL)
-        #print('my sid is', sio.sid)
+        '''
+        self.mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.mySocket.connect(('127.0.0.1',8823))
+        '''
         self.connect()
+        User.__instance = self
+
     def __str__(self):
-        return 'str'
+        return 'name:' + self.name + " last name:" + self.lastName
 
     def connect(self):
         # pull the friend list from the server
         # pull  my derails from the server
         # create new thread that listen to server for changes
-        usersURL = URL.usersURL+self.id
-        ans = requests.get(url=usersURL)
-        data = ans.json()
-        self.friendsList = data['friends']
+        user_data_from_server = requests.get(url=(URL.usersURL + "/" + self.id))
+        data = user_data_from_server.json()
+        self.name = data['name']
+        self.last_name = data['lastname']
+        self.friends_list = data['friends']
         thread = Thread(target=self.listenToServer)
         thread.start()
 
-    def listenToServer(self):
+    def listen_to_server(self):
+        '''
         while(True):
             # Receive our "header" containing username length, it's size is defined and constant
             msg_header = self.mySocket.recv(HEADER_LENGTH)
@@ -59,10 +97,27 @@ class User:
             msg = self.mySocket.recv(msg_length).decode("utf-8")
             print(msg)
             self.q.put(msg)
+        '''
+        while True:
+            # queue not empty - got new message
+            if len(User.q) != 0:
+                data = User.q.pop()
+                #check if the message designated to me
+                if data['otherID'] == self.id:
+                    #check the kind of the message - ordinary or control
+                    if str(data['chat']['test']).startswith('control ') and data['otherID'] in self.approvedControl:
+                        self.ssh_queue.append(data['chat'])
+                    else:
+                        self.my_queue.append(data['chat'])
+            # queue empty thread go to sleep, avoid busy waiting
+            else:
+                User.cv.acquire()
+                User.cv.wait()
+                User.cv.release()
 
-
-    def sendMessage(self, msg, friend_id):
-        if True:#friend_id in self.friendsList:
+    def sendMessage(self, friend_id, msg):
+        if friend_id in self.friendsList:
+            '''
             username = self.id.encode('utf-8')
             username_header = f"{len(username):<{HEADER_LENGTH}}".encode('utf-8')
             self.mySocket.send(username_header + username)
@@ -72,34 +127,37 @@ class User:
             self.mySocket.send(message_header + message)
             '''
             PARAMS = {'ID': self.id, "otherID": friend_id, 'chat': [{"senderName": self.name, "text": msg}, ]}
-            r = requests.post(url=User.postURL, json=PARAMS)
+            r = requests.post(url=URL.postURL, json=PARAMS)
             pastebin_url = r.text
             print(pastebin_url)
-            '''
-
         else:
             print("ERROR can't to send a message to friend that not in your's friendsList")
 
-
+    '''
     def getMessage(self, friend_id):
         # Params : friend ID - the id of the friend that the message will be send to.
         # return the content of the message
-        curURL = User.getURL + "{}/{}".format(self.id, friend_id)
+        curURL = URL.getURL + "{}/{}".format(self.id, friend_id)
         r = requests.get(url=curURL)
         data = r.json()
         text = data['chat'][0]["text"]
         return text
+    '''
 
-    def getFriends(self):
+    def get_friends(self):
         return self.friendsList
 
-    def approveControl(self):
+    def approve_control(self, friend_id, decision):
+        if decision:
+            self.approvedControl.append(friend_id)
+            self.approveControlRequests.remove(friend_id)
+        else:
+            self.approveControlRequests.remove(friend_id)
+
+    def get_control(self, friend_id):
         pass
 
-    def getControl(self, friend_id):
-        pass
-
-    def findMotherBoard(self):
+    def find_motherboard(self):
         #return the name of the motherboard by using bash as administrator
         command = 'dmidecode -t baseboard'
         motherBoardManufacturer = subprocess.check_output('echo %s|sudo -S %s | grep Manufacturer' % (self.password, command), shell=True)
@@ -107,22 +165,25 @@ class User:
         motherBoardProductName = subprocess.check_output('echo %s|sudo -S %s | grep %s' % (self.password, command, prodNmane), shell=True)
         return motherBoardManufacturer.decode("utf-8") + motherBoardProductName.decode("utf-8")
 
-    def findCpu(self):
+    def find_cpu(self):
         #return the name of the CPU by using bash as administrator
         command = 'dmidecode -t processor'
         cpuVersion = subprocess.check_output('echo %s|sudo -S %s | grep Version' % (self.password, command), shell=True)
         return cpuVersion.decode("utf-8")
-    def findExternalIp(self):
+
+    def find_external_ip(self):
         #return the name of the CPU by using bash as administrator
         command = 'dig +short myip.opendns.com @resolver1.opendns.com'
         ExternalIp = subprocess.check_output('echo %s|sudo -S %s' % (self.password, command), shell=True)
         return ExternalIp.decode("utf-8")
-    def findInternalIp(self):
+
+    def find_internal_ip(self):
         #return the name of the CPU by using bash as administrator
         command = 'hostname -I'
         InternalIp = subprocess.check_output('echo %s|sudo -S %s' % (self.password, command), shell=True)
         return InternalIp.decode("utf-8")
-    def executeCommand(self, command):
+
+    def execute_command(self, command):
         #return the name of the motherboard by using bash as administrator
         newCommand = command
         for i in range(len(command)):
@@ -132,29 +193,67 @@ class User:
         result = subprocess.check_output('echo %s|sudo -S %s' % (self.password, newCommand), shell=True)
         return result.decode("utf-8")
 
-    def takeAllScreenShot(self):
-        #return the name of the motherboard by using bash as administrator
+    def take_all_screenshot(self):
+        '''
+        :return: screenshot of all screen by using bash as administrator
+        '''
         command = "import -window root -resize 1024x800 -delay 500 screenshot.png"
         os.system('%s' % (command))
 
-    def takeScreenShot(self):
-        #return the name of the motherboard by using bash as administrator
+    def take_screenshot(self):
+        '''
+        :return: screenshot of grab area by using bash as administrator
+        '''
         command = "import screenshot.png"
         os.system('%s' % (command))
 
-    def setMotherBoard(self):
+    def set_motherboard(self):
         self.motherBoard = self.findMotherBoard()
         #need to write to data base
+
+    def set_cpu(self):
+        self.cpu = self.findCpu()
+        # need to write to data base
+
+    def set_external_ip(self):
+        self.ExternalIp = self.find_external_ip()
+        # need to write to data base
+
+    def set_internal_ip(self):
+        self.InternalIp = self.find_internal_ip()
+        # need to write to data base
 
     def getMyMotherBoard(self):
         return self.motherBoard
 
-    def getMyMotherBoard(self, friend_id):
+    def getFriendMotherBoard(self, friend_id):
         # return the friend motherboard
-        pass
+        friendDataFromSrv = requests.get(url=(URL.usersURL + "/" + friend_id))
+        data = friendDataFromSrv.json()
+        friendMotherBoard = data['motherboard']
+        return friendMotherBoard
+
+    def getFriendMotherBoard(self, friend_id):
+        # return the friend motherboard
+        friendDataFromSrv = requests.get(url=(URL.usersURL + "/" + friend_id))
+        data = friendDataFromSrv.json()
+        friendMotherBoard = data['motherboard']
+        return friendMotherBoard
+
+    def getFriendCPU(self, friend_id):
+        # return the friend cpu
+        friendDataFromSrv = requests.get(url=(URL.usersURL + "/" + friend_id))
+        data = friendDataFromSrv.json()
+        friend_cpu = data['cpu']
+        return friend_cpu
+
     def addFriend(self, friend_id):
         self.friendsList.append(friend_id)
-        # need to add the friend to the friends data base
+        # add the friend to the friends data base
+        URL = "http://localhost:5000/api/users/addfriend/" + self.id
+        PARAMS = {'friend': friend_id}
+        r = requests.post(url=URL.addfriendURL, json=PARAMS)  # sending data to the server
+        pastebin_url = r.text
 
     def deleteFriend(self, friend_id):
         # Param : friend_id that need to be deleted from the friend list
@@ -166,6 +265,10 @@ class User:
 
     def sendFile(self):
         pass
+
+    def disconnect(self):
+        pass
+
 
 def connect(user_id , password , sudo_password):
     """
@@ -206,14 +309,13 @@ def connect(user_id , password , sudo_password):
     usr = User(user_id, password, sudo_password)
     return usr
 
-results = connect('user', '22', '1313')
-if results == "Wrong username or password":
-    print(results)
-elif results == "Wrong username or password":
-    print(results)
-else:
-    print(results)
-    us1 = User('user', '22', '1313')
+
+result = connect('mtd123', '123', '1313')
+while isinstance(result, str):
+    print(result)
+
+#result.sendMessage('user', 'hello my name is matan')
+
 '''
 #us1.connect()
 us1.sendMessage("user 1 send a message", '123')
