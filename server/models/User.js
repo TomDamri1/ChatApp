@@ -13,9 +13,9 @@ const UserSchema = new Schema({
   lastname:{  
       type: String,
     required: true
-},
+   },
 
-motherboard: {
+  motherboard: {
     type: String,
     required: true
   },
@@ -23,10 +23,7 @@ motherboard: {
     type: String,
     required: true
   },
-  friends: [{
-    type: String,
-    
-  }]
+  friends: [String]
 
 });
 

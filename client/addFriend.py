@@ -9,7 +9,7 @@ try:
 except:
     msg = 'defaultMSG fourth time'
 
-PARAMS = {'friend':'tom'}
+PARAMS = {'friend':'ghost'}
 
 r = requests.post(url=URL, json=PARAMS)#sending data to the server
 pastebin_url = r.text

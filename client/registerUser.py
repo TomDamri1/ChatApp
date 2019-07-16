@@ -9,8 +9,9 @@ try:
 except:
     msg = 'defaultMSG fourth time'
 
-PARAMS = {'name': 'tomer','lastname':'leon', 'id':'1','motherboard':'intel','cpu':'i5','password':'22'}
+PARAMS = {'name': 'tomer','lastname':'leon', 'id':'user','motherboard':'intel','cpu':'i5','password':'22'}
 
 r = requests.post(url=URL, json=PARAMS)#sending data to the server
+print(r.json())
 pastebin_url = r.text
 
