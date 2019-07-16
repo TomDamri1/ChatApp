@@ -1,5 +1,6 @@
-ip = "http://localhost:5000"
+URL = "http://localhost:5000"
 
-postURL =  ip + "/api/chat"
-getURL =   ip + "/api/chat/"
-usersURL = ip + "/api/users/"
+postURL = URL + "/api/chat"
+getURL = URL + "/api/chat/"
+usersURL =URL + "/api/users/"
+loginURL = URL + "/api/users/login"

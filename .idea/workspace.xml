@@ -2,11 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="71ca1dbe-c1b4-4a69-be88-5df08ecc03a5" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/URL.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/Post.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/Post.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/URL.py" beforeDir="false" afterPath="$PROJECT_DIR$/URL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/Login.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/Login.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/controlled/mainWindow_ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/controlled/mainWindow_ui.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/venv/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -32,70 +31,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/URL.py">
+        <entry file="file://$PROJECT_DIR$/client/registerUser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="40">
-              <caret line="2" column="27" selection-start-line="2" selection-start-column="27" selection-end-line="2" selection-end-column="27" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/user.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="452">
-              <caret line="39" column="12" lean-forward="true" selection-start-line="39" selection-start-column="12" selection-end-line="39" selection-end-column="12" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/Get.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="15" column="36" selection-start-line="15" selection-start-column="36" selection-end-line="29" selection-end-column="32" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/gui/controlled/chatWindow_ui.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="159" column="55" lean-forward="true" selection-start-line="159" selection-start-column="55" selection-end-line="159" selection-end-column="55" />
-              <folding>
-                <element signature="e#201#210#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gui/controlled/mainWindow_ui.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-702">
-              <caret line="121" column="19" lean-forward="true" selection-start-line="121" selection-start-column="19" selection-end-line="121" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gui/controlled/login_ui.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="113">
-              <caret line="88" column="38" selection-start-line="87" selection-start-column="11" selection-end-line="88" selection-end-column="38" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/Post.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="21" column="16" lean-forward="true" selection-start-line="21" selection-start-column="16" selection-end-line="21" selection-end-column="16" />
+            <state relative-caret-position="165">
+              <caret line="11" column="55" selection-start-line="11" selection-start-column="51" selection-end-line="11" selection-end-column="55" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -106,8 +45,94 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/socketClient.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
+            <state relative-caret-position="165">
               <caret line="11" selection-start-line="11" selection-end-line="11" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/Get.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="390">
+              <caret line="26" column="35" lean-forward="true" selection-start-line="26" selection-start-column="35" selection-end-line="26" selection-end-column="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/addFriend.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="270">
+              <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/Post.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="14" column="21" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/try.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/Login.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="14" selection-start-line="14" selection-end-line="14" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/message.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="8" column="33" selection-start-line="8" selection-start-column="33" selection-end-line="8" selection-end-column="33" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/URL.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="4" column="28" lean-forward="true" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/client/user.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="297">
+              <caret line="38" column="42" lean-forward="true" selection-start-line="38" selection-start-column="42" selection-end-line="38" selection-end-column="42" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -134,9 +159,10 @@
         <option value="$PROJECT_DIR$/client/socketClient.py" />
         <option value="$PROJECT_DIR$/gui/controlled/chatWindow_ui.py" />
         <option value="$PROJECT_DIR$/gui/controlled/mainWindow_ui.py" />
-        <option value="$PROJECT_DIR$/URL.py" />
-        <option value="$PROJECT_DIR$/client/user.py" />
         <option value="$PROJECT_DIR$/client/Post.py" />
+        <option value="$PROJECT_DIR$/URL.py" />
+        <option value="$PROJECT_DIR$/client/Login.py" />
+        <option value="$PROJECT_DIR$/client/user.py" />
       </list>
     </option>
   </component>
@@ -174,24 +200,6 @@
               <item name="gui" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="controlled" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
-            <path>
-              <item name="ChatApp" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="~/PycharmProjects/ChatApp" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="server" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="ChatApp" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="~/PycharmProjects/ChatApp" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="server" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="routes" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="ChatApp" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="~/PycharmProjects/ChatApp" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="server" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="routes" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="api" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -217,8 +225,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.chatWindow_ui">
-    <configuration name="Get" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.user">
+    <configuration name="Login" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="ChatApp" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -231,7 +239,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/client/Get.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/client/Login.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -330,11 +338,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.user" />
+        <item itemvalue="Python.Post" />
+        <item itemvalue="Python.Login" />
         <item itemvalue="Python.chatWindow_ui" />
         <item itemvalue="Python.mainWindow_ui" />
-        <item itemvalue="Python.Get" />
-        <item itemvalue="Python.Post" />
-        <item itemvalue="Python.user" />
       </list>
     </recent_temporary>
   </component>
@@ -362,6 +370,9 @@
       <workItem from="1562863456569" duration="1626000" />
       <workItem from="1563043029092" duration="3050000" />
       <workItem from="1563047168449" duration="6342000" />
+      <workItem from="1563216893861" duration="8814000" />
+      <workItem from="1563272097724" duration="7149000" />
+      <workItem from="1563286227476" duration="1084000" />
     </task>
     <task id="LOCAL-00001" summary="add : get cpu, take screen shot, execute command">
       <created>1563043116715</created>
@@ -384,28 +395,42 @@
       <option name="project" value="LOCAL" />
       <updated>1563197738467</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Merge branch 'master' of https://github.com/AlexKreinis/ChatApp&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml">
+      <created>1563272140782</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1563272140782</updated>
+    </task>
+    <task id="LOCAL-00005" summary="connect">
+      <created>1563285087972</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1563285087972</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="28851000" />
+    <option name="totallyTimeSpent" value="45898000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="83" y="27" width="1837" height="1053" extended-state="6" />
+    <frame x="1280" y="-2" width="1920" height="1082" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2121547" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1638207" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4969563" visible="true" weight="0.3629301" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.37069923" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4969563" weight="0.36096537" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.29275972" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32937366" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32841823" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5030437" side_tool="true" weight="0.3277849" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.32963374" />
@@ -417,18 +442,18 @@
       <window_info anchor="right" id="Database" order="4" weight="0.3293944" />
     </layout>
     <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16132596" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16207129" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4969563" visible="true" weight="0.22419533" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39956802" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4969563" visible="true" weight="0.36193028" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.2935657" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32937366" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32841823" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5030437" side_tool="true" weight="0.3277849" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.32963374" />
@@ -445,9 +470,20 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add : get cpu, take screen shot, execute command" />
-    <option name="LAST_COMMIT_MESSAGE" value="add : get cpu, take screen shot, execute command" />
+    <MESSAGE value="Merge branch 'master' of https://github.com/AlexKreinis/ChatApp&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml" />
+    <MESSAGE value="connect" />
+    <option name="LAST_COMMIT_MESSAGE" value="connect" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
         <watch expression="result" />
@@ -455,30 +491,15 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ChatApp$Post.coverage" NAME="Post Coverage Results" MODIFIED="1562842775342" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/client" />
     <SUITE FILE_PATH="coverage/ChatApp$login_ui.coverage" NAME="login_ui Coverage Results" MODIFIED="1562853984216" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />
-    <SUITE FILE_PATH="coverage/ChatApp$user.coverage" NAME="user Coverage Results" MODIFIED="1563054286923" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/client" />
+    <SUITE FILE_PATH="coverage/ChatApp$Post.coverage" NAME="Post Coverage Results" MODIFIED="1563284949674" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/client" />
+    <SUITE FILE_PATH="coverage/ChatApp$user.coverage" NAME="user Coverage Results" MODIFIED="1563287206392" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/client" />
     <SUITE FILE_PATH="coverage/ChatApp$chatWindow_ui.coverage" NAME="chatWindow_ui Coverage Results" MODIFIED="1562843516379" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />
+    <SUITE FILE_PATH="coverage/ChatApp$Login.coverage" NAME="Login Coverage Results" MODIFIED="1563284669893" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/client" />
     <SUITE FILE_PATH="coverage/ChatApp$mainWindow_ui.coverage" NAME="mainWindow_ui Coverage Results" MODIFIED="1563043153546" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/venv/lib/python3.6/site-packages/urllib3/connection.py" />
-    <entry file="file://$PROJECT_DIR$/client/message.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="33" selection-start-line="8" selection-start-column="33" selection-end-line="8" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/try.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -486,9 +507,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/screenshot.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/client/screenshot.png" />
     <entry file="file://$PROJECT_DIR$/server/routes/api/ChatAPI.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-660" />
@@ -501,30 +520,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/URL.py">
+    <entry file="file://$PROJECT_DIR$/gui/controlled/chatWindow_ui.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="40">
-          <caret line="2" column="27" selection-start-line="2" selection-start-column="27" selection-end-line="2" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/user.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="452">
-          <caret line="39" column="12" lean-forward="true" selection-start-line="39" selection-start-column="12" selection-end-line="39" selection-end-column="12" />
+        <state relative-caret-position="513">
+          <caret line="159" column="55" selection-start-line="159" selection-start-column="55" selection-end-line="159" selection-end-column="55" />
           <folding>
-            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#201#210#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/Post.py">
+    <entry file="file://$PROJECT_DIR$/gui/controlled/mainWindow_ui.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="21" column="16" lean-forward="true" selection-start-line="21" selection-start-column="16" selection-end-line="21" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="15">
+          <caret line="121" column="19" selection-start-line="121" selection-start-column="19" selection-end-line="121" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -535,33 +544,96 @@
         </state>
       </provider>
     </entry>
+    <entry file="file:///usr/lib/python3/dist-packages/apport_python_hook.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="48" column="12" selection-start-line="48" selection-start-column="12" selection-end-line="48" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/try.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/client/socketClient.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
+        <state relative-caret-position="165">
           <caret line="11" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/registerUser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="55" selection-start-line="11" selection-start-column="51" selection-end-line="11" selection-end-column="55" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/Post.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="21" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/message.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="33" selection-start-line="8" selection-start-column="33" selection-end-line="8" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/Login.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/Get.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="15" column="36" selection-start-line="15" selection-start-column="36" selection-end-line="29" selection-end-column="32" />
+        <state relative-caret-position="390">
+          <caret line="26" column="35" lean-forward="true" selection-start-line="26" selection-start-column="35" selection-end-line="26" selection-end-column="35" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gui/controlled/mainWindow_ui.py">
+    <entry file="file://$PROJECT_DIR$/client/addFriend.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-702">
-          <caret line="121" column="19" lean-forward="true" selection-start-line="121" selection-start-column="19" selection-end-line="121" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gui/controlled/chatWindow_ui.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="159" column="55" lean-forward="true" selection-start-line="159" selection-start-column="55" selection-end-line="159" selection-end-column="55" />
+        <state relative-caret-position="270">
+          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
           <folding>
-            <element signature="e#201#210#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/URL.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="28" lean-forward="true" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/user.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="38" column="42" lean-forward="true" selection-start-line="38" selection-start-column="42" selection-end-line="38" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>

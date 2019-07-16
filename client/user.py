@@ -10,61 +10,29 @@ from threading import Thread
 import URL
 HEADER_LENGTH = 10
 
-def connect(user_id , password , sudo_password):
-    """
-    send to alex
-    1. check if exist
-    2. pull the user data
-    3. init User , and return it
-    :param user_id:
-    :param password:
-    :return:
-    """
-    def sudo_password_check():
-        command = 'dmidecode -t baseboard'
-        try:
-            result = subprocess.check_output(
-            'echo %s|sudo -S %s 2>/dev/null' % (sudo_password, command), shell=True)
-            result = "right password"
-
-        except:
-            result = "wrong password"
-        finally:
-            return result
-
-    def user_password_check():
-        """
-        check if user exsist - w8 for alex.
-        :return:
-        """
-        pass
-    #return User()
-
-if __name__ == '__main__':
-    print(connect(1,2,'A134601'))
 
 class User:
     postURL = URL.postURL
     getURL = URL.getURL
-    def __init__(self, id, name, lastName, IP, motherBoard, password, friendsList):
+    def __init__(self, id, password, sudo_password):
         self.q = queue.Queue()
         self.id = id
-        self.name = name
-        self.lastName = lastName
-        self.IP = IP
-        self.motherBoard = motherBoard
         self.password = password
-        self.friendsList = friendsList
+        self.sudo_password = sudo_password
+        self.externalIP = self.findExternalIp()
+        self.internalIP = self.findInternalIp()
         self.motherBoard = self.findMotherBoard()
         self.cpu = self.findCpu()
-        self.PORT = 8821
         # open socket with client
+        #self.mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        #self.mySocket.connect(('127.0.0.1',8823))
+
         #self.sio = socketio.Client()
-        #self.sio.connect("http://localhost:5000/")
-        #print('my sid is', self.sio.sid)
-        #self.connect()
-
-
+        #self.sio.connect(URL.URL)
+        #print('my sid is', sio.sid)
+        self.connect()
+    def __str__(self):
+        return 'str'
 
     def connect(self):
         # pull the friend list from the server
@@ -94,21 +62,24 @@ class User:
 
 
     def sendMessage(self, msg, friend_id):
-        if friend_id in self.friendsList:
-            username = self.name.encode('utf-8')
+        if True:#friend_id in self.friendsList:
+            username = self.id.encode('utf-8')
             username_header = f"{len(username):<{HEADER_LENGTH}}".encode('utf-8')
             self.mySocket.send(username_header + username)
 
             message = msg.encode('utf-8')
             message_header = f"{len(message):<{HEADER_LENGTH}}".encode('utf-8')
             self.mySocket.send(message_header + message)
+            '''
             PARAMS = {'ID': self.id, "otherID": friend_id, 'chat': [{"senderName": self.name, "text": msg}, ]}
             r = requests.post(url=User.postURL, json=PARAMS)
             pastebin_url = r.text
             print(pastebin_url)
+            '''
 
         else:
             print("ERROR can't to send a message to friend that not in your's friendsList")
+
 
     def getMessage(self, friend_id):
         # Params : friend ID - the id of the friend that the message will be send to.
@@ -141,7 +112,16 @@ class User:
         command = 'dmidecode -t processor'
         cpuVersion = subprocess.check_output('echo %s|sudo -S %s | grep Version' % (self.password, command), shell=True)
         return cpuVersion.decode("utf-8")
-
+    def findExternalIp(self):
+        #return the name of the CPU by using bash as administrator
+        command = 'dig +short myip.opendns.com @resolver1.opendns.com'
+        ExternalIp = subprocess.check_output('echo %s|sudo -S %s' % (self.password, command), shell=True)
+        return ExternalIp.decode("utf-8")
+    def findInternalIp(self):
+        #return the name of the CPU by using bash as administrator
+        command = 'hostname -I'
+        InternalIp = subprocess.check_output('echo %s|sudo -S %s' % (self.password, command), shell=True)
+        return InternalIp.decode("utf-8")
     def executeCommand(self, command):
         #return the name of the motherboard by using bash as administrator
         newCommand = command
@@ -186,11 +166,56 @@ class User:
 
     def sendFile(self):
         pass
-'''
-password = str(input("Enter your password pls:"))
-us1 = User('205509', 'matan', 'davidian', '127.0.0.1', 'intel mother Board', password, ['2312', '12332', '123'])
 
-us1.connect()
+def connect(user_id , password , sudo_password):
+    """
+    send to alex
+    1. check if exist
+    2. pull the user data
+    3. init User , and return it
+    :param user_id:
+    :param password:
+    :return:
+    """
+    def sudo_password_check(sudo_password):
+        command = 'dmidecode -t baseboard'
+        try:
+            result = subprocess.check_output(
+            'echo %s|sudo -S %s 2>/dev/null' % (sudo_password, command), shell=True)
+            return True
+
+        except:
+            return False
+
+    def user_password_check():
+        """
+        check if user exist
+        :return: False if doesn't exist or True if exist
+        """
+        PARAMS = {'id': user_id, 'password': password}
+        r = requests.post(url=URL.loginURL, json=PARAMS)  # sending data to the server
+        if r.json()['Login'] == 'Login Failed Wrong password':
+            return False
+        return True
+
+    if not user_password_check():
+        return 'Wrong username or password'
+    elif not sudo_password_check(sudo_password):
+        return 'wrong sudo password'
+
+    usr = User(user_id, password, sudo_password)
+    return usr
+
+results = connect('user', '22', '1313')
+if results == "Wrong username or password":
+    print(results)
+elif results == "Wrong username or password":
+    print(results)
+else:
+    print(results)
+    us1 = User('user', '22', '1313')
+'''
+#us1.connect()
 us1.sendMessage("user 1 send a message", '123')
 
 print(us1.findMotherBoard())
@@ -200,4 +225,7 @@ us1.takeScreenShot()
 print(us1.executeCommand("ls -l"))
 #us1.sendMessage("hello my name is matan third try", '123')
 #print(us1.findMotherBoard('123'))
+ans = requests.get(url="http://localhost:5000/api/users/1")
+data = ans.json()
+print(data)
 '''
