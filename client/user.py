@@ -1,4 +1,5 @@
 import requests
+import socketio
 import subprocess
 import os
 import socket
@@ -6,35 +7,42 @@ from time import sleep
 import queue
 import sys
 from threading import Thread
+import URL
 HEADER_LENGTH = 10
 
 
 class User:
-    postURL = "http://localhost:5000/api/chat"
-    getURL = "http://localhost:5000/api/chat/"
-
-    def __init__(self, id, name, lastName, IP, motherBoard, password, friendsList):
+    postURL = URL.postURL
+    getURL = URL.getURL
+    def __init__(self, id,password,sudo_password):
         self.q = queue.Queue()
         self.id = id
-        self.name = name
-        self.lastName = lastName
-        self.IP = IP
-        self.motherBoard = motherBoard
         self.password = password
-        self.motherBoard = motherBoard
-        self.friendsList = friendsList
-        self.PORT = 8821
+        self.sudo_password = sudo_password
+        #self.externalIP = self.findExternalIp()
+        #self.internalIP = self.findInternalIp()
+        #self.motherBoard = self.findMotherBoard()
+        #self.cpu = self.findCpu()
+        self.PORT = 8831
         # open socket with client
-        '''
         self.mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.mySocket.connect((self.IP, self.PORT))
-        '''
+        self.mySocket.connect(('127.0.0.1',8823))
+
+        #self.sio = socketio.Client()
+        #self.sio.connect(URL.URL)
+        #print('my sid is', sio.sid)
+        #self.connect()
+
 
 
     def connect(self):
         # pull the friend list from the server
         # pull  my derails from the server
         # create new thread that listen to server for changes
+        usersURL = URL.usersURL+self.id
+        ans = requests.get(url=usersURL)
+        data = ans.json()
+        self.friendsList = data['friends']
         thread = Thread(target=self.listenToServer)
         thread.start()
 
@@ -55,21 +63,24 @@ class User:
 
 
     def sendMessage(self, msg, friend_id):
-        if friend_id in self.friendsList:
-            username = self.name.encode('utf-8')
+        if True:#friend_id in self.friendsList:
+            username = self.id.encode('utf-8')
             username_header = f"{len(username):<{HEADER_LENGTH}}".encode('utf-8')
             self.mySocket.send(username_header + username)
 
             message = msg.encode('utf-8')
             message_header = f"{len(message):<{HEADER_LENGTH}}".encode('utf-8')
             self.mySocket.send(message_header + message)
+            '''
             PARAMS = {'ID': self.id, "otherID": friend_id, 'chat': [{"senderName": self.name, "text": msg}, ]}
             r = requests.post(url=User.postURL, json=PARAMS)
             pastebin_url = r.text
             print(pastebin_url)
+            '''
 
         else:
             print("ERROR can't to send a message to friend that not in your's friendsList")
+
 
     def getMessage(self, friend_id):
         # Params : friend ID - the id of the friend that the message will be send to.
@@ -102,7 +113,16 @@ class User:
         command = 'dmidecode -t processor'
         cpuVersion = subprocess.check_output('echo %s|sudo -S %s | grep Version' % (self.password, command), shell=True)
         return cpuVersion.decode("utf-8")
-
+    def findExternalIp(self):
+        #return the name of the CPU by using bash as administrator
+        command = 'dig +short myip.opendns.com @resolver1.opendns.com'
+        ExternalIp = subprocess.check_output('echo %s|sudo -S %s' % (self.password, command), shell=True)
+        return ExternalIp.decode("utf-8")
+    def findInternalIp(self):
+        #return the name of the CPU by using bash as administrator
+        command = 'hostname -I'
+        InternalIp = subprocess.check_output('echo %s|sudo -S %s' % (self.password, command), shell=True)
+        return InternalIp.decode("utf-8")
     def executeCommand(self, command):
         #return the name of the motherboard by using bash as administrator
         newCommand = command
@@ -148,10 +168,47 @@ class User:
     def sendFile(self):
         pass
 
-password = str(input("Enter your password pls:"))
-us1 = User('205509', 'matan', 'davidian', '127.0.0.1', 'intel mother Board', password, ['2312', '12332', '123'])
-'''
-us1.connect()
+def connect(user_id , password , sudo_password):
+    """
+    send to alex
+    1. check if exist
+    2. pull the user data
+    3. init User , and return it
+    :param user_id:
+    :param password:
+    :return:
+    """
+    def sudo_password_check(sudo_password):
+        command = 'dmidecode -t baseboard'
+        try:
+            result = subprocess.check_output(
+            'echo %s|sudo -S %s 2>/dev/null' % (sudo_password, command), shell=True)
+            result = "right password"
+
+        except:
+            result = "wrong password"
+        finally:
+            return result
+
+    def user_password_check():
+        """
+        check if user exsist - w8 for alex.
+        :return:
+        """
+        pass
+
+    result=sudo_password_check(sudo_password)
+    print(result)
+    if(result == "wrong password"):
+        return result
+    usr = User(user_id, password, sudo_password)
+    return usr
+
+#connect(1,2,'2323')
+
+us1 = User('matan', '123123', 2323)
+
+#us1.connect()
 us1.sendMessage("user 1 send a message", '123')
 '''
 print(us1.findMotherBoard())
@@ -161,4 +218,4 @@ us1.takeScreenShot()
 print(us1.executeCommand("ls -l"))
 #us1.sendMessage("hello my name is matan third try", '123')
 #print(us1.findMotherBoard('123'))
-
+'''
