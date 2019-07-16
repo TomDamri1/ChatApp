@@ -6,9 +6,9 @@ router.get('/:id', async (req, res) => {
   console.log("getting req");
   try{
      const user=await User.findOne({
-         id: req.params.id,
+         ID: req.params.id,
      })
-     res.json('user');
+     res.json(user);
    }
    catch(err){
        console.log(err);
