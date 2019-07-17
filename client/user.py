@@ -23,17 +23,17 @@ class User:
     # queue that store all the receive messages
     q = deque()
     # for waiting if q is empty, notify when get new message
-    cv = Condition()
-    sio = socketio.Client()
-    sio.connect(URL.URL)
-    # factory method limit the instance of user to one.
-    @staticmethod
-    def get_instance(id, password, sudo_password):
-        """ Static access method. """
-        if User.__instance is None:
-            User(id, password, sudo_password)
-        return User.__instance
+    try:
+        cv = Condition()
+        sio = socketio.Client()
+        sio.connect(URL.URL)
+    except:
+        print("problem - check internet connection , or server is offline")
 
+    @staticmethod
+    def get_instance():
+        """ Static access method. """
+        return User.__instance
 
     """Decorator to register an event handler.
     """
@@ -63,6 +63,11 @@ class User:
         self.set_internal_ip()
         self.set_motherboard()
         self.set_cpu()
+        # update my details(external_ip, internal_ip, otherboard, cpu) on server
+        update_url = URL.updateURL + self.id
+        PARAMS = {'externalIP': self.external_ip, 'internalIP': self.internal_ip, 'CPU': self.cpu, 'motherboard': self.motherboard}
+        r = requests.post(url=update_url, json=PARAMS)  # sending data to the server
+        print(r.json())
         # open socket with client
         '''
         self.mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -83,14 +88,6 @@ class User:
         self.name = data['name']
         self.last_name = data['lastname']
         self.friends_list = data['friends']
-        #update my details on the server - (external_ip, internal_ip, motherboard, cpu)
-        update_ip_url = URL.updateURL + "IP/" + self.id
-        PARAMS = {'externalIP': self.external_ip, 'internalIP': self.internal_ip}
-        #update_ip_url = URL.updateURL + "IP/" + self.id
-        #PARAMS = {'externalIP': self.external_ip, 'internalIP': self.internal_ip}
-        r = requests.post(url=URL, json=PARAMS)  # sending data to the server
-        print(r.json())
-        pastebin_url = r.text
         thread1 = Thread(target=self.listen_to_server)
         thread2 = Thread(target=self.execute_command_from_ssh_requests_command_queue)
         thread1.start()
@@ -232,9 +229,12 @@ class User:
 
     def find_external_ip(self):
         #return the name of the CPU by using bash as administrator
-        command = 'dig +short myip.opendns.com @resolver1.opendns.com'
-        external_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.password, command), shell=True)
-        return external_ip.decode("utf-8")
+        try:
+            command = 'dig +short myip.opendns.com @resolver1.opendns.com'
+            external_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.password, command), shell=True)
+            return external_ip.decode("utf-8")
+        except:
+            return"---"
 
     def find_internal_ip(self):
         #return the name of the CPU by using bash as administrator
@@ -267,7 +267,7 @@ class User:
         os.system('%s' % (command))
 
     def set_motherboard(self):
-        self.motherBoard = self.find_motherboard()
+        self.motherboard = self.find_motherboard()
         #need to write to data base
 
     def set_cpu(self):
@@ -283,7 +283,16 @@ class User:
         # need to write to data base
 
     def get_my_motherboard(self):
-        return self.motherBoard
+        return self.motherboard
+
+    def get_my_cpu(self):
+        return self.cpu
+
+    def get_my_external_ip(self):
+        return self.external_ip
+
+    def get_my_internal_ip(self):
+        return self.internal_ip
 
     def get_friend_motherboard(self, friend_id):
         # return the friend motherboard
@@ -296,25 +305,49 @@ class User:
         # return the friend cpu
         friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
         data = friend_data_from_server.json()
-        friend_cpu = data['cpu']
+        friend_cpu = data['CPU']
         return friend_cpu
 
-    def add_friend(self, friend_id):
-        self.friends_list.append(friend_id)
-        # add the friend to the friends data base
-        add_friend_url = URL.addfriendURL + self.id
-        PARAMS = {'friend': friend_id}
-        r = requests.post(url=add_friend_url, json=PARAMS)  # sending data to the server
-        # add result
-        return r.text
+    def get_friend_external_ip(self, friend_id):
+        # return the friend external ip
+        friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
+        data = friend_data_from_server.json()
+        friend_external_ip = data['externalIP']
+        return friend_external_ip
 
-    def delete_friend(self, friend_id):
+    def get_friend_internal_ip(self, friend_id):
+        # return the friend internal ip
+        friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
+        data = friend_data_from_server.json()
+        friend_internal_ip = data['internalIP']
+        return friend_internal_ip
+
+    def add_friend(self, friend_id):
+        if friend_id not in self.friends_list:
+            self.friends_list.append(friend_id)
+            # add the friend to the friends data base
+            add_friend_url = URL.addfriendURL + self.id
+            PARAMS = {'friend': friend_id}
+            r = requests.post(url=add_friend_url, json=PARAMS)  # sending data to the server
+            # add result
+            print("alex postin :" + str(r.text))
+            return r.text
+
+
+    def remove_friend(self, friend_id):
         # Param : friend_id that need to be deleted from the friend list
-        try:
-            self.friends_list.remove(friend_id)
-            # need to delete the friend from the friends data base
-        except ValueError as e:
-            print(e)
+        if friend_id in self.friends_list:
+            try:
+                remove_url = URL.removeURL + self.id
+                PARAMS = {'friend': friend_id}
+                r = requests.delete(url=URL, json=PARAMS)  # sending data to the server
+                self.friends_list.remove(friend_id)
+                print(r)
+                # need to delete the friend from the friends data base
+            except ValueError as e:
+                print(e)
+        else:
+            return "Error : " + friend_id + "not in yours friend list"
 
     def send_file(self):
         pass
@@ -325,9 +358,10 @@ class User:
 
 def connect(user_id , password , sudo_password):
     """
-    send to serever
+    send to alex
     1. check if exist
-    2. cheack if sudo password is right
+    2. pull the user data
+    3. init User , and return it
     :param user_id:
     :param password:
     :return:
@@ -349,40 +383,41 @@ def connect(user_id , password , sudo_password):
         """
         PARAMS = {'id': user_id, 'password': password}
         r = requests.post(url=URL.loginURL, json=PARAMS)  # sending data to the server
-        if r.json()['Login'] == 'Login Failed Wrong password':
+        if r.json()['Login'] == 'No login found':
             return False
-        return True
-
+        elif r.json()['Login'] == "Logged in successfully ":
+            return True
+        else :
+            return "user check on server return diff msg"
     if not user_password_check():
         return 'Wrong username or password'
     elif not sudo_password_check(sudo_password):
         return 'wrong sudo password'
 
-    #usr = User(user_id, password, sudo_password)
-    #valid and exists user - return True
+    usr = User(user_id, password, sudo_password)
     return True
 
+if __name__ == '__main__':
+    result = connect('mtd123', '123', '1313')
+    if isinstance(result, str):
+        print(result)
+    else:
+        print(User.get_instance().get_friend_external_ip('mtd'))
+        print(User.get_instance().get_friend_internal_ip('mtd'))
+    #result.sendMessage('user', 'hello my name is matan')
 
-result = connect('mtd123', '123', '2323')
-us1 = User('mtd123', '123', '2323')
-us1.add_friend('user')
-while isinstance(result, str):
-    print(result)
-
-#result.sendMessage('user', 'hello my name is matan')
-
-'''
-#us1.connect()
-us1.sendMessage("user 1 send a message", '123')
-
-print(us1.findMotherBoard())
-print(us1.findCpu())
-print("choose field to screen shot")
-us1.takeScreenShot()
-print(us1.executeCommand("ls -l"))
-#us1.sendMessage("hello my name is matan third try", '123')
-#print(us1.findMotherBoard('123'))
-ans = requests.get(url="http://localhost:5000/api/users/1")
-data = ans.json()
-print(data)
-'''
+    '''
+    #us1.connect()
+    us1.sendMessage("user 1 send a message", '123')
+    
+    print(us1.findMotherBoard())
+    print(us1.findCpu())
+    print("choose field to screen shot")
+    us1.takeScreenShot()
+    print(us1.executeCommand("ls -l"))
+    #us1.sendMessage("hello my name is matan third try", '123')
+    #print(us1.findMotherBoard('123'))
+    ans = requests.get(url="http://localhost:5000/api/users/1")
+    data = ans.json()
+    print(data)
+    '''

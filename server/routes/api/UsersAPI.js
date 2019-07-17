@@ -22,11 +22,30 @@ router.post('/addfriend/:id', async (req, res) => {
       })
       user.friends.push(req.body.friend)
       user.save();
+      res.json({"Success":"Friend added successfully"})
   }  
   catch(err){
       console.log(err);
   }
   });
+
+router.delete('/removefriend/:id',async(req,res)=>{
+
+    try{
+        const user=await User.findOne({
+            ID: req.params.id,
+        })
+        const newfriends=user.friends.filter(friend=>{
+           return friend!==req.body.friend
+        })
+        user.friends=newfriends;
+        user.save();
+        res.json({"Success":"Friend removed successfully"})
+    }  
+    catch(err){
+        console.log(err);
+    }
+});
 
 
 router.post('/register', async (req, res) => {
@@ -72,7 +91,7 @@ router.post('/login',async(req,res)=>{
   }
 
 })
-router.post("/updateIP/:id",async(req,res)=>{
+router.post("/update/:id",async(req,res)=>{
    try{
        const user=await User.findOne({
            ID:req.params.id
@@ -83,6 +102,8 @@ router.post("/updateIP/:id",async(req,res)=>{
        else{
         user.externalIP=req.body.externalIP
         user.internalIP=req.body.internalIP
+        user.CPU=req.body.CPU
+        user.motherboard=req.body.motherboard
         user.save();
         res.json({"Success":"Updated successfully"})
        }
