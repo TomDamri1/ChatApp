@@ -82,6 +82,14 @@ class User:
         self.name = data['name']
         self.last_name = data['lastname']
         self.friends_list = data['friends']
+        #update my details on the server - (external_ip, internal_ip, motherboard, cpu)
+        update_ip_url = URL.updateURL + "IP/" + self.id
+        PARAMS = {'externalIP': self.external_ip, 'internalIP': self.internal_ip}
+        #update_ip_url = URL.updateURL + "IP/" + self.id
+        #PARAMS = {'externalIP': self.external_ip, 'internalIP': self.internal_ip}
+        r = requests.post(url=URL, json=PARAMS)  # sending data to the server
+        print(r.json())
+        pastebin_url = r.text
         thread1 = Thread(target=self.listen_to_server)
         thread2 = Thread(target=self.execute_command_from_ssh_requests_command_queue)
         thread1.start()
@@ -213,7 +221,7 @@ class User:
         motherboard_manufacturer = subprocess.check_output('echo %s|sudo -S %s | grep Manufacturer' % (self.password, command), shell=True)
         prod_name = '\'Product Name\''
         motherboard_product_name = subprocess.check_output('echo %s|sudo -S %s | grep %s' % (self.password, command, prod_name), shell=True)
-        return motherboard_manufacturer.decode("utf-8") + motherboard_product_name.decode("utf-8")
+        return motherboard_manufacturer.decode("utf-8")[1:] + motherboard_product_name.decode("utf-8")[1:]
 
     def find_cpu(self):
         #return the name of the CPU by using bash as administrator
@@ -266,11 +274,11 @@ class User:
         # need to write to data base
 
     def set_external_ip(self):
-        self.ExternalIp = self.find_external_ip()
+        self.external_ip = self.find_external_ip()
         # need to write to data base
 
     def set_internal_ip(self):
-        self.InternalIp = self.find_internal_ip()
+        self.internal_ip = self.find_internal_ip()
         # need to write to data base
 
     def get_my_motherboard(self):
@@ -316,10 +324,9 @@ class User:
 
 def connect(user_id , password , sudo_password):
     """
-    send to alex
+    send to serever
     1. check if exist
-    2. pull the user data
-    3. init User , and return it
+    2. cheack if sudo password is right
     :param user_id:
     :param password:
     :return:
@@ -350,11 +357,13 @@ def connect(user_id , password , sudo_password):
     elif not sudo_password_check(sudo_password):
         return 'wrong sudo password'
 
-    usr = User(user_id, password, sudo_password)
-    return usr
+    #usr = User(user_id, password, sudo_password)
+    #valid and exists user - return True
+    return True
 
 
-result = connect('mtd123', '123', '1313')
+result = connect('mtd123', '123', '2323')
+us1 = User('mtd123', '123', '2323')
 while isinstance(result, str):
     print(result)
 
