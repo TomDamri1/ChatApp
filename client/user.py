@@ -34,6 +34,7 @@ class User:
             User(id, password, sudo_password)
         return User.__instance
 
+
     """Decorator to register an event handler.
     """
     @staticmethod
@@ -364,6 +365,7 @@ def connect(user_id , password , sudo_password):
 
 result = connect('mtd123', '123', '2323')
 us1 = User('mtd123', '123', '2323')
+us1.add_friend('user')
 while isinstance(result, str):
     print(result)
 
