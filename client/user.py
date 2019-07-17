@@ -83,14 +83,14 @@ class User:
         self.last_name = data['lastname']
         self.friends_list = data['friends']
         thread1 = Thread(target=self.listen_to_server)
-        thread1.start()
         thread2 = Thread(target=self.execute_command_from_ssh_requests_command_queue)
+        thread1.start()
         thread2.start()
 
     def execute_command_from_ssh_requests_command_queue(self):
         while True:
-            # queue not empty - got new message
-            if len(self.ssh_requests_command_queue) != 0:
+            # queue not empty - get new message
+            if len(self.ssh_requests_command_queue) > 0:
                 data = self.ssh_requests_command_queue.pop()
                 result = self.execute_command(data['chat']['text'][16:])
                 if result != '':
@@ -109,7 +109,7 @@ class User:
                 if data['otherID'] == self.id:
                     #check the kind of the message - ordinary or control
                     if str(data['chat']['text']) == 'can i control yours computer?@#$<<':
-                        self.approve_control_requests.add(data['otherID'])
+                        self.approve_control_requests.add(data['ID'])
                     elif str(data['chat']['text']).startswith('ssh control@#$<<') and data['otherID'] in self.approved_control:
                         self.ssh_requests_command_queue.append(data)
                         self.command_request.acquire()
@@ -122,7 +122,7 @@ class User:
                 User.cv.acquire()
                 User.cv.wait()
                 User.cv.release()
-        """
+        '''
         while(True):
             # Receive our "header" containing username length, it's size is defined and constant
             msg_header = self.mySocket.recv(HEADER_LENGTH)
@@ -136,7 +136,7 @@ class User:
             msg = self.mySocket.recv(msg_length).decode("utf-8")
             print(msg)
             self.q.put(msg)
-        """
+        '''
 
     def send_message(self, friend_id, msg):
         if friend_id in self.friends_list:
@@ -156,6 +156,15 @@ class User:
         else:
             print("ERROR can't to send a message to friend that not in your's friendsList")
 
+    def send_ssh_message(self, friend_id, msg):
+        if friend_id in self.approved_control:
+            msg = 'ssh control@#$<<' + msg
+            params = {'ID': self.id, "otherID": friend_id, 'chat': [{"senderName": self.name, "text": msg}, ]}
+            r = requests.post(url=URL.postURL, json=params)
+            return_msg = r.text
+            print(return_msg)
+        else:
+            print("ERROR can't to send a message to friend that not in your's approved control List")
     """
     def getMessage(self, friend_id):
         # Params : friend ID - the id of the friend that the message will be send to.
@@ -194,7 +203,7 @@ class User:
             return friend_id +"didn\'t add control on your computer"
 
     def ask_for_control(self, friend_id):
-        params = {'ID': self.id, "otherID": friend_id, 'chat': [{"senderName": self.name, "text": 'can i control you\'rs computer?@#$<<'}, ]}
+        params = {'ID': self.id, "otherID": friend_id, 'chat': [{"senderName": self.name, "text": 'can i control yours computer?@#$<<'}, ]}
         r = requests.post(url=URL.postURL, json=params)
         print(r)
 
