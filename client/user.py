@@ -31,10 +31,8 @@ class User:
         print("problem - check internet connection , or server is offline")
     # factory method limit the instance of user to one.
     @staticmethod
-    def get_instance(id, password, sudo_password):
+    def get_instance():
         """ Static access method. """
-        if User.__instance is None:
-            User(id, password, sudo_password)
         return User.__instance
 
     """Decorator to register an event handler.
@@ -216,7 +214,7 @@ class User:
         motherboard_manufacturer = subprocess.check_output('echo %s|sudo -S %s | grep Manufacturer' % (self.password, command), shell=True)
         prod_name = '\'Product Name\''
         motherboard_product_name = subprocess.check_output('echo %s|sudo -S %s | grep %s' % (self.password, command, prod_name), shell=True)
-        return motherboard_manufacturer.decode("utf-8") + motherboard_product_name.decode("utf-8")
+        return motherboard_manufacturer.decode("utf-8")[1:] + motherboard_product_name.decode("utf-8")[1:]
 
     def find_cpu(self):
         #return the name of the CPU by using bash as administrator
@@ -226,9 +224,12 @@ class User:
 
     def find_external_ip(self):
         #return the name of the CPU by using bash as administrator
-        command = 'dig +short myip.opendns.com @resolver1.opendns.com'
-        external_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.password, command), shell=True)
-        return external_ip.decode("utf-8")
+        try:
+            command = 'dig +short myip.opendns.com @resolver1.opendns.com'
+            external_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.password, command), shell=True)
+            return external_ip.decode("utf-8")
+        except:
+            return"---"
 
     def find_internal_ip(self):
         #return the name of the CPU by using bash as administrator
@@ -294,13 +295,16 @@ class User:
         return friend_cpu
 
     def add_friend(self, friend_id):
-        self.friends_list.append(friend_id)
-        # add the friend to the friends data base
-        add_friend_url = URL.addfriendURL + self.id
-        PARAMS = {'friend': friend_id}
-        r = requests.post(url=add_friend_url, json=PARAMS)  # sending data to the server
-        # add result
-        return r.text
+        if friend_id not in self.friends_list:
+            self.friends_list.append(friend_id)
+            # add the friend to the friends data base
+            add_friend_url = URL.addfriendURL + self.id
+            PARAMS = {'friend': friend_id}
+            r = requests.post(url=add_friend_url, json=PARAMS)  # sending data to the server
+            # add result
+            print("alex postin :" + str(r.text))
+            return r.text
+
 
     def delete_friend(self, friend_id):
         # Param : friend_id that need to be deleted from the friend list
@@ -357,8 +361,6 @@ def connect(user_id , password , sudo_password):
     return usr
 
 if __name__ == '__main__':
-
-
     result = connect('mtd123', '123', '1313')
     while isinstance(result, str):
         print(result)

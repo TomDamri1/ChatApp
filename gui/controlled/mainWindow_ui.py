@@ -130,13 +130,8 @@ class Ui_mainWindow(object):
 
 
     def add_friend(self, friend):
-        """
-        need to be added by ID!!!!
-
-
-        :param friend: id
-        :return:
-        """
+        my_user = user.User.get_instance()
+        my_user.add_friend(friend)
         if friend!="":
             if friend not in friendList:
                 friendList.append(friend)
