@@ -11,6 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 from multiprocessing import Process
 import sys
+from client import user
 
 friendList = []
 class Ui_mainWindow(object):
@@ -100,9 +101,11 @@ class Ui_mainWindow(object):
         self.lastName_label.setText(_translate("mainWindow", "Last Name:"))
         self.addFriend_button.setText(_translate("mainWindow", "ADD"))
 
-    def __init__(self, user_id):
+    def __init__(self, user_id , user_pass , user_sudo):
 
         self.user_id = user_id
+        self.user_password = user_pass
+        self.user_sudo = user_sudo
         self.app = QtWidgets.QApplication(sys.argv)
         self.mainPage = QtWidgets.QMainWindow()
         self.setupUi(self.mainPage)
@@ -169,7 +172,20 @@ class Ui_mainWindow(object):
 
 if __name__ == '__main__':
     #for the testing of the page only:
-    #x = Ui_mainWindow(sys.argv[1])s
-    x = Ui_mainWindow("abc")
-    x.open()
+    try:
+        userid = sys.argv[1]
+        userpass = sys.argv[2]
+        usersudo = sys.argv[3]
+    except:
+        userid = "testUser"
+        userpass = "123456"
+        usersudo = "A1346014"
+
+
+    my_user = user.User(userid , userpass , usersudo)
+    window = Ui_mainWindow(userid, userpass, usersudo)
+    window.lastName_text.setText(my_user.last_name)
+    window.name_text.setText(my_user.name)
+    window.motherBoard_text.setText(my_user.motherBoard)
+    window.open()
 

@@ -23,9 +23,12 @@ class User:
     # queue that store all the receive messages
     q = deque()
     # for waiting if q is empty, notify when get new message
-    cv = Condition()
-    sio = socketio.Client()
-    sio.connect(URL.URL)
+    try:
+        cv = Condition()
+        sio = socketio.Client()
+        sio.connect(URL.URL)
+    except:
+        print("problem - check internet connection , or server is offline")
     # factory method limit the instance of user to one.
     @staticmethod
     def get_instance(id, password, sudo_password):
@@ -341,7 +344,7 @@ def connect(user_id , password , sudo_password):
         """
         PARAMS = {'id': user_id, 'password': password}
         r = requests.post(url=URL.loginURL, json=PARAMS)  # sending data to the server
-        if r.json()['Login'] == 'Login Failed Wrong password':
+        if r.json()['Login'] == 'No login found':
             return False
         return True
 
@@ -353,25 +356,27 @@ def connect(user_id , password , sudo_password):
     usr = User(user_id, password, sudo_password)
     return usr
 
+if __name__ == '__main__':
 
-result = connect('mtd123', '123', '1313')
-while isinstance(result, str):
-    print(result)
 
-#result.sendMessage('user', 'hello my name is matan')
+    result = connect('mtd123', '123', '1313')
+    while isinstance(result, str):
+        print(result)
 
-'''
-#us1.connect()
-us1.sendMessage("user 1 send a message", '123')
+    #result.sendMessage('user', 'hello my name is matan')
 
-print(us1.findMotherBoard())
-print(us1.findCpu())
-print("choose field to screen shot")
-us1.takeScreenShot()
-print(us1.executeCommand("ls -l"))
-#us1.sendMessage("hello my name is matan third try", '123')
-#print(us1.findMotherBoard('123'))
-ans = requests.get(url="http://localhost:5000/api/users/1")
-data = ans.json()
-print(data)
-'''
+    '''
+    #us1.connect()
+    us1.sendMessage("user 1 send a message", '123')
+    
+    print(us1.findMotherBoard())
+    print(us1.findCpu())
+    print("choose field to screen shot")
+    us1.takeScreenShot()
+    print(us1.executeCommand("ls -l"))
+    #us1.sendMessage("hello my name is matan third try", '123')
+    #print(us1.findMotherBoard('123'))
+    ans = requests.get(url="http://localhost:5000/api/users/1")
+    data = ans.json()
+    print(data)
+    '''

@@ -12,7 +12,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 import threading
 from gui.controlled.mainWindow_ui import Ui_mainWindow
-
+from client import user
 
 
 class Ui_LoginPage(object):
@@ -80,8 +80,9 @@ class Ui_LoginPage(object):
 
     def login(self):
 
-        def enter_main_page(userid):
-            main_page_process = Process (target= os.system , args=("python3 mainWindow_ui.py "+str(userid),))
+        def enter_main_page(userid , userpass , usersudo):
+            string_of_details = str(userid)+ " "+str(userpass) +" " +str (usersudo)
+            main_page_process = Process (target= os.system , args=("python3 mainWindow_ui.py "+string_of_details,))
             main_page_process.start()
 
         def open_new_socket(userid):
@@ -90,27 +91,28 @@ class Ui_LoginPage(object):
 
         user_id = self.user_id = self.username_text.text()
         user_password = self.user_password = self.password_text.text()
+        user_sudo = self.user_sudo = "A1346014" #=self.sudo_text.text()
         print(user_id , user_password)
-        if self.check_login_details(user_id , user_password):
+        if self.check_login_details(user_id , user_password , user_sudo):
             self.login_flag = True
-            enter_main_page(user_id)
+            enter_main_page(user_id , user_password , user_sudo)
             open_new_socket(user_id)
             self.close()
 
 
-    def check_login_details(self,user_id,user_password):
-        """
-        if exists(user_id):
-            if getUser(user_id).password == password:
-                return True
-        return Fasle
-        """
+    def check_login_details(self,user_id,user_password,user_sudo_password):
+        my_user = user.connect(user_id,user_password,user_sudo_password)
+        if isinstance(my_user,str):
+            print (my_user)
+            return False
         return True
 
     def close(self):
         self.app.quit()
 
-
-os.system("pwd")
-x = Ui_LoginPage()
-x.open()
+try:
+    os.system("pwd")
+    x = Ui_LoginPage()
+    x.open()
+except Exception as e:
+    print(e)
