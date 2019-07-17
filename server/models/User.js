@@ -16,8 +16,10 @@ const UserSchema = new Schema({
    },
 
   motherboard: {
-    type: String,
-    required: true
+    type: String
+  },
+  CPU:{
+    type:String
   },
   password: {
     type: String,

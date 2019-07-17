@@ -72,7 +72,7 @@ router.post('/login',async(req,res)=>{
   }
 
 })
-router.post("/updateIP/:id",async(req,res)=>{
+router.post("/update/:id",async(req,res)=>{
    try{
        const user=await User.findOne({
            ID:req.params.id
@@ -83,6 +83,8 @@ router.post("/updateIP/:id",async(req,res)=>{
        else{
         user.externalIP=req.body.externalIP
         user.internalIP=req.body.internalIP
+        user.CPU=req.body.CPU
+        user.motherboard=req.body.motherboard
         user.save();
         res.json({"Success":"Updated successfully"})
        }
