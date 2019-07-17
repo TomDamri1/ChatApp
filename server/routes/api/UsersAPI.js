@@ -72,6 +72,27 @@ router.post('/login',async(req,res)=>{
   }
 
 })
+router.post("/updateIP/:id",async(req,res)=>{
+   try{
+       const user=await User.findOne({
+           ID:req.params.id
+       })
+       if(!user){
+          res.json({"Login":"No login found"})
+       }
+       else{
+        user.externalIP=req.body.externalIP
+        user.internalIP=req.body.internalIP
+        user.save();
+        res.json({"Success":"Updated successfully"})
+       }
+   
+   }
+   catch(err){
+       console.log(err);
+   }
+   
+})
 
 
 module.exports = router;

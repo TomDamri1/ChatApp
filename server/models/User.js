@@ -23,6 +23,12 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  externalIP:{
+    type:String
+  },
+  internalIP:{
+    type:String
+  },
   friends: [String]
 
 });
