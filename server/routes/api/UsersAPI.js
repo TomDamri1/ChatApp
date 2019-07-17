@@ -22,11 +22,30 @@ router.post('/addfriend/:id', async (req, res) => {
       })
       user.friends.push(req.body.friend)
       user.save();
+      res.json({"Success":"Friend added successfully"})
   }  
   catch(err){
       console.log(err);
   }
   });
+
+router.delete('/removefriend/:id',async(req,res)=>{
+
+    try{
+        const user=await User.findOne({
+            ID: req.params.id,
+        })
+        const newfriends=user.friends.filter(friend=>{
+           return friend!==req.body.friend
+        })
+        user.friends=newfriends;
+        user.save();
+        res.json({"Success":"Friend removed successfully"})
+    }  
+    catch(err){
+        console.log(err);
+    }
+});
 
 
 router.post('/register', async (req, res) => {
