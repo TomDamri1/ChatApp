@@ -160,7 +160,8 @@ class User:
             self.mySocket.send(message_header + message)
             """
             if msg != "":
-                params = {'ID': self.id, "otherID": friend_id, 'chat': [{"senderName": self.name, "text": msg}, ]}
+                params = {'ID': self.id, "otherID": friend_id, 'chat': {"senderName": self.name, "text": msg} }
+                print(params)
                 r = requests.post(url=URL.postURL, json=params)
                 return_msg = r.text
                 print(return_msg)

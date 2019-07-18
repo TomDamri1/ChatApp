@@ -128,13 +128,15 @@ class Ui_friend_msgBox(object):
         self.app = QtWidgets.QApplication(sys.argv)
         self.friend_msgBox = QtWidgets.QMainWindow()
         self.setupUi(self.friend_msgBox)
-        def get_msgs():
+        def get_msgs_history():
             msgs = my_user.getMessage(friend_id)
+            print(msgs)
             for msg in msgs:
                 self.chat_text.addItem(msg[0]+" > "+msg[1])
-        get_msgs()
+        get_msgs_history()
         self.motherBoard_text.setText(my_user.get_friend_motherboard(friend_id))
 
+        self.message_button.clicked.connect(self.sendmsg)
 
         def get_messages_process(user_id , friend_id):
             from multiprocessing.pool import ThreadPool
@@ -162,6 +164,14 @@ class Ui_friend_msgBox(object):
         for msg in self.messages:
             self.chat_text.addItem(msg[0]+" > "+msg[1])
         """
+
+    def sendmsg(self):
+        msg_txt = self.message_text.toPlainText()
+        print("my text is " + msg_txt)
+        if msg_txt != '':
+            self.my_user.send_message(self.friend_id , msg_txt)
+            self.message_text.setPlainText("")
+
 
 
 
