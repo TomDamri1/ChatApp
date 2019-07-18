@@ -347,13 +347,15 @@ class User:
         if friend_id not in self.friends_list:
             #-------------------------------------------------------need add check if the friend is exist
             #check_fried_exist =
-            self.friends_list.append(friend_id)
             # add the friend to the friends data base
             add_friend_url = URL.addfriendURL + self.id
             PARAMS = {'friend': friend_id}
             r = requests.post(url=add_friend_url, json=PARAMS)  # sending data to the server
+            r = r.json()
             # add result
             print("alex postin :" + str(r.text))
+            if r.text['Failed'] != 'true':
+                self.friends_list.append(friend_id)
             return r.text
 
 
