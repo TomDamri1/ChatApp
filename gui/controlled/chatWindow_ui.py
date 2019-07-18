@@ -124,14 +124,19 @@ class Ui_friend_msgBox(object):
         self.app = QtWidgets.QApplication(sys.argv)
         self.friend_msgBox = QtWidgets.QMainWindow()
         self.setupUi(self.friend_msgBox)
+        def get_msgs():
+            from client import user
+            msgs = user.User.getMessage(friend_id)
+            for msg in msgs:
+                self.chat_text.addItem(msg[0]+" > "+msg[1])
 
         def get_messages_process(user_id , friend_id):
             from multiprocessing.pool import ThreadPool
             import client.Get as cg
             pool = ThreadPool(processes=1)
-            async_result = pool.apply_async(cg.get_messages, (user_id, friend_id))  # tuple of args for foo
+            #async_result = pool.apply_async(cg.get_messages, (user_id, friend_id))  # tuple of args for foo
             # do some other stuff in the main process
-            return_val = async_result.get()  # get the return value from your function.
+            #return_val = async_result.get()  # get the return value from your function.
             return ""
 
         def listen_msg():
