@@ -83,7 +83,7 @@ class Ui_friend_msgBox(object):
         self.commandLinkButton_2 = QtWidgets.QCommandLinkButton(self.gridLayoutWidget)
         self.commandLinkButton_2.setObjectName("commandLinkButton_2")
         self.gridLayout.addWidget(self.commandLinkButton_2, 6, 1, 1, 1)
-        self.chat_text = QtWidgets.QListView(self.centralwidget)
+        self.chat_text = QtWidgets.QListWidget(self.centralwidget)
         self.chat_text.setGeometry(QtCore.QRect(10, 10, 451, 341))
         self.chat_text.setObjectName("chat_text")
         friend_msgBox.setCentralWidget(self.centralwidget)
@@ -129,11 +129,23 @@ class Ui_friend_msgBox(object):
             from multiprocessing.pool import ThreadPool
             import client.Get as cg
             pool = ThreadPool(processes=1)
-
-            #async_result = pool.apply_async(cg.get_messages, (user_id, friend_id))  # tuple of args for foo
+            async_result = pool.apply_async(cg.get_messages, (user_id, friend_id))  # tuple of args for foo
             # do some other stuff in the main process
-            #return_val = async_result.get()  # get the return value from your function.
+            return_val = async_result.get()  # get the return value from your function.
             return ""
+
+        def listen_msg():
+            from client import user
+            my_user = user.User.get_instance()
+            while True:
+                if len(my_user.my_queue)>0:
+                    data = my_user.my_queue.pop()
+                    self.chat_text.addItem(data['senderName']+ " > " + data['text'])
+
+                else :
+                    my_user.my_queue_waiter.acquire()
+                    my_user.my_queue_waiter.wait()
+                    my_user.my_queue_waiter.release()
 
         self.messages = get_messages_process(user_id , friend_id)
         for msg in self.messages:

@@ -203,7 +203,7 @@ if __name__ == '__main__':
         if len(sys.argv) != 3:
             userid = "testUser"
             userpass = "123456"
-            usersudo = "2323"
+            usersudo = "A1346014"
         else:
             print("user details error!")
 
