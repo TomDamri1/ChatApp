@@ -118,19 +118,23 @@ class Ui_friend_msgBox(object):
         self.commandLinkButton_2.setText(_translate("friend_msgBox", "Disable his control"))
 
 
-    def __init__(self,user_id, friend_id):
+    def __init__(self,user_id, user_pass , user_sudo ,friend_id):
+        from client import user
         self.user_id = user_id
+        self.user_password = user_pass
+        self.user_sudo = user_sudo
+        self.my_user = my_user = user.User(self.user_id, self.user_password, self.user_sudo)
         self.friend_id = friend_id
         self.app = QtWidgets.QApplication(sys.argv)
         self.friend_msgBox = QtWidgets.QMainWindow()
         self.setupUi(self.friend_msgBox)
         def get_msgs():
-            from client import user
-            my_user = user.User.get_instance()
             msgs = my_user.getMessage(friend_id)
             for msg in msgs:
                 self.chat_text.addItem(msg[0]+" > "+msg[1])
         get_msgs()
+        self.motherBoard_text.setText(my_user.get_friend_motherboard(friend_id))
+
 
         def get_messages_process(user_id , friend_id):
             from multiprocessing.pool import ThreadPool
@@ -143,7 +147,6 @@ class Ui_friend_msgBox(object):
 
         def listen_msg():
             from client import user
-            my_user = user.User.get_instance()
             while True:
                 if len(my_user.my_queue)>0:
                     data = my_user.my_queue.pop()
@@ -154,9 +157,11 @@ class Ui_friend_msgBox(object):
                     my_user.my_queue_waiter.wait()
                     my_user.my_queue_waiter.release()
 
+        """
         self.messages = get_messages_process(user_id , friend_id)
         for msg in self.messages:
-            self.chat_text.addItem(msg[0]+" : "+msg[1])
+            self.chat_text.addItem(msg[0]+" > "+msg[1])
+        """
 
 
 
@@ -171,11 +176,14 @@ if __name__ == '__main__':
     #x = Ui_mainWindow(sys.argv[1])s
     default_id1 = 'testUser'
     default_id2 = 'testUser2'
-    try:
-        x = Ui_friend_msgBox(sys.argv[1] , sys.argv[2])
-    except:
-        x = Ui_friend_msgBox(default_id1 , default_id2)
+    default_pas = '12345'
+    default_sudo = 'A1346014'
 
-    print(x.messages)
+    try:
+        x = Ui_friend_msgBox(sys.argv[1] , sys.argv[2] , sys.argv[3] , sys.argv[4])
+    except:
+        x = Ui_friend_msgBox(default_id1 , default_pas , default_sudo , default_id2)
+
+    #print(x.messages)
 
     x.open()
