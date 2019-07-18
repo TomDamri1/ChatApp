@@ -49,7 +49,7 @@ class User:
     def __init__(self, id, password, sudo_password):
         if User.__instance is not None:
             raise Exception("This class is a singleton!")
-        self.my_queue = deque()
+        self.my_dict_of_queue = dict()
         self.ssh_requests_command_queue = deque()
         # for waiting if ssh_requests_command_queue is empty, notify when get new command
         self.command_request = Condition()
@@ -122,7 +122,11 @@ class User:
                         self.command_request.notify()
                         self.command_request.release()
                     else:
-                        self.my_queue.append(data['chat'])
+                        if self.my_dict_of_queue[data['chat']['ID']] == None:
+                            self.my_dict_of_queue[data['chat']['ID']] = deque()
+                            self.my_dict_of_queue[data['chat']['ID']].append(data['chat'])
+                        else:
+                            self.my_dict_of_queue[data['chat']['ID']].append(data['chat'])
             # queue empty thread go to sleep, avoid busy waiting
             else:
                 User.cv.acquire()

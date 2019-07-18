@@ -129,6 +129,7 @@ class Ui_friend_msgBox(object):
             from multiprocessing.pool import ThreadPool
             import client.Get as cg
             pool = ThreadPool(processes=1)
+
             #async_result = pool.apply_async(cg.get_messages, (user_id, friend_id))  # tuple of args for foo
             # do some other stuff in the main process
             #return_val = async_result.get()  # get the return value from your function.
