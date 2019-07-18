@@ -167,9 +167,10 @@ class Ui_friend_msgBox(object):
 
     def sendmsg(self):
         msg_txt = self.message_text.toPlainText()
+        print("my text is " + msg_txt)
         if msg_txt != '':
-            self.message_text.setPlainText("")
             self.my_user.send_message(self.friend_id , msg_txt)
+            self.message_text.setPlainText("")
 
 
 

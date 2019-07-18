@@ -35,10 +35,14 @@ router.post('/', async (req, res) => {
     ID: req.body.otherID
   });
   if (chat1) {
+    console.log(chat1)
     chat1.chat = [...chat1.chat,req.body.chat];
+    console.log(chat1.chat)
     chat1.save();
   } else if (chat2) {
+    console.log(chat2)
     chat2.chat = [...chat2.chat,req.body.chat];
+    console.log(chat2.chat)
     chat2.save();
   } else {
     const newChat = new Chat({
