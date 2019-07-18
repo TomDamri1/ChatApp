@@ -126,7 +126,8 @@ class Ui_friend_msgBox(object):
         self.setupUi(self.friend_msgBox)
         def get_msgs():
             from client import user
-            msgs = user.User.get_instance().getMessage(friend_id)
+            my_user = user.User.get_instance()
+            msgs = my_user.getMessage(friend_id)
             for msg in msgs:
                 self.chat_text.addItem(msg[0]+" > "+msg[1])
         get_msgs()

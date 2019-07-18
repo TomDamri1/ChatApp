@@ -142,7 +142,7 @@ class Ui_mainWindow(object):
 
         #self.user
 
-        for name in self.get_friends(user_id):
+        for name in self.get_friends():
             self.listWidget.addItem(name)
 
         """
@@ -171,7 +171,7 @@ class Ui_mainWindow(object):
 
 
 
-    def get_friends(self,user_id):
+    def get_friends(self):
         """
 
         :param user_id:
@@ -179,7 +179,7 @@ class Ui_mainWindow(object):
 
         for each friend - add the friend to the list with his detials.
          """
-        return friendList
+        return self.my_user.get_friends()
 
 
 
