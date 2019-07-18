@@ -7,7 +7,7 @@ from time import sleep
 import queue
 from collections import deque
 import sys
-from threading import Thread, Condition
+from threading import Thread, Condition, Lock
 import URL
 HEADER_LENGTH = 10
 
@@ -50,7 +50,8 @@ class User:
         if User.__instance is not None:
             raise Exception("This class is a singleton!")
         self.my_queue = deque()
-        self.my_queue_waiter = Condition()
+        trylock = Lock()
+        self.my_queue_waiter = Condition(trylock)
         self.ssh_requests_command_queue = deque()
         # for waiting if ssh_requests_command_queue is empty, notify when get new command
         self.command_request = Condition()

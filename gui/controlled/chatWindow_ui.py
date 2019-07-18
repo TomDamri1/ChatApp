@@ -1,16 +1,10 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'chatWindow_ui.ui'
-#
-# Created by: PyQt5 UI code generator 5.13.0
-#
-# WARNING! All changes made in this file will be lost!
 import os
 from multiprocessing import Process
+from threading import Thread
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
-from threading import Thread, Condition
+
 
 class Ui_friend_msgBox(object):
     def setupUi(self, friend_msgBox):
@@ -123,46 +117,46 @@ class Ui_friend_msgBox(object):
         self.user_id = user_id
         self.user_password = user_pass
         self.user_sudo = user_sudo
-        try:
-            self.my_user = my_user = user.User(self.user_id, self.user_password, self.user_sudo)
-        finally:
-            self.my_user = my_user = user.User.get_instance()
+        self.my_user = my_user = user.User(self.user_id, self.user_password, self.user_sudo)
         self.friend_id = friend_id
         self.app = QtWidgets.QApplication(sys.argv)
         self.friend_msgBox = QtWidgets.QMainWindow()
         self.setupUi(self.friend_msgBox)
-        self.motherBoard_text.setText(my_user.get_friend_motherboard(friend_id))
-        self.message_button.clicked.connect(self.sendmsg)
 
+        # self.message_text.returnPressed.connect(self.message_button.animateClick)
         def get_msgs_history():
             msgs = my_user.getMessage(friend_id)
-            if msgs:
-                print(msgs)
-                for msg in msgs:
-                    self.chat_text.addItem(msg[0]+" > "+msg[1])
-
-        def listen_msg():
-            # from client import user
-            while True:
-                if len(self.my_user.my_queue) > 0:
-                    data = self.my_user.my_queue.pop()
-                    self.chat_text.addItem(data['senderName'] + " > " + data['text'])
-                else:
-                    self.my_user.my_queue_waiter.acquire()
-                    self.my_user.my_queue_waiter.wait()
-                    print("wake up")
-                    self.my_user.my_queue_waiter.release()
-
-        def get_messages_process():
-            thread = Thread(target=listen_msg)
-            thread.start()
-            # do some other stuff in the main process
-            #return_val = async_result.get()  # get the return value from your function.
-            return ""
+            print(msgs)
+            for msg in msgs:
+                self.chat_text.addItem(msg[0] + " > " + msg[1])
 
         get_msgs_history()
-        get_messages_process()
+        self.motherBoard_text.setText(my_user.get_friend_motherboard(friend_id))
 
+        self.message_button.clicked.connect(self.sendmsg)
+
+        def get_messages_process():
+            from multiprocessing.pool import ThreadPool
+            my_thread = Thread(target=listen_msg)
+            my_thread.start()
+
+            return ""
+
+        def listen_msg():
+            from client import user
+            while True:
+                if len(my_user.my_queue) > 0:
+                    data = self.my_user.my_queue.pop()
+                    self.chat_text.addItem(data['sender_name'] + " > " + data['text'])
+
+                else:
+                    self.my_user.my_queue_waiter.acquire()
+                    print("wating...")
+                    self.my_user.my_queue_waiter.wait()
+                    print("interupted")
+                    self.my_user.my_queue_waiter.release()
+
+        get_messages_process()
         """
         self.messages = get_messages_process(user_id , friend_id)
         for msg in self.messages:
@@ -173,31 +167,28 @@ class Ui_friend_msgBox(object):
         msg_txt = self.message_text.toPlainText()
         print("my text is " + msg_txt)
         if msg_txt != '':
-            self.my_user.send_message(self.friend_id , msg_txt)
+            self.my_user.send_message(self.friend_id, msg_txt)
             self.message_text.setPlainText("")
-
-
-
 
     def open(self):
         self.friend_msgBox.show()
         sys.exit(self.app.exec_())
 
 
-
 if __name__ == '__main__':
-    #for the testing of the page only:
-    #x = Ui_mainWindow(sys.argv[1])s
+    # for the testing of the page only:
+    # x = Ui_mainWindow(sys.argv[1])s
     default_id1 = 'testUser'
     default_id2 = 'testUser2'
     default_pas = '12345'
-    default_sudo = 'A1346014'
+    default_sudo = '1313'
 
     try:
-        x = Ui_friend_msgBox(sys.argv[1] , sys.argv[2] , sys.argv[3] , sys.argv[4])
+        x = Ui_friend_msgBox(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
     except:
-        x = Ui_friend_msgBox(default_id1 , default_pas , default_sudo , default_id2)
+        x = Ui_friend_msgBox(default_id1, default_pas, default_sudo, default_id2)
 
-    #print(x.messages)
+    # print(x.messages)
 
     x.open()
+
