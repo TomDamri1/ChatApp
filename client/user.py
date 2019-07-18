@@ -29,7 +29,7 @@ class User:
         sio.connect(URL.URL)
     except:
         print("problem - check internet connection , or server is offline")
-    # factory method limit the instance of user to one.
+
     @staticmethod
     def get_instance():
         """ Static access method. """
@@ -63,6 +63,11 @@ class User:
         self.set_internal_ip()
         self.set_motherboard()
         self.set_cpu()
+        # update my details(external_ip, internal_ip, otherboard, cpu) on server
+        update_url = URL.updateURL + self.id
+        PARAMS = {'externalIP': self.external_ip, 'internalIP': self.internal_ip, 'CPU': self.cpu, 'motherboard': self.motherboard}
+        r = requests.post(url=update_url, json=PARAMS)  # sending data to the server
+        print(r.json())
         # open socket with client
         '''
         self.mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -211,22 +216,22 @@ class User:
     def find_motherboard(self):
         #return the name of the motherboard by using bash as administrator
         command = 'dmidecode -t baseboard'
-        motherboard_manufacturer = subprocess.check_output('echo %s|sudo -S %s | grep Manufacturer' % (self.password, command), shell=True)
+        motherboard_manufacturer = subprocess.check_output('echo %s|sudo -S %s | grep Manufacturer' % (self.sudo_password, command), shell=True)
         prod_name = '\'Product Name\''
-        motherboard_product_name = subprocess.check_output('echo %s|sudo -S %s | grep %s' % (self.password, command, prod_name), shell=True)
+        motherboard_product_name = subprocess.check_output('echo %s|sudo -S %s | grep %s' % (self.sudo_password, command, prod_name), shell=True)
         return motherboard_manufacturer.decode("utf-8")[1:] + motherboard_product_name.decode("utf-8")[1:]
 
     def find_cpu(self):
         #return the name of the CPU by using bash as administrator
         command = 'dmidecode -t processor'
-        cpu_version = subprocess.check_output('echo %s|sudo -S %s | grep Version' % (self.password, command), shell=True)
+        cpu_version = subprocess.check_output('echo %s|sudo -S %s | grep Version' % (self.sudo_password, command), shell=True)
         return cpu_version.decode("utf-8")
 
     def find_external_ip(self):
         #return the name of the CPU by using bash as administrator
         try:
             command = 'dig +short myip.opendns.com @resolver1.opendns.com'
-            external_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.password, command), shell=True)
+            external_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.sudo_password, command), shell=True)
             return external_ip.decode("utf-8")
         except:
             return"---"
@@ -234,7 +239,7 @@ class User:
     def find_internal_ip(self):
         #return the name of the CPU by using bash as administrator
         command = 'hostname -I'
-        internal_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.password, command), shell=True)
+        internal_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.sudo_password, command), shell=True)
         return internal_ip.decode("utf-8")
 
     def execute_command(self, command):
@@ -262,7 +267,7 @@ class User:
         os.system('%s' % (command))
 
     def set_motherboard(self):
-        self.motherBoard = self.find_motherboard()
+        self.motherboard = self.find_motherboard()
         #need to write to data base
 
     def set_cpu(self):
@@ -270,15 +275,24 @@ class User:
         # need to write to data base
 
     def set_external_ip(self):
-        self.ExternalIp = self.find_external_ip()
+        self.external_ip = self.find_external_ip()
         # need to write to data base
 
     def set_internal_ip(self):
-        self.InternalIp = self.find_internal_ip()
+        self.internal_ip = self.find_internal_ip()
         # need to write to data base
 
     def get_my_motherboard(self):
-        return self.motherBoard
+        return self.motherboard
+
+    def get_my_cpu(self):
+        return self.cpu
+
+    def get_my_external_ip(self):
+        return self.external_ip
+
+    def get_my_internal_ip(self):
+        return self.internal_ip
 
     def get_friend_motherboard(self, friend_id):
         # return the friend motherboard
@@ -291,8 +305,22 @@ class User:
         # return the friend cpu
         friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
         data = friend_data_from_server.json()
-        friend_cpu = data['cpu']
+        friend_cpu = data['CPU']
         return friend_cpu
+
+    def get_friend_external_ip(self, friend_id):
+        # return the friend external ip
+        friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
+        data = friend_data_from_server.json()
+        friend_external_ip = data['externalIP']
+        return friend_external_ip
+
+    def get_friend_internal_ip(self, friend_id):
+        # return the friend internal ip
+        friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
+        data = friend_data_from_server.json()
+        friend_internal_ip = data['internalIP']
+        return friend_internal_ip
 
     def add_friend(self, friend_id):
         if friend_id not in self.friends_list:
@@ -306,13 +334,20 @@ class User:
             return r.text
 
 
-    def delete_friend(self, friend_id):
+    def remove_friend(self, friend_id):
         # Param : friend_id that need to be deleted from the friend list
-        try:
-            self.friends_list.remove(friend_id)
-            # need to delete the friend from the friends data base
-        except ValueError as e:
-            print(e)
+        if friend_id in self.friends_list:
+            try:
+                remove_url = URL.removeURL + self.id
+                PARAMS = {'friend': friend_id}
+                r = requests.delete(url=URL, json=PARAMS)  # sending data to the server
+                self.friends_list.remove(friend_id)
+                print(r)
+                # need to delete the friend from the friends data base
+            except ValueError as e:
+                print(e)
+        else:
+            return "Error : " + friend_id + "not in yours friend list"
 
     def send_file(self):
         pass
@@ -350,21 +385,26 @@ def connect(user_id , password , sudo_password):
         r = requests.post(url=URL.loginURL, json=PARAMS)  # sending data to the server
         if r.json()['Login'] == 'No login found':
             return False
-        return True
-
+        elif r.json()['Login'] == "Logged in successfully ":
+            return True
+        else :
+            return "user check on server return diff msg"
     if not user_password_check():
         return 'Wrong username or password'
     elif not sudo_password_check(sudo_password):
         return 'wrong sudo password'
 
     usr = User(user_id, password, sudo_password)
-    return usr
+    return True
 
 if __name__ == '__main__':
     result = connect('mtd123', '123', '1313')
-    while isinstance(result, str):
+    if isinstance(result, str):
         print(result)
-
+    else:
+        print(User.get_instance().get_my_cpu())
+        #print(User.get_instance().get_friend_external_ip('mtd'))
+        #print(User.get_instance().get_friend_internal_ip('mtd'))
     #result.sendMessage('user', 'hello my name is matan')
 
     '''

@@ -135,10 +135,10 @@ class Ui_mainWindow(object):
         self.listWidget.itemActivated.connect(self.itemActivated_event)
         self.lastName_text.setText(self.my_user.last_name)
         self.name_text.setText(self.my_user.name)
-        self.motherBoard_text.setText(self.my_user.motherBoard)
-        self.ip_ex_text.setText(self.my_user.find_external_ip().split()[0])
-        self.ip_in_text.setText(self.my_user.find_internal_ip().split()[0])
-        self.cpu_text.setText(self.my_user.cpu.strip())
+        self.motherBoard_text.setText(self.my_user.get_my_motherboard())
+        self.ip_ex_text.setText(self.my_user.get_my_external_ip().split()[0])
+        self.ip_in_text.setText(self.my_user.get_my_internal_ip().split()[0])
+        self.cpu_text.setText(self.my_user.get_my_cpu().strip())
 
         #self.user
 
@@ -203,7 +203,7 @@ if __name__ == '__main__':
         if len(sys.argv) != 3:
             userid = "testUser"
             userpass = "123456"
-            usersudo = "A1346014"
+            usersudo = "2323"
         else:
             print("user details error!")
 

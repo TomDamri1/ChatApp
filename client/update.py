@@ -11,7 +11,3 @@ PARAMS = {'externalIP':'1234','internalIP':'45678','CPU':'intel','motherboard':'
 r = requests.post(url=URL, json=PARAMS)#sending data to the server
 print(r.json())
 pastebin_url = r.text
-
-
-
-
