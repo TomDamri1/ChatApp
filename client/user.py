@@ -127,6 +127,11 @@ class User:
                             self.my_dict_of_queue[data['chat']['ID']].append(data['chat'])
                         else:
                             self.my_dict_of_queue[data['chat']['ID']].append(data['chat'])
+                            self.my_queue_waiter.acquire()
+                            self.my_queue_waiter.notify()
+                            self.command_request.release()
+
+
             # queue empty thread go to sleep, avoid busy waiting
             else:
                 User.cv.acquire()
