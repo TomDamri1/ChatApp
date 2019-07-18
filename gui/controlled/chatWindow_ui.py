@@ -126,9 +126,10 @@ class Ui_friend_msgBox(object):
         self.setupUi(self.friend_msgBox)
         def get_msgs():
             from client import user
-            msgs = user.User.getMessage(friend_id)
+            msgs = user.User.get_instance().getMessage(friend_id)
             for msg in msgs:
                 self.chat_text.addItem(msg[0]+" > "+msg[1])
+        get_msgs()
 
         def get_messages_process(user_id , friend_id):
             from multiprocessing.pool import ThreadPool
@@ -167,8 +168,8 @@ class Ui_friend_msgBox(object):
 if __name__ == '__main__':
     #for the testing of the page only:
     #x = Ui_mainWindow(sys.argv[1])s
-    default_id1 = '87'
-    default_id2 = '99'
+    default_id1 = 'testUser'
+    default_id2 = 'testUser2'
     try:
         x = Ui_friend_msgBox(sys.argv[1] , sys.argv[2])
     except:
