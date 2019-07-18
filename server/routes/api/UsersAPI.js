@@ -20,9 +20,17 @@ router.post('/addfriend/:id', async (req, res) => {
       const user=await User.findOne({
           ID: req.params.id,
       })
-      user.friends.push(req.body.friend)
-      user.save();
-      res.json({"Success":"Friend added successfully"})
+      const testuser=await User.findOne({
+          ID:req.body.friend
+      })
+      if(testuser){
+        user.friends.push(req.body.friend)
+        user.save();
+        res.json({"Success":"Friend added successfully"})   
+      }
+      else{
+         res.json({"Failed":true}); 
+      }
   }  
   catch(err){
       console.log(err);
