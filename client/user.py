@@ -175,7 +175,7 @@ class User:
             print(return_msg)
         else:
             print("ERROR can't to send a message to friend that not in your's approved control List")
-    """
+
     def getMessage(self, friend_id):
         # Params : friend ID - the id of the friend that the message will be send to.
         # return the content of the message
@@ -183,8 +183,14 @@ class User:
         r = requests.get(url=curURL)
         data = r.json()
         text = data['chat'][0]["text"]
-        return text
-    """
+        list_of_msg = []
+        if data['chat']:
+            for i in data['chat']:
+                if 'senderName' in i.keys():
+                    msg = [i['senderName'], i['text']]
+                    list_of_msg.append(msg)
+
+        return list_of_msg
 
     def get_friends(self):
         return self.friends_list

@@ -12,6 +12,7 @@ def get_messages(id1 , id2):
     data = ans.json()
     l = []
     print(data)
+
     for i in data['chat']:
         if 'senderName' in i.keys():
             msg = [i['senderName'] , i['text']]
