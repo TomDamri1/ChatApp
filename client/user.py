@@ -344,6 +344,8 @@ class User:
 
     def add_friend(self, friend_id):
         if friend_id not in self.friends_list:
+            #-------------------------------------------------------need add check if the friend is exist
+            #check_fried_exist =
             self.friends_list.append(friend_id)
             # add the friend to the friends data base
             add_friend_url = URL.addfriendURL + self.id
@@ -422,7 +424,7 @@ if __name__ == '__main__':
     if isinstance(result, str):
         print(result)
     else:
-        result.send_message('testUser2','hi')
+        result.send_message('testUser2','what your name?')
         print(result.getMessage('testUser2'))
         #print(User.get_instance().get_my_cpu())
         #print(User.get_instance().get_friend_external_ip('mtd'))
