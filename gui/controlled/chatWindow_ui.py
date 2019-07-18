@@ -7,6 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 import os
 from multiprocessing import Process
+from threading import Thread
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
@@ -128,6 +129,7 @@ class Ui_friend_msgBox(object):
         self.app = QtWidgets.QApplication(sys.argv)
         self.friend_msgBox = QtWidgets.QMainWindow()
         self.setupUi(self.friend_msgBox)
+        #self.message_text.returnPressed.connect(self.message_button.animateClick)
         def get_msgs_history():
             msgs = my_user.getMessage(friend_id)
             print(msgs)
@@ -138,27 +140,30 @@ class Ui_friend_msgBox(object):
 
         self.message_button.clicked.connect(self.sendmsg)
 
-        def get_messages_process(user_id , friend_id):
+        def get_messages_process():
             from multiprocessing.pool import ThreadPool
-            import client.Get as cg
-            pool = ThreadPool(processes=1)
-            #async_result = pool.apply_async(cg.get_messages, (user_id, friend_id))  # tuple of args for foo
-            # do some other stuff in the main process
-            #return_val = async_result.get()  # get the return value from your function.
+            my_thread = Thread (target= listen_msg)
+            my_thread.start()
+
+
+
             return ""
 
         def listen_msg():
             from client import user
             while True:
-                if len(my_user.my_queue)>0:
-                    data = my_user.my_queue.pop()
+                if len(self.my_user.my_dict_of_queue)>0:
+                    data = self.my_user.my_dict_of_queue.pop()
                     self.chat_text.addItem(data['senderName']+ " > " + data['text'])
 
                 else :
-                    my_user.my_queue_waiter.acquire()
-                    my_user.my_queue_waiter.wait()
-                    my_user.my_queue_waiter.release()
+                    self.my_user.my_queue_waiter.acquire()
+                    print("wating...")
+                    self.my_user.my_queue_waiter.wait()
+                    print("interupted")
+                    self.my_user.my_queue_waiter.release()
 
+        get_messages_process()
         """
         self.messages = get_messages_process(user_id , friend_id)
         for msg in self.messages:

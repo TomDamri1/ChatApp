@@ -50,6 +50,7 @@ class User:
         if User.__instance is not None:
             raise Exception("This class is a singleton!")
         self.my_dict_of_queue = dict()
+        self.my_queue_waiter = Condition()
         self.ssh_requests_command_queue = deque()
         # for waiting if ssh_requests_command_queue is empty, notify when get new command
         self.command_request = Condition()
@@ -112,7 +113,7 @@ class User:
             if len(User.q) != 0:
                 data = User.q.pop()
                 #check if the message designated to me
-                if data['otherID'] == self.id:
+                if data['otherID'] == self.id or data['ID'] == self.id:
                     #check the kind of the message - ordinary or control
                     if str(data['chat']['text']) == 'can i control yours computer?@#$<<':
                         self.approve_control_requests.add(data['ID'])
@@ -122,14 +123,14 @@ class User:
                         self.command_request.notify()
                         self.command_request.release()
                     else:
-                        if self.my_dict_of_queue[data['chat']['ID']] == None:
-                            self.my_dict_of_queue[data['chat']['ID']] = deque()
-                            self.my_dict_of_queue[data['chat']['ID']].append(data['chat'])
+                        if data['ID'] in self.my_dict_of_queue.keys():
+                            self.my_dict_of_queue[data['ID']] = deque()
+                            self.my_dict_of_queue[data['ID']].append(data['chat'])
                             self.my_queue_waiter.acquire()
                             self.my_queue_waiter.notify()
                             self.command_request.release()
                         else:
-                            self.my_dict_of_queue[data['chat']['ID']].append(data['chat'])
+                            self.my_dict_of_queue[data['ID']].append(data['chat'])
                             self.my_queue_waiter.acquire()
                             self.my_queue_waiter.notify()
                             self.command_request.release()
