@@ -125,6 +125,9 @@ class User:
                         if self.my_dict_of_queue[data['chat']['ID']] == None:
                             self.my_dict_of_queue[data['chat']['ID']] = deque()
                             self.my_dict_of_queue[data['chat']['ID']].append(data['chat'])
+                            self.my_queue_waiter.acquire()
+                            self.my_queue_waiter.notify()
+                            self.command_request.release()
                         else:
                             self.my_dict_of_queue[data['chat']['ID']].append(data['chat'])
                             self.my_queue_waiter.acquire()
