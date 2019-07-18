@@ -216,22 +216,22 @@ class User:
     def find_motherboard(self):
         #return the name of the motherboard by using bash as administrator
         command = 'dmidecode -t baseboard'
-        motherboard_manufacturer = subprocess.check_output('echo %s|sudo -S %s | grep Manufacturer' % (self.password, command), shell=True)
+        motherboard_manufacturer = subprocess.check_output('echo %s|sudo -S %s | grep Manufacturer' % (self.sudo_password, command), shell=True)
         prod_name = '\'Product Name\''
-        motherboard_product_name = subprocess.check_output('echo %s|sudo -S %s | grep %s' % (self.password, command, prod_name), shell=True)
+        motherboard_product_name = subprocess.check_output('echo %s|sudo -S %s | grep %s' % (self.sudo_password, command, prod_name), shell=True)
         return motherboard_manufacturer.decode("utf-8")[1:] + motherboard_product_name.decode("utf-8")[1:]
 
     def find_cpu(self):
         #return the name of the CPU by using bash as administrator
         command = 'dmidecode -t processor'
-        cpu_version = subprocess.check_output('echo %s|sudo -S %s | grep Version' % (self.password, command), shell=True)
+        cpu_version = subprocess.check_output('echo %s|sudo -S %s | grep Version' % (self.sudo_password, command), shell=True)
         return cpu_version.decode("utf-8")
 
     def find_external_ip(self):
         #return the name of the CPU by using bash as administrator
         try:
             command = 'dig +short myip.opendns.com @resolver1.opendns.com'
-            external_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.password, command), shell=True)
+            external_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.sudo_password, command), shell=True)
             return external_ip.decode("utf-8")
         except:
             return"---"
@@ -239,7 +239,7 @@ class User:
     def find_internal_ip(self):
         #return the name of the CPU by using bash as administrator
         command = 'hostname -I'
-        internal_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.password, command), shell=True)
+        internal_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.sudo_password, command), shell=True)
         return internal_ip.decode("utf-8")
 
     def execute_command(self, command):
@@ -402,8 +402,9 @@ if __name__ == '__main__':
     if isinstance(result, str):
         print(result)
     else:
-        print(User.get_instance().get_friend_external_ip('mtd'))
-        print(User.get_instance().get_friend_internal_ip('mtd'))
+        print(User.get_instance().get_my_cpu())
+        #print(User.get_instance().get_friend_external_ip('mtd'))
+        #print(User.get_instance().get_friend_internal_ip('mtd'))
     #result.sendMessage('user', 'hello my name is matan')
 
     '''
