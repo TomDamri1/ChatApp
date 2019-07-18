@@ -187,7 +187,7 @@ class Ui_mainWindow(object):
     def itemActivated_event(self,item):
         print(item.text())
         def open_chat_window(friend_id):
-            chat_window_process = Process(target=os.system, args=("python3 chatWindow_ui.py " + str(self.user_id)+" "+str(friend_id),))
+            chat_window_process = Process(target=os.system, args=("python3 chatWindow_ui.py " + str(self.user_id)+" "+str(self.userpass)+" "+str(self.user_sudo)+" "+str(friend_id),))
             chat_window_process.start()
 
         open_chat_window(item.text())
