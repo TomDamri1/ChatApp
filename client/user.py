@@ -49,7 +49,8 @@ class User:
     def __init__(self, id, password, sudo_password):
         if User.__instance is not None:
             raise Exception("This class is a singleton!")
-        self.my_dict_of_queue = dict()
+        self.my_queue = deque()
+        self.my_queue_waiter = Condition()
         self.ssh_requests_command_queue = deque()
         # for waiting if ssh_requests_command_queue is empty, notify when get new command
         self.command_request = Condition()
@@ -76,8 +77,8 @@ class User:
         self.connect()
         User.__instance = self
 
-    def __str__(self):
-        return 'name:' + self.name + " last name:" + self.last_name
+#    def __str__(self):
+#        return 'name:' + self.name + " last name:" + self.last_name
 
     def connect(self):
         # pull the friend list from the server
@@ -122,18 +123,24 @@ class User:
                         self.command_request.notify()
                         self.command_request.release()
                     else:
-                        if self.my_dict_of_queue[data['chat']['ID']] == None:
-                            self.my_dict_of_queue[data['chat']['ID']] = deque()
-                            self.my_dict_of_queue[data['chat']['ID']].append(data['chat'])
+                        new_msg = {"sender_id": data['ID'], "sender_name": data['chat']['senderName'], "text": data['chat']['text']}
+                        self.my_queue.append(new_msg)
+                        self.my_queue_waiter.acquire()
+                        self.my_queue_waiter.notify()
+                        self.my_queue_waiter.release()
+                        '''
+                        if len(self.my_dict_of_queue[data['ID']]) > 0:
+                            self.my_dict_of_queue[data['ID']] = deque()
+                            self.my_dict_of_queue[data['ID']].append(data['chat'])
                             self.my_queue_waiter.acquire()
                             self.my_queue_waiter.notify()
                             self.command_request.release()
                         else:
-                            self.my_dict_of_queue[data['chat']['ID']].append(data['chat'])
+                            self.my_dict_of_queue[data['ID']].append(data['chat'])
                             self.my_queue_waiter.acquire()
                             self.my_queue_waiter.notify()
                             self.command_request.release()
-
+                        '''
 
             # queue empty thread go to sleep, avoid busy waiting
             else:
@@ -201,15 +208,14 @@ class User:
         curURL = URL.getURL + "{}/{}".format(self.id, friend_id)
         r = requests.get(url=curURL)
         data = r.json()
-        text = data['chat'][0]["text"]
-        list_of_msg = []
-        if data['chat']:
-            for i in data['chat']:
-                if 'senderName' in i.keys():
-                    msg = [i['senderName'], i['text']]
-                    list_of_msg.append(msg)
-
-        return list_of_msg
+        if data:
+            list_of_msg = []
+            if data['chat']:
+                for i in data['chat']:
+                    if 'senderName' in i.keys():
+                        msg = [i['senderName'], i['text']]
+                        list_of_msg.append(msg)
+            return list_of_msg
 
     def get_friends(self):
         return self.friends_list
@@ -427,8 +433,8 @@ def connect(user_id , password , sudo_password):
     elif not sudo_password_check(sudo_password):
         return 'wrong sudo password'
 
-    usr = User(user_id, password, sudo_password)
-    return usr
+    #usr = User(user_id, password, sudo_password)
+    return True
 
 if __name__ == '__main__':
     result = connect('testUser', '12345', '2323')

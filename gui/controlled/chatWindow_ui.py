@@ -10,6 +10,7 @@ from multiprocessing import Process
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
+from threading import Thread, Condition
 
 class Ui_friend_msgBox(object):
     def setupUi(self, friend_msgBox):
@@ -117,47 +118,50 @@ class Ui_friend_msgBox(object):
         self.ask_for_control_button.setText(_translate("friend_msgBox", "Ask for Control"))
         self.commandLinkButton_2.setText(_translate("friend_msgBox", "Disable his control"))
 
-
-    def __init__(self,user_id, user_pass , user_sudo ,friend_id):
+    def __init__(self, user_id, user_pass, user_sudo, friend_id):
         from client import user
         self.user_id = user_id
         self.user_password = user_pass
         self.user_sudo = user_sudo
-        self.my_user = my_user = user.User(self.user_id, self.user_password, self.user_sudo)
+        try:
+            self.my_user = my_user = user.User(self.user_id, self.user_password, self.user_sudo)
+        finally:
+            self.my_user = my_user = user.User.get_instance()
         self.friend_id = friend_id
         self.app = QtWidgets.QApplication(sys.argv)
         self.friend_msgBox = QtWidgets.QMainWindow()
         self.setupUi(self.friend_msgBox)
-        def get_msgs_history():
-            msgs = my_user.getMessage(friend_id)
-            print(msgs)
-            for msg in msgs:
-                self.chat_text.addItem(msg[0]+" > "+msg[1])
-        get_msgs_history()
         self.motherBoard_text.setText(my_user.get_friend_motherboard(friend_id))
-
         self.message_button.clicked.connect(self.sendmsg)
 
-        def get_messages_process(user_id , friend_id):
-            from multiprocessing.pool import ThreadPool
-            import client.Get as cg
-            pool = ThreadPool(processes=1)
-            #async_result = pool.apply_async(cg.get_messages, (user_id, friend_id))  # tuple of args for foo
+        def get_msgs_history():
+            msgs = my_user.getMessage(friend_id)
+            if msgs:
+                print(msgs)
+                for msg in msgs:
+                    self.chat_text.addItem(msg[0]+" > "+msg[1])
+
+        def listen_msg():
+            # from client import user
+            while True:
+                if len(self.my_user.my_queue) > 0:
+                    data = self.my_user.my_queue.pop()
+                    self.chat_text.addItem(data['senderName'] + " > " + data['text'])
+                else:
+                    self.my_user.my_queue_waiter.acquire()
+                    self.my_user.my_queue_waiter.wait()
+                    print("wake up")
+                    self.my_user.my_queue_waiter.release()
+
+        def get_messages_process():
+            thread = Thread(target=listen_msg)
+            thread.start()
             # do some other stuff in the main process
             #return_val = async_result.get()  # get the return value from your function.
             return ""
 
-        def listen_msg():
-            from client import user
-            while True:
-                if len(my_user.my_queue)>0:
-                    data = my_user.my_queue.pop()
-                    self.chat_text.addItem(data['senderName']+ " > " + data['text'])
-
-                else :
-                    my_user.my_queue_waiter.acquire()
-                    my_user.my_queue_waiter.wait()
-                    my_user.my_queue_waiter.release()
+        get_msgs_history()
+        get_messages_process()
 
         """
         self.messages = get_messages_process(user_id , friend_id)

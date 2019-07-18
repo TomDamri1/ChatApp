@@ -123,7 +123,10 @@ class Ui_mainWindow(object):
         self.ip_in_text.setText(_translate("mainWindow", "-----"))
 
     def __init__(self, user_id , user_pass , user_sudo):
-        self.my_user = user.User(userid, userpass, usersudo)
+        try:
+            self.my_user = user.User(user_id, user_pass, user_sudo)
+        finally:
+            self.my_user = user.User.get_instance()
         self.user_id = user_id
         self.user_password = user_pass
         self.user_sudo = user_sudo
