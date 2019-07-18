@@ -159,10 +159,20 @@ class User:
             message_header = f"{len(message):<{HEADER_LENGTH}}".encode('utf-8')
             self.mySocket.send(message_header + message)
             """
-            params = {'ID': self.id, "otherID": friend_id, 'chat': [{"senderName": self.name, "text": msg}, ]}
-            r = requests.post(url=URL.postURL, json=params)
-            return_msg = r.text
-            print(return_msg)
+            if msg != "":
+                params = {'ID': self.id, "otherID": friend_id, 'chat': [{"senderName": self.name, "text": msg}, ]}
+                r = requests.post(url=URL.postURL, json=params)
+                return_msg = r.text
+                print(return_msg)
+                pastebin_url = r.text
+                print("now get")
+
+                url = f"http://localhost:5000/api/chat/{self.id}/{friend_id}"
+
+                ans = requests.get(url=url)
+                data = r.json()
+                print("and the answer is :\n")
+                print(data)
         else:
             print("ERROR can't to send a message to friend that not in your's friendsList")
 
@@ -405,14 +415,16 @@ def connect(user_id , password , sudo_password):
         return 'wrong sudo password'
 
     usr = User(user_id, password, sudo_password)
-    return True
+    return usr
 
 if __name__ == '__main__':
-    result = connect('mtd123', '123', '1313')
+    result = connect('testUser', '12345', '2323')
     if isinstance(result, str):
         print(result)
     else:
-        print(User.get_instance().get_my_cpu())
+        result.send_message('testUser2','hi')
+        print(result.getMessage('testUser2'))
+        #print(User.get_instance().get_my_cpu())
         #print(User.get_instance().get_friend_external_ip('mtd'))
         #print(User.get_instance().get_friend_internal_ip('mtd'))
     #result.sendMessage('user', 'hello my name is matan')

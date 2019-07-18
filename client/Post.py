@@ -15,7 +15,7 @@ r = requests.post(url=URL, json=PARAMS)#sending data to the server
 pastebin_url = r.text
 print("now get")
 
-URL = "http://localhost:5000/api/chat/99/87"
+URL = "http://localhost:5000/api/chat/testUser/testUser2"
 
 
 ans = requests.get(url=URL)
