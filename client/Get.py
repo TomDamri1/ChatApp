@@ -1,7 +1,7 @@
 import requests
 
-id1 = '87'
-id2 = '99'
+id1 = 'testUser'
+id2 = 'testUser2'
 URL = "http://localhost:5000/api/chat/"+id2+"/"+id1
 
 def get_messages(id1 , id2):
@@ -19,6 +19,7 @@ def get_messages(id1 , id2):
             l.append(msg)
 
     return l
+
 
 
 if __name__ == '__main__':
