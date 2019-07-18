@@ -7,15 +7,16 @@ URL = "http://localhost:5000/api/chat"
 try:
     msg = sys.argv[1]
 except:
-    msg = 'test msg2'
-
-PARAMS = {'ID': "testUser", "otherID": "testUser2", 'chat': {"senderName": "testUser", "text": msg}}
+    msg = 'test msg3'
+id1 = 'testUser'
+id2 = 'testUser2'
+PARAMS = {'ID': id1, "otherID": id2, 'chat': {"senderName": "testUser", "text": msg}}
 
 r = requests.post(url=URL, json=PARAMS)#sending data to the server
 pastebin_url = r.text
 print("now get")
 
-URL = "http://localhost:5000/api/chat/99/87"
+URL = "http://localhost:5000/api/chat/{}/{}".format(id1 , id2)
 
 
 ans = requests.get(url=URL)

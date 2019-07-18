@@ -84,6 +84,7 @@ class Ui_LoginPage(object):
         self.LoginPage = QtWidgets.QMainWindow()
         self.setupUi(self.LoginPage)
         self.login_flag = False
+        self.pushButton.clicked.connect(self.login)
 
     def open(self):
         self.LoginPage.show()
