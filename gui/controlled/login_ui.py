@@ -5,14 +5,13 @@
 # Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
+
 import os
 from multiprocessing import Process
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
-import threading
-from gui.controlled.mainWindow_ui import Ui_mainWindow
 from client import user
+
 
 
 class Ui_LoginPage(object):
@@ -92,25 +91,29 @@ class Ui_LoginPage(object):
 
 
     def login(self):
+        if self.login_flag == False:
+            def enter_main_page(userid , userpass , usersudo):
+                string_of_details = str(userid)+ " "+str(userpass) +" " +str (usersudo)
+                main_page_process = Process(target= os.system , args=("python3 mainWindow_ui.py "+string_of_details,))
+                main_page_process.start()
 
-        def enter_main_page(userid , userpass , usersudo):
-            string_of_details = str(userid)+ " "+str(userpass) +" " +str (usersudo)
-            main_page_process = Process(target= os.system , args=("python3 mainWindow_ui.py "+string_of_details,))
-            main_page_process.start()
-        '''
-        def open_new_socket(userid):
-            new_socket_process = Process(target= os.system , args=("python3 ../../client/socketClient.py",))
-            new_socket_process.start()
-        '''
-        user_id = self.user_id = self.username_text.text()
-        user_password = self.user_password = self.password_text.text()
-        user_sudo = self.user_sudo = self.sudo_password_text.text()
-        print(user_id , user_password)
-        if self.check_login_details(user_id , user_password , user_sudo):
-            self.login_flag = True
-            enter_main_page(user_id , user_password , user_sudo)
-            #open_new_socket(user_id)
-            self.close()
+            '''
+            def open_new_socket(userid):
+                new_socket_process = Process(target= os.system , args=("python3 ../../client/socketClient.py",))
+                new_socket_process.start()
+            '''
+            user_id = self.user_id = self.username_text.text()
+            user_password = self.user_password = self.password_text.text()
+            user_sudo = self.user_sudo = self.sudo_password_text.text()
+            print(user_id , user_password)
+            if self.check_login_details(user_id , user_password , user_sudo):
+                self.login_flag = True
+                enter_main_page(user_id , user_password , user_sudo)
+                self.LoginPage.hide()
+
+
+                #open_new_socket(user_id)
+
 
 
     def check_login_details(self,user_id,user_password,user_sudo_password):
@@ -123,9 +126,13 @@ class Ui_LoginPage(object):
     def close(self):
         self.app.quit()
 
+
+
 try:
-    os.system("pwd")
-    x = Ui_LoginPage()
-    x.open()
+    def run_login():
+        x = Ui_LoginPage()
+        x.open()
+    login_process = Process(target=run_login)
+    login_process.start()
 except Exception as e:
     print(e)

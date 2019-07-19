@@ -1,3 +1,4 @@
+
 import requests
 import socketio
 import subprocess
@@ -23,6 +24,8 @@ class User:
     # queue that store all the receive messages
     q = deque()
     # for waiting if q is empty, notify when get new message
+
+
     try:
         cv = Condition()
         sio = socketio.Client()
@@ -183,8 +186,8 @@ class User:
                 print(return_msg)
                 pastebin_url = r.text
                 print("now get")
-
-                url = f"http://localhost:5000/api/chat/{self.id}/{friend_id}"
+                url = URL.postURL+self.id+"/"+friend_id
+                #url = f"http://localhost:5000/api/chat/{self.id}/{friend_id}"
 
                 ans = requests.get(url=url)
                 data = r.json()
@@ -440,6 +443,7 @@ def connect(user_id , password , sudo_password):
     return True
 
 if __name__ == '__main__':
+    """
     result = connect('testUser', '12345', '2323')
     if isinstance(result, str):
         print(result)
@@ -466,3 +470,4 @@ if __name__ == '__main__':
     data = ans.json()
     print(data)
     '''
+    """
