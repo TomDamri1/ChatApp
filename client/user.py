@@ -21,13 +21,9 @@ class User:
     q = deque()
     # for waiting if q is empty, notify when get new message
 
-
-    try:
-        cv = Condition()
-        sio = socketio.Client()
-        sio.connect(URL.URL)
-    except:
-        print("problem - check internet connection , or server is offline")
+    cv = Condition()
+    sio = socketio.Client()
+    sio.connect(URL.URL)
 
     @staticmethod
     def get_instance():
@@ -48,6 +44,7 @@ class User:
     def __init__(self, id, password, sudo_password):
         if User.__instance is not None:
             raise Exception("This class is a singleton!")
+        #queue of simple msgs
         self.my_queue = deque()
         lock_for_my_queue = Lock()
         self.my_queue_waiter = Condition(lock_for_my_queue)
@@ -59,6 +56,8 @@ class User:
         self.password = password
         self.sudo_password = sudo_password
         self.approve_control_requests = set()
+        lock_for_my_queue = Lock()
+        self.my_queue_waiter = Condition(lock_for_my_queue)
         self.approved_control = set()
         self.set_external_ip()
         self.set_internal_ip()
@@ -115,7 +114,7 @@ class User:
                 #check if the message designated to me
                 if data['otherID'] == self.id:
                     #check the kind of the message - ordinary or control
-                    if str(data['chat']['text']) == 'can i control yours computer?@#$<<':
+                    if str(data['chat'][0]['text']) == 'can i control yours computer?@#$<<':
                         self.approve_control_requests.add(data['ID'])
                     elif str(data['chat']['text']).startswith('ssh control@#$<<') and data['otherID'] in self.approved_control:
                         self.ssh_requests_command_queue.append(data)

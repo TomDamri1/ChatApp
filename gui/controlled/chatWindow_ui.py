@@ -1,10 +1,21 @@
 import os
 from multiprocessing import Process
 from threading import Thread
-
+import time
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QWidget, QLabel, QApplication, QPushButton, QMessageBox
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import pyqtSlot
 import sys
 
+
+class App(QWidget):
+    def message_box(self, friend_name):
+        resp = QMessageBox.question(self, 'Approve control', 'Do you approve to ' + friend_name + " to control yours computer?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if resp == QMessageBox.Yes:
+            return True
+        else:
+            return False
 
 class Ui_friend_msgBox(object):
     def setupUi(self, friend_msgBox):
@@ -140,6 +151,8 @@ class Ui_friend_msgBox(object):
 
         self.message_button.clicked.connect(self.sendmsg)
         self.ask_for_control_button.clicked.connect(self.ask_for_control)
+        #self.commandLinkButton_2.clicked.connect(self.buildExamplePopup)
+
         def get_messages_process():
             from multiprocessing.pool import ThreadPool
             my_thread = Thread(target=listen_msg)
@@ -148,7 +161,6 @@ class Ui_friend_msgBox(object):
             return ""
 
         def listen_msg():
-            from client import user
             while True:
                 if len(my_user.my_queue) > 0:
                     data = self.my_user.my_queue.pop()
@@ -163,6 +175,25 @@ class Ui_friend_msgBox(object):
                     print("interupted")
                     self.my_user.my_queue_waiter.release()
 
+        def get_control_req_process():
+            my_thread = Thread(target=listen_to_control_req)
+            my_thread.start()
+
+            return ""
+        def listen_to_control_req():
+            while True: #busy waiting
+                set_of_req = my_user.approve_control_requests
+                if len(set_of_req) > 0 and friend_id in set_of_req:
+                    ap = App()
+                    ans = ap.message_box(friend_id)
+                    if ans:
+                        my_user.approve_control(friend_id, True)
+                    elif not ans:
+                        my_user.approve_control(friend_id, False)
+                print("not got a ask - no popup")
+                time.sleep(2)
+
+        get_control_req_process()
         get_messages_process()
         """
         self.messages = get_messages_process(user_id , friend_id)
@@ -184,6 +215,7 @@ class Ui_friend_msgBox(object):
     def open(self):
         self.friend_msgBox.show()
         sys.exit(self.app.exec_())
+
 
 
 if __name__ == '__main__':
