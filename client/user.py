@@ -108,14 +108,14 @@ class User:
     def execute_command_from_ssh_requests_command_queue(self):
         print("got in execute command")
         while True:
-            print("execute_command wake up")
             # queue not empty - get new message
             if len(self.ssh_requests_command_queue) > 0:
                 print("execute_command got a command")
                 data = self.ssh_requests_command_queue.pop()
                 result = self.execute_command(data['chat']['text'][16:])
                 if result != '':
-                    self.ssh_results_command_queue.append(data['ID'] + ' ' + result)
+                    new_msg = {"sender_id": data['ID'], "ssh_cmd": result}
+                    self.ssh_results_command_queue.append(new_msg)
                     self.ssh_results_command_queue_waiter.acquire()
                     self.ssh_results_command_queue_waiter.notify()
                     self.ssh_results_command_queue_waiter.release()
@@ -124,6 +124,7 @@ class User:
                 self.command_request.acquire()
                 self.command_request.wait()
                 self.command_request.release()
+                print("execute_command woke up")
 
     def listen_to_server(self):
         while True:

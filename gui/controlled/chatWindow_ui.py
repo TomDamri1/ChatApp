@@ -181,7 +181,8 @@ class Ui_friend_msgBox(object):
                     data = self.my_user.ssh_results_command_queue.pop()
                     print(self.my_user.id + "  got message from :" + data['sender_id'])
                     if self.friend_id == data['sender_id']:
-                        self.chat_text.addItem(data['sender_name'] + " > " + data['text'])
+                        self.chat_text.addItem(data['sender_id'] + " > " + data['ssh_cmd'])
+
 
                 else:
                     self.my_user.ssh_results_command_queue_waiter.acquire()
