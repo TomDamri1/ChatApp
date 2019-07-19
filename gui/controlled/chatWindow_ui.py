@@ -187,11 +187,15 @@ class Ui_friend_msgBox(object):
                     ap = App()
                     ans = ap.message_box(friend_id)
                     if ans:
+                        print("yes")
                         my_user.approve_control(friend_id, True)
                     elif not ans:
                         my_user.approve_control(friend_id, False)
-                print("not got a ask - no popup")
-                time.sleep(2)
+                        print("no")
+                else:
+                    my_user.approve_control_requests_waiter.acquire()
+                    my_user.approve_control_requests_waiter.wait()
+                    my_user.approve_control_requests_waiter.release()
 
         get_control_req_process()
         get_messages_process()

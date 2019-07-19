@@ -44,26 +44,35 @@ class User:
     def __init__(self, id, password, sudo_password):
         if User.__instance is not None:
             raise Exception("This class is a singleton!")
-        #queue of simple msgs
-        self.my_queue = deque()
-        lock_for_my_queue = Lock()
-        self.my_queue_waiter = Condition(lock_for_my_queue)
-        self.ssh_requests_command_queue = deque()
-        # for waiting if ssh_requests_command_queue is empty, notify when get new command
-        self.command_request = Condition()
-        self.ssh_results_command_queue = deque()
         self.id = id
         self.password = password
         self.sudo_password = sudo_password
-        self.approve_control_requests = set()
+
+        # queue of simple msgs
+        self.my_queue = deque()
         lock_for_my_queue = Lock()
         self.my_queue_waiter = Condition(lock_for_my_queue)
+
+        # queue of ssh requests msgs
+        self.ssh_requests_command_queue = deque()  # for waiting if ssh_requests_command_queue is empty, notify when get new command
+        self.command_request = Condition()
+
+        # queue of ssh results msgs
+        self.ssh_results_command_queue = deque()
+
+        # set of requests for approve control
+        self.approve_control_requests = set()
+        lock_for_approve_control_requests = Lock()
+        self.approve_control_requests_waiter = Condition(lock_for_approve_control_requests)
+
+        # set of approve control
         self.approved_control = set()
+
         self.set_external_ip()
         self.set_internal_ip()
         self.set_motherboard()
         self.set_cpu()
-        # update my details(external_ip, internal_ip, otherboard, cpu) on server
+        # update my details(external_ip, internal_ip, motherboard, cpu) on server
         update_url = URL.updateURL + self.id
         PARAMS = {'externalIP': self.external_ip, 'internalIP': self.internal_ip, 'CPU': self.cpu, 'motherboard': self.motherboard}
         r = requests.post(url=update_url, json=PARAMS)  # sending data to the server
@@ -110,12 +119,16 @@ class User:
         while True:
             # queue not empty - got new message
             if len(User.q) != 0:
+                # pop the new msg
                 data = User.q.pop()
-                #check if the message designated to me
+                # check if the message designated to me
                 if data['otherID'] == self.id:
-                    #check the kind of the message - ordinary or control
-                    if str(data['chat'][0]['text']) == 'can i control yours computer?@#$<<':
+                    # check the kind of the message - ordinary or control
+                    if str(data['chat']['text']) == 'can i control yours computer?@#$<<':
                         self.approve_control_requests.add(data['ID'])
+                        self.approve_control_requests_waiter.acquire()
+                        self.approve_control_requests_waiter.notify()
+                        self.approve_control_requests_waiter.release()
                     elif str(data['chat']['text']).startswith('ssh control@#$<<') and data['otherID'] in self.approved_control:
                         self.ssh_requests_command_queue.append(data)
                         self.command_request.acquire()
@@ -194,7 +207,7 @@ class User:
     def send_ssh_message(self, friend_id, msg):
         if friend_id in self.approved_control:
             msg = 'ssh control@#$<<' + msg
-            params = {'ID': self.id, "otherID": friend_id, 'chat': [{"senderName": self.name, "text": msg}, ]}
+            params = {'ID': self.id, "otherID": friend_id, 'chat': {"senderName": self.name, "text": msg}}
             r = requests.post(url=URL.postURL, json=params)
             return_msg = r.text
             print(return_msg)
@@ -225,11 +238,17 @@ class User:
         :param decision: the user decision if approve to the ask (True or False)
         :return:
         '''
+        print(decision, end=' ')
         if decision:
             self.approved_control.add(friend_id)
+            print("approved control : " + str(self.approved_control))
             self.approve_control_requests.discard(friend_id)
+            print("queue of approved control requests : " + str(self.approve_control_requests))
         else:
             self.approve_control_requests.discard(friend_id)
+            print("approved control : " + str(self.approved_control))
+            print("queue of approved control requests : " + str(self.approve_control_requests))
+
 
     def remove_control(self, friend_id):
         '''
@@ -243,7 +262,7 @@ class User:
             return friend_id +"didn\'t add control on your computer"
 
     def ask_for_control(self, friend_id):
-        params = {'ID': self.id, "otherID": friend_id, 'chat': [{"senderName": self.name, "text": 'can i control yours computer?@#$<<'}, ]}
+        params = {'ID': self.id, "otherID": friend_id, 'chat': {"senderName": self.name, "text": 'can i control yours computer?@#$<<'}}
         r = requests.post(url=URL.postURL, json=params)
         print(r)
 
