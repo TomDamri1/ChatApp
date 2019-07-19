@@ -125,7 +125,8 @@ class Ui_mainWindow(object):
     def __init__(self, user_id , user_pass , user_sudo):
         try:
             self.my_user = user.User(user_id, user_pass, user_sudo)
-        finally:
+        except Exception as e:
+            print(e)
             self.my_user = user.User.get_instance()
         self.user_id = user_id
         self.user_password = user_pass

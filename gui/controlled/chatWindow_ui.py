@@ -169,6 +169,7 @@ class Ui_friend_msgBox(object):
         if msg_txt != '':
             self.my_user.send_message(self.friend_id, msg_txt)
             self.message_text.setPlainText("")
+            self.chat_text.addItem(self.my_user.name + " > " + msg_txt)
 
     def open(self):
         self.friend_msgBox.show()

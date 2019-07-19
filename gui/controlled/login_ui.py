@@ -95,13 +95,13 @@ class Ui_LoginPage(object):
 
         def enter_main_page(userid , userpass , usersudo):
             string_of_details = str(userid)+ " "+str(userpass) +" " +str (usersudo)
-            main_page_process = Process (target= os.system , args=("python3 mainWindow_ui.py "+string_of_details,))
+            main_page_process = Process(target= os.system , args=("python3 mainWindow_ui.py "+string_of_details,))
             main_page_process.start()
-
+        '''
         def open_new_socket(userid):
-            new_socket_process = Process (target= os.system , args=("python3 ../../client/socketClient.py",))
+            new_socket_process = Process(target= os.system , args=("python3 ../../client/socketClient.py",))
             new_socket_process.start()
-
+        '''
         user_id = self.user_id = self.username_text.text()
         user_password = self.user_password = self.password_text.text()
         user_sudo = self.user_sudo = self.sudo_password_text.text()
@@ -109,7 +109,7 @@ class Ui_LoginPage(object):
         if self.check_login_details(user_id , user_password , user_sudo):
             self.login_flag = True
             enter_main_page(user_id , user_password , user_sudo)
-            open_new_socket(user_id)
+            #open_new_socket(user_id)
             self.close()
 
 
