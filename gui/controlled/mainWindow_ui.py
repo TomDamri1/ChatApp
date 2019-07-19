@@ -14,6 +14,8 @@ import sys
 from client import user
 
 friendList = []
+
+
 class Ui_mainWindow(object):
     def setupUi(self, mainWindow):
         mainWindow.setObjectName("mainWindow")
@@ -128,10 +130,11 @@ class Ui_mainWindow(object):
         except Exception as e:
             print(e)
             self.my_user = user.User.get_instance()
-        '''remove dont work need to ask alex
+        """
+        # remove all my friend
         for i in self.my_user.friends_list:
             self.my_user.remove_friend(i)
-        '''
+        """
         self.user_id = user_id
         self.user_password = user_pass
         self.user_sudo = user_sudo
@@ -207,7 +210,7 @@ if __name__ == '__main__':
         usersudo = sys.argv[3]
     except:
         if len(sys.argv) != 3:
-            userid = "testUser3"
+            userid = "testUser"
             userpass = "12345"
             usersudo = "1313"
         else:

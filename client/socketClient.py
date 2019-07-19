@@ -1,3 +1,4 @@
+"""
 import socketio
 
 sio = socketio.Client()
@@ -19,3 +20,4 @@ def connect():
 @sio.event
 def disconnect():
     print("I'm disconnected!")
+"""

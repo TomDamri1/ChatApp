@@ -10,7 +10,8 @@ import os
 from multiprocessing import Process
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
-from client import user
+#from client import user
+from client import user_login
 
 
 
@@ -85,6 +86,7 @@ class Ui_LoginPage(object):
         self.login_flag = False
         self.pushButton.clicked.connect(self.login)
 
+
     def open(self):
         self.LoginPage.show()
         sys.exit(self.app.exec_())
@@ -116,10 +118,10 @@ class Ui_LoginPage(object):
 
 
 
-    def check_login_details(self,user_id,user_password,user_sudo_password):
-        my_user = user.connect(user_id,user_password,user_sudo_password)
-        if isinstance(my_user,str):
-            print (my_user)
+    def check_login_details(self,user_id, user_password, user_sudo_password):
+        my_user = user_login.connect(user_id, user_password, user_sudo_password)
+        if isinstance(my_user, str):
+            print(my_user)
             return False
         return True
 

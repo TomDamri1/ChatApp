@@ -129,7 +129,7 @@ class Ui_friend_msgBox(object):
 
         # self.message_text.returnPressed.connect(self.message_button.animateClick)
         def get_msgs_history():
-            msgs = my_user.getMessage(friend_id)
+            msgs = my_user.get_message(friend_id)
             print(msgs)
             if msgs:
                 for msg in msgs:
@@ -139,7 +139,7 @@ class Ui_friend_msgBox(object):
         self.motherBoard_text.setText(my_user.get_friend_motherboard(friend_id))
 
         self.message_button.clicked.connect(self.sendmsg)
-
+        self.ask_for_control_button.clicked.connect(self.ask_for_control)
         def get_messages_process():
             from multiprocessing.pool import ThreadPool
             my_thread = Thread(target=listen_msg)
@@ -169,6 +169,9 @@ class Ui_friend_msgBox(object):
         for msg in self.messages:
             self.chat_text.addItem(msg[0]+" > "+msg[1])
         """
+    def ask_for_control(self):
+        self.my_user.ask_for_control(self.friend_id)
+
 
     def sendmsg(self):
         msg_txt = self.message_text.toPlainText()

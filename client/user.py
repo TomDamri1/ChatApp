@@ -1,16 +1,12 @@
-
 import requests
 import socketio
 import subprocess
 import os
-import socket
-from time import sleep
-import queue
 from collections import deque
-import sys
 from threading import Thread, Condition, Lock
 import URL
-HEADER_LENGTH = 10
+#import socket
+#HEADER_LENGTH = 10
 
 
 """
@@ -53,8 +49,8 @@ class User:
         if User.__instance is not None:
             raise Exception("This class is a singleton!")
         self.my_queue = deque()
-        trylock = Lock()
-        self.my_queue_waiter = Condition(trylock)
+        lock_for_my_queue = Lock()
+        self.my_queue_waiter = Condition(lock_for_my_queue)
         self.ssh_requests_command_queue = deque()
         # for waiting if ssh_requests_command_queue is empty, notify when get new command
         self.command_request = Condition()
@@ -206,7 +202,7 @@ class User:
         else:
             print("ERROR can't to send a message to friend that not in your's approved control List")
 
-    def getMessage(self, friend_id):
+    def get_message(self, friend_id):
         # Params : friend ID - the id of the friend that the message will be send to.
         # return the content of the message
         curURL = URL.getURL + "{}/{}".format(self.id, friend_id)
@@ -386,7 +382,7 @@ class User:
             try:
                 remove_url = URL.removeURL + self.id
                 PARAMS = {'friend': friend_id}
-                r = requests.delete(url=URL, json=PARAMS)  # sending data to the server
+                r = requests.delete(url=remove_url, json=PARAMS)  # sending data to the server
                 self.friends_list.remove(friend_id)
                 print(r)
             except ValueError as e:
@@ -397,50 +393,13 @@ class User:
     def send_file(self):
         pass
 
-    def disconnect(self):
-        pass
+    @staticmethod
+    def disconnect():
+        '''
+        very imported to use that func when user disconnected for data security
+        '''
+        __instance = None
 
-
-def connect(user_id , password , sudo_password):
-    """
-    send to alex
-    1. check if exist
-    2. pull the user data
-    3. init User , and return it
-    :param user_id:
-    :param password:
-    :return:
-    """
-    def sudo_password_check(sudo_password):
-        command = 'dmidecode -t baseboard'
-        try:
-            result = subprocess.check_output(
-            'echo %s|sudo -S %s 2>/dev/null' % (sudo_password, command), shell=True)
-            return True
-
-        except:
-            return False
-
-    def user_password_check():
-        """
-        check if user exist
-        :return: False if doesn't exist or True if exist
-        """
-        PARAMS = {'id': user_id, 'password': password}
-        r = requests.post(url=URL.loginURL, json=PARAMS)  # sending data to the server
-        if r.json()['Login'] == 'No login found':
-            return False
-        elif r.json()['Login'] == "Logged in successfully ":
-            return True
-        else :
-            return "user check on server return diff msg"
-    if not user_password_check():
-        return 'Wrong username or password'
-    elif not sudo_password_check(sudo_password):
-        return 'wrong sudo password'
-
-    #usr = User(user_id, password, sudo_password)
-    return True
 
 if __name__ == '__main__':
     """
