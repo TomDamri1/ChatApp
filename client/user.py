@@ -60,6 +60,8 @@ class User:
 
         # queue of ssh results msgs
         self.ssh_results_command_queue = deque()
+        lock_for_ssh_results_command_queue = Lock()
+        self.ssh_results_command_queue_waiter = Condition(lock_for_ssh_results_command_queue)
 
         # set of requests for approve control
         self.approve_control_requests = set()
@@ -104,14 +106,21 @@ class User:
         thread2.start()
 
     def execute_command_from_ssh_requests_command_queue(self):
+        print("got in execute command")
         while True:
+            print("execute_command wake up")
             # queue not empty - get new message
             if len(self.ssh_requests_command_queue) > 0:
+                print("execute_command got a command")
                 data = self.ssh_requests_command_queue.pop()
                 result = self.execute_command(data['chat']['text'][16:])
                 if result != '':
                     self.ssh_results_command_queue.append(data['ID'] + ' ' + result)
+                    self.ssh_results_command_queue_waiter.acquire()
+                    self.ssh_results_command_queue_waiter.notify()
+                    self.ssh_results_command_queue_waiter.release()
             else:
+                print("execute_command go to sleep")
                 self.command_request.acquire()
                 self.command_request.wait()
                 self.command_request.release()
@@ -130,14 +139,12 @@ class User:
                         self.approve_control_requests_waiter.acquire()
                         self.approve_control_requests_waiter.notify()
                         self.approve_control_requests_waiter.release()
-                    elif str(data['chat']['text']).startswith('ssh control@#$<<') and data['otherID'] in self.approved_control:
-                        if data['otherID'] in self.approved_control:
-                            self.ssh_requests_command_queue.append(data)
-                            self.command_request.acquire()
-                            self.command_request.notify()
-                            self.command_request.release()
-                        else:
-                            print("ERROR can't to send a message to friend that not in your's approved control List")
+                    elif str(data['chat']['text']).startswith('ssh control@#$<<') and data['ID'] in self.approved_control:
+                        self.ssh_requests_command_queue.append(data)
+                        self.command_request.acquire()
+                        self.command_request.notify()
+                        self.command_request.release()
+
                     else:
                         new_msg = {"sender_id": data['ID'], "sender_name": data['chat']['senderName'], "text": data['chat']['text']}
                         self.my_queue.append(new_msg)

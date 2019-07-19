@@ -149,16 +149,16 @@ class Ui_friend_msgBox(object):
         get_msgs_history()
         self.motherBoard_text.setText(my_user.get_friend_motherboard(friend_id))
 
-        self.message_button.clicked.connect(self.sendmsg)
+        self.message_button.clicked.connect(self.send_msg)
         self.ask_for_control_button.clicked.connect(self.ask_for_control)
         self.ssh_button.clicked.connect(self.send_ssh_msg)
 
         def get_messages_process():
             from multiprocessing.pool import ThreadPool
-            my_thread = Thread(target=listen_msg)
-            my_thread.start()
-
-            return ""
+            my_thread_for_simple_msgs = Thread(target=listen_msg)
+            my_thread_for_simple_msgs.start()
+            my_thread_for_ssh_msgs = Thread(target=listen_to_ssh_msg)
+            my_thread_for_ssh_msgs.start()
 
         def listen_msg():
             while True:
@@ -175,11 +175,25 @@ class Ui_friend_msgBox(object):
                     print("interupted")
                     self.my_user.my_queue_waiter.release()
 
+        def listen_to_ssh_msg():
+            while True:
+                if len(my_user.ssh_results_command_queue) > 0:
+                    data = self.my_user.ssh_results_command_queue.pop()
+                    print(self.my_user.id + "  got message from :" + data['sender_id'])
+                    if self.friend_id == data['sender_id']:
+                        self.chat_text.addItem(data['sender_name'] + " > " + data['text'])
+
+                else:
+                    self.my_user.ssh_results_command_queue_waiter.acquire()
+                    print("wating...")
+                    self.my_user.ssh_results_command_queue_waiter.wait()
+                    print("interupted")
+                    self.my_user.ssh_results_command_queue_waiter.release()
+
         def get_control_req_process():
             my_thread = Thread(target=listen_to_control_req)
             my_thread.start()
 
-            return ""
         def listen_to_control_req():
             while True: #busy waiting
                 set_of_req = my_user.approve_control_requests
@@ -207,8 +221,7 @@ class Ui_friend_msgBox(object):
     def ask_for_control(self):
         self.my_user.ask_for_control(self.friend_id)
 
-
-    def sendmsg(self):
+    def send_msg(self):
         msg_txt = self.message_text.toPlainText()
         print("my text is " + msg_txt)
         if msg_txt != '':
@@ -233,8 +246,8 @@ class Ui_friend_msgBox(object):
 if __name__ == '__main__':
     # for the testing of the page only:
     # x = Ui_mainWindow(sys.argv[1])s
-    default_id1 = 'testUser'
-    default_id2 = 'testUser2'
+    default_id1 = 'testUser2'
+    default_id2 = 'testUser'
     default_pas = '12345'
     default_sudo = '1313'
 
