@@ -9,7 +9,7 @@ try:
 except:
     msg = 'defaultMSG fourth time'
 
-PARAMS = {'name': 'tomer','lastname':'leon', 'id':'user','motherboard':'intel','cpu':'i5','password':'22'}
+PARAMS = {'name': 'testUser4','lastname':'testUser4', 'id':'testUser4','motherboard':'???','cpu':'???','password':'12345'}
 for i in PARAMS.keys():
     PARAMS[i] = input(str(i)+ ":")
 

@@ -117,7 +117,11 @@ class Ui_friend_msgBox(object):
         self.user_id = user_id
         self.user_password = user_pass
         self.user_sudo = user_sudo
-        self.my_user = my_user = user.User(self.user_id, self.user_password, self.user_sudo)
+        try:
+            self.my_user = my_user = user.User(self.user_id, self.user_password, self.user_sudo)
+        except Exception as e:
+            print(e)
+            self.my_user = my_user = user.User.get_instance()
         self.friend_id = friend_id
         self.app = QtWidgets.QApplication(sys.argv)
         self.friend_msgBox = QtWidgets.QMainWindow()
@@ -147,7 +151,9 @@ class Ui_friend_msgBox(object):
             while True:
                 if len(my_user.my_queue) > 0:
                     data = self.my_user.my_queue.pop()
-                    self.chat_text.addItem(data['sender_name'] + " > " + data['text'])
+                    print(self.my_user.id + "  got message from :" + data['sender_id'])
+                    if self.friend_id == data['sender_id']:
+                        self.chat_text.addItem(data['sender_name'] + " > " + data['text'])
 
                 else:
                     self.my_user.my_queue_waiter.acquire()

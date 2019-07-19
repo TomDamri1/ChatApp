@@ -128,6 +128,10 @@ class Ui_mainWindow(object):
         except Exception as e:
             print(e)
             self.my_user = user.User.get_instance()
+        '''remove dont work need to ask alex
+        for i in self.my_user.friends_list:
+            self.my_user.remove_friend(i)
+        '''
         self.user_id = user_id
         self.user_password = user_pass
         self.user_sudo = user_sudo
@@ -206,8 +210,8 @@ if __name__ == '__main__':
     except:
         if len(sys.argv) != 3:
             userid = "testUser"
-            userpass = "123456"
-            usersudo = "A1346014"
+            userpass = "12345"
+            usersudo = "1313"
         else:
             print("user details error!")
 
