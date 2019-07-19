@@ -151,7 +151,7 @@ class Ui_friend_msgBox(object):
 
         self.message_button.clicked.connect(self.sendmsg)
         self.ask_for_control_button.clicked.connect(self.ask_for_control)
-        #self.commandLinkButton_2.clicked.connect(self.buildExamplePopup)
+        self.ssh_button.clicked.connect(self.send_ssh_msg)
 
         def get_messages_process():
             from multiprocessing.pool import ThreadPool
@@ -215,6 +215,14 @@ class Ui_friend_msgBox(object):
             self.my_user.send_message(self.friend_id, msg_txt)
             self.message_text.setPlainText("")
             self.chat_text.addItem(self.my_user.name + " > " + msg_txt)
+
+    def send_ssh_msg(self):
+        msg_txt = self.ssh_text.toPlainText()
+        print("my text is " + msg_txt)
+        if msg_txt != '':
+            self.my_user.send_ssh_message(self.friend_id, msg_txt)
+            self.ssh_text.setPlainText("")
+            #self.chat_text.addItem(self.my_user.name + " > " + msg_txt)
 
     def open(self):
         self.friend_msgBox.show()

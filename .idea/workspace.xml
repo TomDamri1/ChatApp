@@ -29,39 +29,44 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gui/controlled/chatWindow_ui.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="215">
-              <caret line="187" column="51" lean-forward="true" selection-start-line="187" selection-start-column="51" selection-end-line="187" selection-end-column="51" />
+            <state relative-caret-position="440">
+              <caret line="219" column="45" lean-forward="true" selection-start-line="219" selection-start-column="45" selection-end-line="219" selection-end-column="45" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
+                <element signature="e#9129#9275#0" />
+                <element signature="e#9539#10226#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/client/user.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="268">
-              <caret line="46" column="29" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="29" />
+            <state relative-caret-position="150">
+              <caret line="149" column="82" lean-forward="true" selection-start-line="149" selection-start-column="82" selection-end-line="149" selection-end-column="82" />
               <folding>
                 <element signature="e#1#16#0" expanded="true" />
                 <element signature="e#711#771#0" />
-                <element signature="e#892#1027#0" />
-                <element signature="e#2545#3121#0" />
-                <element signature="e#3194#3718#0" />
-                <element signature="e#3760#6630#0" />
                 <element signature="e#5900#6630#1" />
                 <element signature="e#6684#7884#0" />
-                <element signature="e#7942#8372#0" />
                 <element signature="e#8419#8967#0" />
                 <element signature="e#9004#9028#0" />
+                <element signature="e#9532#10281#0" />
                 <element signature="e#9528#9912#0" />
                 <element signature="e#10210#10756#0" />
                 <element signature="e#10790#11061#0" />
+                <element signature="e#11103#11452#0" />
                 <element signature="e#11187#11412#0" />
+                <element signature="e#11494#11739#0" />
+                <element signature="e#11789#12222#0" />
+                <element signature="e#12267#12474#0" />
+                <element signature="e#12515#12680#0" />
+                <element signature="e#12721#12799#0" />
+                <element signature="e#12832#12895#0" />
               </folding>
             </state>
           </provider>
@@ -125,6 +130,9 @@
       <find>ask_for_control_button</find>
       <find>message_button</find>
       <find>ask</find>
+      <find>ssh_results_command_queue</find>
+      <find>ssh_requests_command_queue</find>
+      <find>command_request</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -209,7 +217,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.login_ui">
+  <component name="RunManager" selected="Python.chatWindow_ui">
     <configuration name="chatWindow_ui" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="ChatApp" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -322,8 +330,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.login_ui" />
         <item itemvalue="Python.chatWindow_ui" />
+        <item itemvalue="Python.login_ui" />
         <item itemvalue="Python.user" />
         <item itemvalue="Python.mainWindow_ui" />
         <item itemvalue="Python.removeFriend" />
@@ -365,7 +373,7 @@
       <workItem from="1563484423841" duration="7171000" />
       <workItem from="1563491909827" duration="598000" />
       <workItem from="1563493932251" duration="3967000" />
-      <workItem from="1563528246621" duration="12033000" />
+      <workItem from="1563528246621" duration="15183000" />
     </task>
     <task id="LOCAL-00001" summary="add : get cpu, take screen shot, execute command">
       <created>1563043116715</created>
@@ -472,11 +480,25 @@
       <option name="project" value="LOCAL" />
       <updated>1563533103244</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="pop up when got a ask for control">
+      <created>1563544047672</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1563544047672</updated>
+    </task>
+    <task id="LOCAL-00017" summary="fix ssh msg, control msg">
+      <created>1563545750734</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1563545750734</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="68071000" />
+    <option name="totallyTimeSpent" value="71221000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1280" y="-2" width="1920" height="1082" extended-state="6" />
@@ -541,14 +563,16 @@
     <MESSAGE value="fix bugs" />
     <MESSAGE value="fix more bugs" />
     <MESSAGE value="ask for control GUI" />
-    <option name="LAST_COMMIT_MESSAGE" value="ask for control GUI" />
+    <MESSAGE value="pop up when got a ask for control" />
+    <MESSAGE value="fix ssh msg, control msg" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix ssh msg, control msg" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/client/user.py</url>
-          <line>409</line>
+          <line>430</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -557,29 +581,19 @@
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/client/user.py</url>
-          <line>109</line>
-          <option name="timeStamp" value="79" />
+          <url>file://$PROJECT_DIR$/gui/controlled/chatWindow_ui.py</url>
+          <line>188</line>
+          <option name="timeStamp" value="88" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/client/user.py</url>
-          <line>147</line>
-          <option name="timeStamp" value="80" />
+          <line>127</line>
+          <option name="timeStamp" value="89" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/gui/controlled/chatWindow_ui.py</url>
-          <line>195</line>
-          <option name="timeStamp" value="83" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/gui/controlled/chatWindow_ui.py</url>
-          <line>203</line>
-          <option name="timeStamp" value="85" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/client/user.py</url>
-          <line>245</line>
-          <option name="timeStamp" value="86" />
+          <line>219</line>
+          <option name="timeStamp" value="90" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -587,6 +601,8 @@
       <configuration name="PythonConfigurationType">
         <watch expression="data['chat']['text']" />
         <watch expression="data['chat'][0]['text']" />
+        <watch expression="data['chat']" />
+        <watch expression="data['chat'][0]" />
       </configuration>
     </watches-manager>
   </component>
@@ -594,9 +610,9 @@
     <SUITE FILE_PATH="coverage/ChatApp$removeFriend.coverage" NAME="removeFriend Coverage Results" MODIFIED="1563531732069" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/client" />
     <SUITE FILE_PATH="coverage/ChatApp$Post.coverage" NAME="Post Coverage Results" MODIFIED="1562842775342" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/client" />
     <SUITE FILE_PATH="coverage/ChatApp$user.coverage" NAME="user Coverage Results" MODIFIED="1563540139349" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/client" />
-    <SUITE FILE_PATH="coverage/ChatApp$login_ui.coverage" NAME="login_ui Coverage Results" MODIFIED="1563543876802" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />
+    <SUITE FILE_PATH="coverage/ChatApp$login_ui.coverage" NAME="login_ui Coverage Results" MODIFIED="1563544807371" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />
     <SUITE FILE_PATH="coverage/ChatApp$update.coverage" NAME="update Coverage Results" MODIFIED="1563384398083" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/client" />
-    <SUITE FILE_PATH="coverage/ChatApp$chatWindow_ui.coverage" NAME="chatWindow_ui Coverage Results" MODIFIED="1563543791679" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />
+    <SUITE FILE_PATH="coverage/ChatApp$chatWindow_ui.coverage" NAME="chatWindow_ui Coverage Results" MODIFIED="1563546792549" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />
     <SUITE FILE_PATH="coverage/ChatApp$registerUser.coverage" NAME="registerUser Coverage Results" MODIFIED="1563494856092" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/client" />
     <SUITE FILE_PATH="coverage/ChatApp$addFriend.coverage" NAME="addFriend Coverage Results" MODIFIED="1563468047190" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/client" />
     <SUITE FILE_PATH="coverage/ChatApp$mainWindow_ui.coverage" NAME="mainWindow_ui Coverage Results" MODIFIED="1563533332726" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />
@@ -837,13 +853,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///usr/lib/python3.6/threading.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="863" selection-start-line="863" selection-end-line="863" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharm2019.1/system/python_stubs/-1247971763/PyQt5/QtWidgets/QMessageBox.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
@@ -851,36 +860,48 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/user.py">
+    <entry file="file:///usr/lib/python3.6/threading.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="268">
-          <caret line="46" column="29" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="29" />
-          <folding>
-            <element signature="e#1#16#0" expanded="true" />
-            <element signature="e#711#771#0" />
-            <element signature="e#892#1027#0" />
-            <element signature="e#2545#3121#0" />
-            <element signature="e#3194#3718#0" />
-            <element signature="e#3760#6630#0" />
-            <element signature="e#5900#6630#1" />
-            <element signature="e#6684#7884#0" />
-            <element signature="e#7942#8372#0" />
-            <element signature="e#8419#8967#0" />
-            <element signature="e#9004#9028#0" />
-            <element signature="e#9528#9912#0" />
-            <element signature="e#10210#10756#0" />
-            <element signature="e#10790#11061#0" />
-            <element signature="e#11187#11412#0" />
-          </folding>
+        <state relative-caret-position="183">
+          <caret line="863" selection-start-line="863" selection-end-line="863" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/gui/controlled/chatWindow_ui.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="187" column="51" lean-forward="true" selection-start-line="187" selection-start-column="51" selection-end-line="187" selection-end-column="51" />
+        <state relative-caret-position="440">
+          <caret line="219" column="45" lean-forward="true" selection-start-line="219" selection-start-column="45" selection-end-line="219" selection-end-column="45" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#9129#9275#0" />
+            <element signature="e#9539#10226#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/user.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="149" column="82" lean-forward="true" selection-start-line="149" selection-start-column="82" selection-end-line="149" selection-end-column="82" />
+          <folding>
+            <element signature="e#1#16#0" expanded="true" />
+            <element signature="e#711#771#0" />
+            <element signature="e#5900#6630#1" />
+            <element signature="e#6684#7884#0" />
+            <element signature="e#8419#8967#0" />
+            <element signature="e#9004#9028#0" />
+            <element signature="e#9532#10281#0" />
+            <element signature="e#9528#9912#0" />
+            <element signature="e#10210#10756#0" />
+            <element signature="e#10790#11061#0" />
+            <element signature="e#11103#11452#0" />
+            <element signature="e#11187#11412#0" />
+            <element signature="e#11494#11739#0" />
+            <element signature="e#11789#12222#0" />
+            <element signature="e#12267#12474#0" />
+            <element signature="e#12515#12680#0" />
+            <element signature="e#12721#12799#0" />
+            <element signature="e#12832#12895#0" />
           </folding>
         </state>
       </provider>

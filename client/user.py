@@ -55,7 +55,8 @@ class User:
 
         # queue of ssh requests msgs
         self.ssh_requests_command_queue = deque()  # for waiting if ssh_requests_command_queue is empty, notify when get new command
-        self.command_request = Condition()
+        lock_for_ssh_requests_command_queue = Lock()
+        self.command_request = Condition(lock_for_ssh_requests_command_queue)
 
         # queue of ssh results msgs
         self.ssh_results_command_queue = deque()
@@ -130,10 +131,13 @@ class User:
                         self.approve_control_requests_waiter.notify()
                         self.approve_control_requests_waiter.release()
                     elif str(data['chat']['text']).startswith('ssh control@#$<<') and data['otherID'] in self.approved_control:
-                        self.ssh_requests_command_queue.append(data)
-                        self.command_request.acquire()
-                        self.command_request.notify()
-                        self.command_request.release()
+                        if data['otherID'] in self.approved_control:
+                            self.ssh_requests_command_queue.append(data)
+                            self.command_request.acquire()
+                            self.command_request.notify()
+                            self.command_request.release()
+                        else:
+                            print("ERROR can't to send a message to friend that not in your's approved control List")
                     else:
                         new_msg = {"sender_id": data['ID'], "sender_name": data['chat']['senderName'], "text": data['chat']['text']}
                         self.my_queue.append(new_msg)
@@ -205,14 +209,12 @@ class User:
             print("ERROR can't to send a message to friend that not in your's friendsList")
 
     def send_ssh_message(self, friend_id, msg):
-        if friend_id in self.approved_control:
-            msg = 'ssh control@#$<<' + msg
-            params = {'ID': self.id, "otherID": friend_id, 'chat': {"senderName": self.name, "text": msg}}
-            r = requests.post(url=URL.postURL, json=params)
-            return_msg = r.text
-            print(return_msg)
-        else:
-            print("ERROR can't to send a message to friend that not in your's approved control List")
+        msg = 'ssh control@#$<<' + msg
+        params = {'ID': self.id, "otherID": friend_id, 'chat': {"senderName": self.name, "text": msg}}
+        r = requests.post(url=URL.postURL, json=params)
+        return_msg = r.text
+        print(return_msg)
+
 
     def get_message(self, friend_id):
         # Params : friend ID - the id of the friend that the message will be send to.
