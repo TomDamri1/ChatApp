@@ -167,11 +167,9 @@ class Ui_mainWindow(object):
 
     def add_friend(self, friend):
         my_user = user.User.get_instance()
-        my_user.add_friend(friend)
-        if friend!="":
-            if friend not in friendList:
-                friendList.append(friend)
-                self.listWidget.addItem(friend)
+        if my_user.add_friend(friend) and friend != "":
+            friendList.append(friend)
+            self.listWidget.addItem(friend)
 
 
     def open_chat(self,user_id):
@@ -209,7 +207,7 @@ if __name__ == '__main__':
         usersudo = sys.argv[3]
     except:
         if len(sys.argv) != 3:
-            userid = "testUser"
+            userid = "testUser3"
             userpass = "12345"
             usersudo = "1313"
         else:

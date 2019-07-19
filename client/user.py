@@ -368,9 +368,13 @@ class User:
             r = requests.post(url=add_friend_url, json=PARAMS)  # sending data to the server
             r = r.json()
             # add result
-            if r.text['Failed'] != 'true':
+            print(r)
+            #if r['Failed'] != 'true':
+            #   self.friends_list.append(friend_id)
+            if 'Success' in r.keys():
                 self.friends_list.append(friend_id)
-            return r.text
+                return True
+        return False
 
 
     def remove_friend(self, friend_id):

@@ -131,8 +131,9 @@ class Ui_friend_msgBox(object):
         def get_msgs_history():
             msgs = my_user.getMessage(friend_id)
             print(msgs)
-            for msg in msgs:
-                self.chat_text.addItem(msg[0] + " > " + msg[1])
+            if msgs:
+                for msg in msgs:
+                    self.chat_text.addItem(msg[0] + " > " + msg[1])
 
         get_msgs_history()
         self.motherBoard_text.setText(my_user.get_friend_motherboard(friend_id))
