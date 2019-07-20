@@ -387,6 +387,20 @@ class User:
         friend_internal_ip = data['internalIP']
         return friend_internal_ip
 
+    def get_friend_name(self, friend_id):
+        # return the friend name
+        friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
+        data = friend_data_from_server.json()
+        friend_name = data['name']
+        return friend_name
+
+    def get_friend_last_name(self, friend_id):
+        # return the friend name
+        friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
+        data = friend_data_from_server.json()
+        friend_last_name = data['lastname']
+        return friend_last_name
+
     def add_friend(self, friend_id):
         if friend_id not in self.friends_list:
             #-------------------------------------------------------need add check if the friend is exist
