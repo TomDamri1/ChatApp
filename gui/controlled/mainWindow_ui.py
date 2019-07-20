@@ -32,9 +32,6 @@ class Ui_mainWindow(object):
         self.motherBoard_label = QtWidgets.QLabel(self.centralwidget)
         self.motherBoard_label.setObjectName("motherBoard_label")
         self.userDetails_grid.addWidget(self.motherBoard_label, 5, 1, 1, 1)
-        self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit.setObjectName("lineEdit")
-        self.userDetails_grid.addWidget(self.lineEdit, 12, 2, 1, 1)
         self.lastName_label = QtWidgets.QLabel(self.centralwidget)
         self.lastName_label.setObjectName("lastName_label")
         self.userDetails_grid.addWidget(self.lastName_label, 2, 1, 1, 1)
@@ -59,25 +56,19 @@ class Ui_mainWindow(object):
         self.addFriend_text = QtWidgets.QLineEdit(self.centralwidget)
         self.addFriend_text.setText("")
         self.addFriend_text.setObjectName("addFriend_text")
-        self.userDetails_grid.addWidget(self.addFriend_text, 8, 2, 1, 1)
+        self.userDetails_grid.addWidget(self.addFriend_text, 9, 2, 1, 1)
         self.name_text = QtWidgets.QLabel(self.centralwidget)
         self.name_text.setObjectName("name_text")
         self.userDetails_grid.addWidget(self.name_text, 1, 2, 1, 1)
-        self.searchFriend_label = QtWidgets.QLabel(self.centralwidget)
-        self.searchFriend_label.setObjectName("searchFriend_label")
-        self.userDetails_grid.addWidget(self.searchFriend_label, 12, 1, 1, 1)
         self.listWidget = QtWidgets.QListWidget(self.centralwidget)
         self.listWidget.setObjectName("listWidget")
-        self.userDetails_grid.addWidget(self.listWidget, 13, 1, 1, 2)
+        self.userDetails_grid.addWidget(self.listWidget, 14, 1, 1, 2)
         self.addFriend_label = QtWidgets.QLabel(self.centralwidget)
         self.addFriend_label.setObjectName("addFriend_label")
-        self.userDetails_grid.addWidget(self.addFriend_label, 8, 1, 1, 1)
+        self.userDetails_grid.addWidget(self.addFriend_label, 9, 1, 1, 1)
         self.motherBoard_text = QtWidgets.QLabel(self.centralwidget)
         self.motherBoard_text.setObjectName("motherBoard_text")
         self.userDetails_grid.addWidget(self.motherBoard_text, 5, 2, 1, 1)
-        self.addFriend_button = QtWidgets.QPushButton(self.centralwidget)
-        self.addFriend_button.setObjectName("addFriend_button")
-        self.userDetails_grid.addWidget(self.addFriend_button, 9, 2, 1, 1)
         self.ip_ex_label = QtWidgets.QLabel(self.centralwidget)
         self.ip_ex_label.setObjectName("ip_ex_label")
         self.userDetails_grid.addWidget(self.ip_ex_label, 3, 1, 1, 1)
@@ -90,6 +81,18 @@ class Ui_mainWindow(object):
         self.ip_in_text = QtWidgets.QLabel(self.centralwidget)
         self.ip_in_text.setObjectName("ip_in_text")
         self.userDetails_grid.addWidget(self.ip_in_text, 4, 2, 1, 1)
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.deleteFriend_button = QtWidgets.QPushButton(self.centralwidget)
+        self.deleteFriend_button.setObjectName("deleteFriend_button")
+        self.horizontalLayout_2.addWidget(self.deleteFriend_button)
+        self.addFriend_button = QtWidgets.QPushButton(self.centralwidget)
+        self.addFriend_button.setObjectName("addFriend_button")
+        self.horizontalLayout_2.addWidget(self.addFriend_button)
+        self.userDetails_grid.addLayout(self.horizontalLayout_2, 10, 2, 1, 1)
+        self.logout_button = QtWidgets.QPushButton(self.centralwidget)
+        self.logout_button.setObjectName("logout_button")
+        self.userDetails_grid.addWidget(self.logout_button, 10, 1, 1, 1)
         self.horizontalLayout.addLayout(self.userDetails_grid)
         mainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(mainWindow)
@@ -115,14 +118,16 @@ class Ui_mainWindow(object):
         self.Jtag_label.setText(_translate("mainWindow", "ID:"))
         self.lastName_text.setText(_translate("mainWindow", "-----"))
         self.name_text.setText(_translate("mainWindow", "-----"))
-        self.searchFriend_label.setText(_translate("mainWindow", "Search Friend:"))
-        self.addFriend_label.setText(_translate("mainWindow", "Add Friend:"))
+        self.addFriend_label.setText(_translate("mainWindow", "Friend:"))
         self.motherBoard_text.setText(_translate("mainWindow", "-----"))
-        self.addFriend_button.setText(_translate("mainWindow", "ADD"))
         self.ip_ex_label.setText(_translate("mainWindow", "IP(external):"))
         self.ip_in_label.setText(_translate("mainWindow", "IP(internal)"))
         self.ip_ex_text.setText(_translate("mainWindow", "-----"))
         self.ip_in_text.setText(_translate("mainWindow", "-----"))
+        self.deleteFriend_button.setText(_translate("mainWindow", "Delete"))
+        self.addFriend_button.setText(_translate("mainWindow", "ADD"))
+        self.logout_button.setText(_translate("mainWindow", "Logout"))
+
 
     def __init__(self, user_id , user_pass , user_sudo):
         try:
@@ -166,7 +171,10 @@ class Ui_mainWindow(object):
         sys.exit(self.app.exec_())
 
 
-
+    def delete_friend(self , friend_id):
+        if friend_id in friendList:
+            user.User.remove_friend(friend_id)
+            friendList.remove(friend_id)
 
     def add_friend(self, friend):
         my_user = user.User.get_instance()
@@ -212,7 +220,7 @@ if __name__ == '__main__':
         if len(sys.argv) != 3:
             userid = "testUser"
             userpass = "12345"
-            usersudo = "1313"
+            usersudo = "A1346014"
         else:
             print("user details error!")
 
