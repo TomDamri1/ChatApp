@@ -149,7 +149,7 @@ class Ui_mainWindow(object):
         self.motherBoard_text.setText(self.my_user.get_my_motherboard())
         self.ip_ex_text.setText(self.my_user.get_my_external_ip().split()[0])
         self.ip_in_text.setText(self.my_user.get_my_internal_ip().split()[0])
-        self.cpu_text.setText(self.my_user.get_my_cpu().strip())
+        self.cpu_text.setText(self.my_user.get_my_cpu().strip().partition('\n')[0])
 
         #self.user
 
