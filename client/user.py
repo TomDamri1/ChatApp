@@ -47,6 +47,7 @@ class User:
         self.id = id
         self.password = password
         self.sudo_password = sudo_password
+        self.show_ssh_res = False
 
         # queue of simple msgs
         self.my_queue = deque()
@@ -115,10 +116,12 @@ class User:
                 result = self.execute_command(data['chat']['text'][16:])
                 if result != '':
                     new_msg = {"sender_id": data['ID'], "ssh_cmd": result}
-                    self.ssh_results_command_queue.append(new_msg)
-                    self.ssh_results_command_queue_waiter.acquire()
-                    self.ssh_results_command_queue_waiter.notify()
-                    self.ssh_results_command_queue_waiter.release()
+                    if self.show_ssh_res:
+                        self.ssh_results_command_queue.append(new_msg)
+                        self.ssh_results_command_queue_waiter.acquire()
+                        self.ssh_results_command_queue_waiter.notify()
+                        self.ssh_results_command_queue_waiter.release()
+                    self.send_message(data['ID'], result)
             else:
                 print("execute_command go to sleep")
                 self.command_request.acquire()
@@ -145,7 +148,6 @@ class User:
                         self.command_request.acquire()
                         self.command_request.notify()
                         self.command_request.release()
-
                     else:
                         new_msg = {"sender_id": data['ID'], "sender_name": data['chat']['senderName'], "text": data['chat']['text']}
                         self.my_queue.append(new_msg)
