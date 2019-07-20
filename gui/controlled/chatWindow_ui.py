@@ -200,7 +200,7 @@ class Ui_friend_msgBox(object):
             my_thread.start()
 
         def listen_to_control_req():
-            while True: #busy waiting
+            while True:
                 set_of_req = my_user.approve_control_requests
                 if len(set_of_req) > 0 and friend_id in set_of_req:
                     ap = App()
@@ -212,7 +212,6 @@ class Ui_friend_msgBox(object):
                     elif not ans:
                         my_user.approve_control(friend_id, False)
                         print("no")
-# self.control_text.setText("Not Allowed")
                 else:
                     my_user.approve_control_requests_waiter.acquire()
                     my_user.approve_control_requests_waiter.wait()
@@ -231,6 +230,7 @@ class Ui_friend_msgBox(object):
     def disable_control(self):
         self.my_user.remove_control(self.friend_id)
         print(self.my_user.approved_control)
+        self.control_text.setText("Not Allowed")
 
     def send_msg(self):
         msg_txt = self.message_text.toPlainText()
