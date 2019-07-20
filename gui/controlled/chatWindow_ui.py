@@ -17,6 +17,7 @@ class App(QWidget):
         else:
             return False
 
+
 class Ui_friend_msgBox(object):
     def setupUi(self, friend_msgBox):
         friend_msgBox.setObjectName("friend_msgBox")
@@ -114,7 +115,7 @@ class Ui_friend_msgBox(object):
         self.control_label.setText(_translate("friend_msgBox", "Control:"))
         self.ip_label.setText(_translate("friend_msgBox", "ip:"))
         self.ip_text.setText(_translate("friend_msgBox", "-----"))
-        self.control_text.setText(_translate("friend_msgBox", "Not Alowed"))
+        self.control_text.setText(_translate("friend_msgBox", "Not Allowed"))
         self.name_text.setText(_translate("friend_msgBox", "-----"))
         self.motherBoard_text.setText(_translate("friend_msgBox", "-----"))
         self.lastName_label.setText(_translate("friend_msgBox", "Last Name:"))
@@ -148,13 +149,16 @@ class Ui_friend_msgBox(object):
 
         get_msgs_history()
         self.motherBoard_text.setText(my_user.get_friend_motherboard(friend_id))
-
+        self.name_text.setText(my_user.get_friend_name(friend_id))
+        self.ip_text.setText(my_user.get_friend_external_ip(friend_id))
+        self.lastName_text.setText(my_user.get_friend_last_name(friend_id))
+        # define buttons click
         self.message_button.clicked.connect(self.send_msg)
         self.ask_for_control_button.clicked.connect(self.ask_for_control)
         self.ssh_button.clicked.connect(self.send_ssh_msg)
-
+        self.commandLinkButton_2.clicked.connect(self.disable_control)
         def get_messages_process():
-            from multiprocessing.pool import ThreadPool
+            #from multiprocessing.pool import ThreadPool
             my_thread_for_simple_msgs = Thread(target=listen_msg)
             my_thread_for_simple_msgs.start()
             my_thread_for_ssh_msgs = Thread(target=listen_to_ssh_msg)
@@ -204,9 +208,11 @@ class Ui_friend_msgBox(object):
                     if ans:
                         print("yes")
                         my_user.approve_control(friend_id, True)
+                        self.control_text.setText("Allowed")
                     elif not ans:
                         my_user.approve_control(friend_id, False)
                         print("no")
+# self.control_text.setText("Not Allowed")
                 else:
                     my_user.approve_control_requests_waiter.acquire()
                     my_user.approve_control_requests_waiter.wait()
@@ -221,6 +227,10 @@ class Ui_friend_msgBox(object):
         """
     def ask_for_control(self):
         self.my_user.ask_for_control(self.friend_id)
+
+    def disable_control(self):
+        self.my_user.remove_control(self.friend_id)
+        print(self.my_user.approved_control)
 
     def send_msg(self):
         msg_txt = self.message_text.toPlainText()
