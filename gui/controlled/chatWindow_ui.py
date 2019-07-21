@@ -1,6 +1,6 @@
 import os
 from multiprocessing import Process
-from threading import Thread
+from threading import Thread, Condition
 import time
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget, QLabel, QApplication, QPushButton, QMessageBox
@@ -126,6 +126,8 @@ class Ui_friend_msgBox(object):
 
     def __init__(self, user_id, user_pass, user_sudo, friend_id):
         from client import user
+        #self.get_ask_for_control = False
+        #self.main_wake_up = Condition()
         self.user_id = user_id
         self.user_password = user_pass
         self.user_sudo = user_sudo
@@ -157,6 +159,7 @@ class Ui_friend_msgBox(object):
         self.ask_for_control_button.clicked.connect(self.ask_for_control)
         self.ssh_button.clicked.connect(self.send_ssh_msg)
         self.commandLinkButton_2.clicked.connect(self.disable_control)
+
         def get_messages_process():
             #from multiprocessing.pool import ThreadPool
             my_thread_for_simple_msgs = Thread(target=listen_msg)
@@ -201,8 +204,11 @@ class Ui_friend_msgBox(object):
 
         def listen_to_control_req():
             while True:
+                print("listen to req ask")
                 set_of_req = my_user.approve_control_requests
                 if len(set_of_req) > 0 and friend_id in set_of_req:
+                    print("get req ask")
+                    self.get_ask_for_control = True
                     ap = App()
                     ans = ap.message_box(friend_id)
                     if ans:
@@ -212,6 +218,11 @@ class Ui_friend_msgBox(object):
                     elif not ans:
                         my_user.approve_control(friend_id, False)
                         print("no")
+                    """
+                    self.main_wake_up.acquire()
+                    self.main_wake_up.notify()
+                    self.main_wake_up.release()
+                    """
                 else:
                     my_user.approve_control_requests_waiter.acquire()
                     my_user.approve_control_requests_waiter.wait()
@@ -230,6 +241,7 @@ class Ui_friend_msgBox(object):
     def disable_control(self):
         self.my_user.remove_control(self.friend_id)
         print(self.my_user.approved_control)
+        self.get_ask_for_control = False
         self.control_text.setText("Not Allowed")
 
     def send_msg(self):
@@ -257,8 +269,8 @@ class Ui_friend_msgBox(object):
 if __name__ == '__main__':
     # for the testing of the page only:
     # x = Ui_mainWindow(sys.argv[1])s
-    default_id1 = 'testUser2'
-    default_id2 = 'testUser'
+    default_id1 = 'testUser'
+    default_id2 = 'testUser2'
     default_pas = '12345'
     default_sudo = '1313'
 
@@ -270,4 +282,23 @@ if __name__ == '__main__':
     # print(x.messages)
 
     x.open()
-
+"""
+    while True:
+        print("main wait - req ask")
+        if x.get_ask_for_control:
+            print("main in popup")
+            ap = App()
+            ans = ap.message_box(x.friend_id)
+            if ans:
+                print("yes")
+                x.my_user.approve_control(x.friend_id, True)
+                x.control_text.setText("Allowed")
+            elif not ans:
+                x.my_user.approve_control(x.friend_id, False)
+                print("no")
+        print("main wait")
+        x.main_wake_up.acquire()
+        x.main_wake_up.wait()
+        x.main_wake_up.release()
+        print("main wake up")
+"""
