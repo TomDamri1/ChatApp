@@ -181,7 +181,7 @@ class Ui_mainWindow(object):
 
     def remove_friend(self):
         """
-        problem!!!!
+        problem fixed!!!!
         :return:
         """
         list_items = self.listWidget.selectedItems()

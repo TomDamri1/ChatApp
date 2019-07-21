@@ -9,13 +9,14 @@ from PyQt5.QtCore import pyqtSlot
 import sys
 
 
-class App(QWidget):
+class AskForControlPopup(QWidget):
     def message_box(self, friend_name):
         resp = QMessageBox.question(self, 'Approve control', 'Do you approve to ' + friend_name + " to control yours computer?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if resp == QMessageBox.Yes:
             return True
         else:
             return False
+
 
 
 class Ui_friend_msgBox(object):
@@ -154,7 +155,7 @@ class Ui_friend_msgBox(object):
         self.name_text.setText(my_user.get_friend_name(friend_id))
         self.ip_text.setText(my_user.get_friend_external_ip(friend_id))
         self.lastName_text.setText(my_user.get_friend_last_name(friend_id))
-        # define buttons click
+        # define buttons click events
         self.message_button.clicked.connect(self.send_msg)
         self.ask_for_control_button.clicked.connect(self.ask_for_control)
         self.ssh_button.clicked.connect(self.send_ssh_msg)
@@ -202,6 +203,9 @@ class Ui_friend_msgBox(object):
             my_thread = Thread(target=listen_to_control_req)
             my_thread.start()
 
+        # class represent popup
+        self.popup = AskForControlPopup()
+
         def listen_to_control_req():
             while True:
                 print("listen to req ask")
@@ -209,8 +213,8 @@ class Ui_friend_msgBox(object):
                 if len(set_of_req) > 0 and friend_id in set_of_req:
                     print("get req ask")
                     self.get_ask_for_control = True
-                    ap = App()
-                    ans = ap.message_box(friend_id)
+
+                    ans = self.popup.message_box(friend_id)
                     if ans:
                         print("yes")
                         my_user.approve_control(friend_id, True)
@@ -258,7 +262,7 @@ class Ui_friend_msgBox(object):
         if msg_txt != '':
             self.my_user.send_ssh_message(self.friend_id, msg_txt)
             self.ssh_text.setPlainText("")
-            #self.chat_text.addItem(self.my_user.name + " > " + msg_txt)
+            self.chat_text.addItem(self.my_user.name + "shh req >> " + msg_txt)
 
     def open(self):
         self.friend_msgBox.show()
