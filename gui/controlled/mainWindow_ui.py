@@ -149,13 +149,14 @@ class Ui_mainWindow(object):
         self.Jtag_text.setText(str(user_id))
         self.addFriend_button.clicked.connect(lambda: self.add_friend(self.addFriend_text.text()))
         self.listWidget.itemActivated.connect(self.itemActivated_event)
+        self.listWidget.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         self.lastName_text.setText(self.my_user.last_name)
         self.name_text.setText(self.my_user.name)
         self.motherBoard_text.setText(self.my_user.get_my_motherboard())
         self.ip_ex_text.setText(self.my_user.get_my_external_ip().split()[0])
         self.ip_in_text.setText(self.my_user.get_my_internal_ip().split()[0])
         self.cpu_text.setText(self.my_user.get_my_cpu().strip().partition('\n')[0])
-        self.deleteFriend_button.clicked.connect(self.delete_friend)
+        self.deleteFriend_button.clicked.connect(self.remove_friend)
         self.logout_button.clicked.connect(self.logout)
 
         #self.user
@@ -178,20 +179,18 @@ class Ui_mainWindow(object):
         sys.exit(self.app.exec_())
 
 
-    def delete_friend(self):
+    def remove_friend(self):
         """
         problem!!!!
         :return:
         """
+        list_items = self.listWidget.selectedItems()
+        if not list_items:
+            return
+        for item in list_items:
+            self.listWidget.takeItem(self.listWidget.row(item))
+            self.my_user.remove_friend(item.text())
 
-        friend_id = self.addFriend_text.text()
-        print("deleting " + friend_id)
-        print(user.User.get_instance().get_friends())
-        if friend_id in friendList:
-            self.my_user.remove_friend(friend_id)
-            friendList.remove(friend_id)
-            self.listWidget.removeItemWidget(friend_id)
-        print(user.User.get_instance().get_friends())
 
 
     def add_friend(self, friend):
@@ -238,7 +237,7 @@ if __name__ == '__main__':
         if len(sys.argv) != 3:
             userid = "testUser"
             userpass = "12345"
-            usersudo = "A1346014"
+            usersudo = "1313"
         else:
             print("user details error!")
 
