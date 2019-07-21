@@ -3,7 +3,7 @@ from multiprocessing import Process
 from threading import Thread, Condition
 import time
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QWidget, QLabel, QApplication, QPushButton, QMessageBox
+from PyQt5.QtWidgets import QWidget, QLabel, QListWidgetItem, QMessageBox
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 import sys
@@ -174,7 +174,9 @@ class Ui_friend_msgBox(object):
                     data = self.my_user.my_queue.pop()
                     print(self.my_user.id + "  got message from :" + data['sender_id'])
                     if self.friend_id == data['sender_id']:
-                        self.chat_text.addItem(data['sender_name'] + " > " + data['text'])
+                        item = QListWidgetItem('%s' % (data['sender_name'] + " > " + data['text']))
+                        item.setBackground(QtGui.QColor('#00ffff'))
+                        self.chat_text.addItem(item)
 
                 else:
                     self.my_user.my_queue_waiter.acquire()
@@ -189,7 +191,9 @@ class Ui_friend_msgBox(object):
                     data = self.my_user.ssh_results_command_queue.pop()
                     print(self.my_user.id + "  got message from :" + data['sender_id'])
                     if self.friend_id == data['sender_id']:
-                        self.chat_text.addItem(data['sender_id'] + " > " + data['ssh_cmd'])
+                        item = QListWidgetItem('%s' % (data['sender_id'] + " > " + data['ssh_cmd']))
+                        item.setBackground(QtGui.QColor('#808000'))
+                        self.chat_text.addItem(item)
 
 
                 else:
@@ -254,7 +258,9 @@ class Ui_friend_msgBox(object):
         if msg_txt != '':
             self.my_user.send_message(self.friend_id, msg_txt)
             self.message_text.setPlainText("")
-            self.chat_text.addItem(self.my_user.name + " > " + msg_txt)
+            item = QListWidgetItem('%s' % (self.my_user.name + " > " + msg_txt))
+            item.setBackground(QtGui.QColor('#00ff00'))
+            self.chat_text.addItem(item)
 
     def send_ssh_msg(self):
         msg_txt = self.ssh_text.toPlainText()
@@ -262,7 +268,9 @@ class Ui_friend_msgBox(object):
         if msg_txt != '':
             self.my_user.send_ssh_message(self.friend_id, msg_txt)
             self.ssh_text.setPlainText("")
-            self.chat_text.addItem(self.my_user.name + "shh req >> " + msg_txt)
+            item = QListWidgetItem('%s' % (self.my_user.name + "shh req >> " + msg_txt))
+            item.setBackground(QtGui.QColor('#7fc97f'))
+            self.chat_text.addItem(item)
 
     def open(self):
         self.friend_msgBox.show()
