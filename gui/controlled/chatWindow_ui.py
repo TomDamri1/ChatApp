@@ -244,7 +244,7 @@ class Ui_friend_msgBox(object):
                     self.my_user.ssh_results_command_queue_waiter.release()
 
         def get_control_req_process():
-            my_thread = Thread(target=listen_to_control_req)
+            my_thread = Process(target=listen_to_control_req)
             my_thread.start()
 
         # class represent popup

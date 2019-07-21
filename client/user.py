@@ -47,7 +47,7 @@ class User:
         self.id = id
         self.password = password
         self.sudo_password = sudo_password
-        self.show_ssh_res = False
+        self.show_ssh_res = True
 
         # queue of simple msgs
         self.my_queue = deque()
