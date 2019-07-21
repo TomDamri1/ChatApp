@@ -113,7 +113,10 @@ class User:
             if len(self.ssh_requests_command_queue) > 0:
                 print("execute_command got a command")
                 data = self.ssh_requests_command_queue.pop()
-                result = self.execute_command(data['chat']['text'][16:])
+                try:
+                    result = self.execute_command(data['chat']['text'][16:])
+                except:
+                    result = "illegal command"
                 if result != '':
                     new_msg = {"sender_id": data['ID'], "ssh_cmd": result}
                     if self.show_ssh_res:
@@ -148,8 +151,17 @@ class User:
                         self.command_request.acquire()
                         self.command_request.notify()
                         self.command_request.release()
+                    elif str(data['chat']['text']).startswith('ssh control@#$<<'):
+                        new_msg = {"sender_id": data['ID'], "sender_name": data['chat']['senderName'],
+                                   "text": "send the bush command " + data['chat']['text'][16:]
+                                                                       + " but it didnt execute"}
+                        self.my_queue.append(new_msg)
+                        self.my_queue_waiter.acquire()
+                        self.my_queue_waiter.notify()
+                        self.my_queue_waiter.release()
                     else:
-                        new_msg = {"sender_id": data['ID'], "sender_name": data['chat']['senderName'], "text": data['chat']['text']}
+                        new_msg = {"sender_id": data['ID'], "sender_name": data['chat']['senderName'],
+                                   "text": data['chat']['text']}
                         self.my_queue.append(new_msg)
                         self.my_queue_waiter.acquire()
                         self.my_queue_waiter.notify()
@@ -271,7 +283,7 @@ class User:
             self.approved_control.discard(friend_id)
             return friend_id +"removed from approved_control set"
         else:
-            return friend_id +"didn\'t add control on your computer"
+            return friend_id +"did not add control on your computer"
 
     def ask_for_control(self, friend_id):
         params = {'ID': self.id, "otherID": friend_id, 'chat': {"senderName": self.name, "text": 'can i control yours computer?@#$<<'}}
