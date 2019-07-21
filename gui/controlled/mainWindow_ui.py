@@ -135,7 +135,11 @@ class Ui_mainWindow(object):
         except Exception as e:
             print(e)
             self.my_user = user.User.get_instance()
-
+        """
+        # remove all my friend
+        for i in self.my_user.friends_list:
+            self.my_user.remove_friend(i)
+        """
         self.user_id = user_id
         self.user_password = user_pass
         self.user_sudo = user_sudo
@@ -145,13 +149,14 @@ class Ui_mainWindow(object):
         self.Jtag_text.setText(str(user_id))
         self.addFriend_button.clicked.connect(lambda: self.add_friend(self.addFriend_text.text()))
         self.listWidget.itemActivated.connect(self.itemActivated_event)
-        self.deleteFriend_button.clicked.connect(self.delete_friend)
         self.lastName_text.setText(self.my_user.last_name)
         self.name_text.setText(self.my_user.name)
         self.motherBoard_text.setText(self.my_user.get_my_motherboard())
         self.ip_ex_text.setText(self.my_user.get_my_external_ip().split()[0])
         self.ip_in_text.setText(self.my_user.get_my_internal_ip().split()[0])
         self.cpu_text.setText(self.my_user.get_my_cpu().strip().partition('\n')[0])
+        self.deleteFriend_button.clicked.connect(self.delete_friend)
+        self.logout_button.clicked.connect(self.logout)
 
         #self.user
 
@@ -162,25 +167,32 @@ class Ui_mainWindow(object):
         here we need to get the user details by the id and put it in place.
         """
 
+    def logout(self):
+        os.system("pwd")
+        login_screen_process = Process(target= os.system , args=("python3 login_ui.py" , ))
+        login_screen_process.start()
+        self.mainPage.hide()
 
     def open(self):
         self.mainPage.show()
         sys.exit(self.app.exec_())
 
+
     def delete_friend(self):
-        print("in delete")
-        list_items = self.listWidget.selectedItems()
-        if not list_items:
-            return
-        for item in list_items:
-            self.listWidget.takeItem(self.listWidget.row(item))
-            print("deleted friend:" + item.text())
-            self.my_user.remove_friend(item.text())
-        """remove all friends
-        for i in self.my_user.friends_list:
-            self.my_user.remove_friend(i)
-            self.listWidget.remo
         """
+        problem!!!!
+        :return:
+        """
+
+        friend_id = self.addFriend_text.text()
+        print("deleting " + friend_id)
+        print(user.User.get_instance().get_friends())
+        if friend_id in friendList:
+            self.my_user.remove_friend(friend_id)
+            friendList.remove(friend_id)
+            self.listWidget.removeItemWidget(friend_id)
+        print(user.User.get_instance().get_friends())
+
 
     def add_friend(self, friend):
         my_user = user.User.get_instance()
