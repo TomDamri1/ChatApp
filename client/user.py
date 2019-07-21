@@ -402,6 +402,8 @@ class User:
         return friend_last_name
 
     def add_friend(self, friend_id):
+        if friend_id == self.id:
+            return False
         if friend_id not in self.friends_list:
             #-------------------------------------------------------need add check if the friend is exist
             #check_fried_exist =
@@ -413,7 +415,7 @@ class User:
             # add result
             print(r)
             #if r['Failed'] != 'true':
-            #   self.friends_list.append(friend_id)
+            #   if the friend is exist
             if 'Success' in r.keys():
                 self.friends_list.append(friend_id)
                 return True
