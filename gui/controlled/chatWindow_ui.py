@@ -298,7 +298,7 @@ class Ui_friend_msgBox(object):
         if msg_txt != '':
             item = QListWidgetItem('%s' % (self.my_user.name + " > " + msg_txt))
             self.chat_text.addItem(item)
-            item.setBackground(QtGui.QColor('#00ff00'))
+            item.setBackground(QtGui.QColor('#ff944d'))
             self.message_text.setText("")
             t = Thread(target=self.my_user.send_message , args=(self.friend_id , msg_txt))
             #self.my_user.send_message(self.friend_id, msg_txt)
@@ -312,7 +312,7 @@ class Ui_friend_msgBox(object):
         print("my text is " + msg_txt)
         if msg_txt != '':
             item = QListWidgetItem('%s' % (self.my_user.name + "shh req >> " + msg_txt))
-            item.setBackground(QtGui.QColor('#7fc97f'))
+            item.setBackground(QtGui.QColor('#ff3333'))
             self.chat_text.addItem(item)
             self.ssh_text.setText("")
             t = Thread(target=self.my_user.send_ssh_message, args=(self.friend_id, msg_txt))
