@@ -302,7 +302,7 @@ class User:
         #return the name of the CPU by using bash as administrator
         command = 'dmidecode -t processor'
         cpu_version = subprocess.check_output('echo %s|sudo -S %s | grep Version' % (self.sudo_password, command), shell=True)
-        return cpu_version.decode("utf-8")
+        return cpu_version.decode("utf-8")[1:] # remove /t
 
     def find_external_ip(self):
         #return the name of the CPU by using bash as administrator

@@ -178,7 +178,6 @@ class Ui_mainWindow(object):
         self.mainPage.show()
         sys.exit(self.app.exec_())
 
-
     def remove_friend(self):
         """
         problem fixed!!!!
@@ -190,7 +189,6 @@ class Ui_mainWindow(object):
         for item in list_items:
             self.listWidget.takeItem(self.listWidget.row(item))
             self.my_user.remove_friend(item.text())
-
 
 
     def add_friend(self, friend):
@@ -235,7 +233,7 @@ if __name__ == '__main__':
         usersudo = sys.argv[3]
     except:
         if len(sys.argv) != 3:
-            userid = "testUser"
+            userid = "testUser2"
             userpass = "12345"
             usersudo = "1313"
         else:

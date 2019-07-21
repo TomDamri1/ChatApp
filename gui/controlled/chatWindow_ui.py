@@ -8,7 +8,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 import sys
 
-
+"""popUP class
 class AskForControlPopup(QWidget):
     def message_box(self, friend_name):
         resp = QMessageBox.question(self, 'Approve control', 'Do you approve to ' + friend_name + " to control yours computer?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
@@ -16,7 +16,7 @@ class AskForControlPopup(QWidget):
             return True
         else:
             return False
-
+"""
 
 
 class Ui_friend_msgBox(object):
@@ -526,9 +526,14 @@ class Ui_friend_msgBox(object):
         self.motherBoard_text.setText(my_user.get_friend_motherboard(friend_id))
         self.name_text.setText(my_user.get_friend_name(friend_id))
         self.ip_text.setText(my_user.get_friend_external_ip(friend_id))
+        self.ip_in_text.setText(my_user.get_friend_internal_ip(friend_id))
+        self.label_2.setText(my_user.get_friend_cpu(friend_id))
         self.lastName_text.setText(my_user.get_friend_last_name(friend_id))
+
         # define buttons click events
         self.message_button.clicked.connect(self.send_msg)
+        self.allow_yes_button.clicked.connect(self.approve_control)
+        self.allow_no_button.clicked.connect(self.reject_ask_for_control)
         self.ask_for_control_button.clicked.connect(self.ask_for_control)
         self.ssh_button.clicked.connect(self.send_ssh_msg)
         self.commandLinkButton_2.clicked.connect(self.disable_control)
@@ -578,11 +583,11 @@ class Ui_friend_msgBox(object):
                     self.my_user.ssh_results_command_queue_waiter.release()
 
         def get_control_req_process():
-            my_thread = Process(target=listen_to_control_req)
+            my_thread = Thread(target=listen_to_control_req)
             my_thread.start()
 
         # class represent popup
-        self.popup = AskForControlPopup()
+        #self.popup = AskForControlPopup()
 
         def listen_to_control_req():
             while True:
@@ -590,6 +595,11 @@ class Ui_friend_msgBox(object):
                 set_of_req = my_user.approve_control_requests
                 if len(set_of_req) > 0 and friend_id in set_of_req:
                     print("get req ask")
+                    self.allow_yes_button.setCheckable(True)
+                    self.allow_yes_button.setEnabled(True)
+                    self.allow_no_button.setCheckable(True)
+                    self.allow_no_button.setEnabled(True)
+                    """for popup instead buttons
                     self.get_ask_for_control = True
 
                     ans = self.popup.message_box(friend_id)
@@ -601,14 +611,14 @@ class Ui_friend_msgBox(object):
                         my_user.approve_control(friend_id, False)
                         print("no")
                     """
+                    """ to delete
                     self.main_wake_up.acquire()
                     self.main_wake_up.notify()
                     self.main_wake_up.release()
                     """
-                else:
-                    my_user.approve_control_requests_waiter.acquire()
-                    my_user.approve_control_requests_waiter.wait()
-                    my_user.approve_control_requests_waiter.release()
+                my_user.approve_control_requests_waiter.acquire()
+                my_user.approve_control_requests_waiter.wait()
+                my_user.approve_control_requests_waiter.release()
 
         get_control_req_process()
         get_messages_process()
@@ -617,6 +627,20 @@ class Ui_friend_msgBox(object):
         for msg in self.messages:
             self.chat_text.addItem(msg[0]+" > "+msg[1])
         """
+    def approve_control(self):
+        self.my_user.approve_control(self.friend_id, True)
+        self.allow_yes_button.setCheckable(False)
+        self.allow_yes_button.setEnabled(False)
+        self.allow_no_button.setCheckable(False)
+        self.allow_no_button.setEnabled(False)
+
+    def reject_ask_for_control(self):
+        self.my_user.approve_control(self.friend_id, False)
+        self.allow_yes_button.setCheckable(False)
+        self.allow_yes_button.setEnabled(False)
+        self.allow_no_button.setCheckable(False)
+        self.allow_no_button.setEnabled(False)
+
     def ask_for_control(self):
         self.my_user.ask_for_control(self.friend_id)
 
