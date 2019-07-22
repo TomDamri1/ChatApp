@@ -515,6 +515,7 @@ class Ui_friend_msgBox(object):
         self.setupUi(self.friend_msgBox)
 
         self.message_text.returnPressed.connect(self.message_button.animateClick)
+        self.ssh_text.returnPressed.connect(self.ssh_button.animateClick)
         def get_msgs_history():
             msgs = my_user.get_message(friend_id)
             print(msgs)
