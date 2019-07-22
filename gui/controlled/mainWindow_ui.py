@@ -204,7 +204,7 @@ class Ui_mainWindow(object):
                 items = self.listWidget.findItems(str(data), QtCore.Qt.MatchExactly)
                 if len(items) > 0:
                     for item in items:
-                        blink_msg_thread = Thread(target=self.blink_msg, args=[item])
+                        blink_msg_thread = Thread(target=self.blink_msg, args=(item , ))
                         blink_msg_thread.start()
             self.my_user.my_queue_waiter.acquire()
             print("wating...")
@@ -213,12 +213,15 @@ class Ui_mainWindow(object):
             self.my_user.my_queue_waiter.release()
 
     def blink_msg(self, item):
-        while True:
-            print("orange")
-            item.setBackground(QtGui.QColor('#ff944d'))
-            time.sleep(3)
+        for i in range(5):
+            sys.stdout.flush()
+            time.sleep(2)
+            print("orange-"+item.text())
+            item.setBackground(QtGui.QColor('#ff0000'))
+            sys.stdout.flush()
+            time.sleep(2)
             print("black")
-            item.setBackground(QtGui.QColor('#000000'))
+            item.setBackground(QtGui.QColor('#fff00f'))
 
     def logout(self):
         self.my_user.disconnect()
@@ -249,6 +252,7 @@ class Ui_mainWindow(object):
         if my_user.add_friend(friend) and friend != "":
             friendList.append(friend)
             self.listWidget.addItem(friend)
+
 
 
     def open_chat(self,user_id):
