@@ -71,7 +71,8 @@ router.post('/register', async (req, res) => {
         motherboard: req.body.motherboard,
         cpu: req.body.cpu,
         password: req.body.password,
-        friends:[]
+        friends:[],
+        isLogged:false
     })
      newUser.save()
      .then(()=>res.json({"success":"Registered succsessfully"}))
@@ -88,7 +89,9 @@ router.post('/login',async(req,res)=>{
         res.json({"Login":"No login found"})
     }
     else if(user.password===req.body.password){
-        res.json({"Login":"Logged in successfully "})
+        user.isLogged=true;
+        newUser.save()
+       .then(()=>res.json({"Login":"Logged in successfully "}))
     }
     else{
         res.json({"Login":"Login Failed Wrong password"})
@@ -99,6 +102,24 @@ router.post('/login',async(req,res)=>{
   }
 
 })
+
+router.post("/logout/:id",async(req,res)=>{
+    try{
+        const user=await User.findOne({
+            ID:req.params.id
+        })
+        user.isLogged=false;
+        newUser.save()
+       .then(()=>res.json({"Login":"Logged out successfully "}))
+    }
+    catch(err){
+        console.log(err);
+    }
+
+
+
+})
+
 router.post("/update/:id",async(req,res)=>{
    try{
        const user=await User.findOne({

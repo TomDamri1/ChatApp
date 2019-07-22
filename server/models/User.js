@@ -31,7 +31,8 @@ const UserSchema = new Schema({
   internalIP:{
     type:String
   },
-  friends: [String]
+  friends: [String],
+  isLogged:Boolean
 
 });
 
