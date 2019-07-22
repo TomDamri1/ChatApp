@@ -148,7 +148,15 @@ class User:
                 self.command_request.wait()
                 self.command_request.release()
                 print("execute_command woke up")
-
+    def get_friend_status(self):
+        friends_status = dict()
+        friends = self.get_friends()
+        for friend in friends:
+            user_data_from_server = requests.get(url=(URL.usersURL + "/" + self.id))
+            data = user_data_from_server.json()
+            status = data['isLogged']
+            friends_status[friend] = status
+        return friends_status
     def listen_to_server(self):
         while True:
             # queue not empty - got new message
@@ -329,20 +337,20 @@ class User:
         motherboard_manufacturer = subprocess.check_output('echo %s|sudo -S %s | grep Manufacturer' % (self.sudo_password, command), shell=True)
         prod_name = '\'Product Name\''
         motherboard_product_name = subprocess.check_output('echo %s|sudo -S %s | grep %s' % (self.sudo_password, command, prod_name), shell=True)
-        return motherboard_manufacturer.decode("utf-8")[1:] + motherboard_product_name.decode("utf-8")[1:]
+        return (motherboard_manufacturer.decode("utf-8")[1:] + motherboard_product_name.decode("utf-8")[1:]).trim()
 
     def find_cpu(self):
         #return the name of the CPU by using bash as administrator
         command = 'dmidecode -t processor'
         cpu_version = subprocess.check_output('echo %s|sudo -S %s | grep Version' % (self.sudo_password, command), shell=True)
-        return cpu_version.decode("utf-8")[1:] # remove /t
+        return (cpu_version.decode("utf-8")[1:]).trim() # remove /t
 
     def find_external_ip(self):
         #return the name of the CPU by using bash as administrator
         try:
             command = 'dig +short myip.opendns.com @resolver1.opendns.com'
             external_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.sudo_password, command), shell=True)
-            return external_ip.decode("utf-8")
+            return (external_ip.decode("utf-8")).trim()
         except:
             return"---"
 
@@ -350,7 +358,7 @@ class User:
         #return the name of the CPU by using bash as administrator
         command = 'hostname -I'
         internal_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.sudo_password, command), shell=True)
-        return internal_ip.decode("utf-8")
+        return (internal_ip.decode("utf-8").sptit()[0]).trim()
 
     def execute_command(self, command):
         #return the name of the motherboard by using bash as administrator
@@ -489,6 +497,11 @@ class User:
         very imported to use that func when user disconnected for data security
         and for update my friend i am disconnected
         '''
+        url = URL.loguotURL + self.id
+        print(url)
+        r = requests.post(url=url)
+        print(r.json())
+
         params = {'ID': self.id, "otherID": "broadcast", 'chat': {"senderName": self.name, "text": "i am disconnected!@#$"}}
         print(params)
         r = requests.post(url=URL.postURL, json=params)

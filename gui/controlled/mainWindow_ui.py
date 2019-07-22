@@ -8,6 +8,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QListWidgetItem
 import os
 from multiprocessing import Process
 import sys
@@ -165,10 +166,16 @@ class Ui_mainWindow(object):
 
         msg_alarm_thread = Thread(target=self.msg_alarm)
         msg_alarm_thread.start()
-
-        for name in self.get_friends():
-            # add background according to disconnect/connect status
-            self.listWidget.addItem(name)
+        friend_status = self.my_user.get_friend_status()
+        for name in friend_status.keys():
+            if friend_status[name]:
+                item = QListWidgetItem('%s' % (name))
+                self.listWidget.addItem(item)
+                item.setBackground(QtGui.QColor('#ff944d'))
+            else:
+                item = QListWidgetItem('%s' % (name))
+                self.listWidget.addItem(item)
+                item.setBackground(QtGui.QColor('#ff0000'))
 
     def my_friend_status(self):
         while True:
@@ -204,7 +211,7 @@ class Ui_mainWindow(object):
                 items = self.listWidget.findItems(str(data), QtCore.Qt.MatchExactly)
                 if len(items) > 0:
                     for item in items:
-                        blink_msg_thread = Thread(target=self.blink_msg, args=(item , ))
+                        blink_msg_thread = Thread(target=self.blink_msg, args=[item])
                         blink_msg_thread.start()
             self.my_user.my_queue_waiter.acquire()
             print("wating...")
@@ -213,15 +220,15 @@ class Ui_mainWindow(object):
             self.my_user.my_queue_waiter.release()
 
     def blink_msg(self, item):
-        for i in range(5):
+        while True:
+            print("orange")
+            item.setBackground(QtGui.QColor('#ff944d'))
             sys.stdout.flush()
-            time.sleep(2)
-            print("orange-"+item.text())
-            item.setBackground(QtGui.QColor('#ff0000'))
-            sys.stdout.flush()
-            time.sleep(2)
+            time.sleep(3)
             print("black")
-            item.setBackground(QtGui.QColor('#fff00f'))
+            item.setBackground(QtGui.QColor('#000000'))
+            sys.stdout.flush()
+            time.sleep(3)
 
     def logout(self):
         self.my_user.disconnect()
@@ -252,7 +259,6 @@ class Ui_mainWindow(object):
         if my_user.add_friend(friend) and friend != "":
             friendList.append(friend)
             self.listWidget.addItem(friend)
-
 
 
     def open_chat(self,user_id):

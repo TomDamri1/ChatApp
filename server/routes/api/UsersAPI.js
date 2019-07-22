@@ -11,7 +11,7 @@ router.get('/:id', async (req, res) => {
      res.json(user);
    }
    catch(err){
-       console.log(err);
+       console.log('the error is',err);
      }
 });
 
@@ -33,7 +33,7 @@ router.post('/addfriend/:id', async (req, res) => {
       }
   }  
   catch(err){
-      console.log(err);
+    console.log('the error is',err);
   }
   });
 
@@ -51,7 +51,7 @@ router.delete('/removefriend/:id',async(req,res)=>{
         res.json({"Success":"Friend removed successfully"})
     }  
     catch(err){
-        console.log(err);
+        console.log('the error is',err);
     }
 });
 
@@ -76,11 +76,12 @@ router.post('/register', async (req, res) => {
     })
      newUser.save()
      .then(()=>res.json({"success":"Registered succsessfully"}))
-     .catch(err=>console.log(err))
+     .catch(err=> console.log('the error is',err))
   }  
  
 });
 router.post('/login',async(req,res)=>{
+  console.log('loging in')  
   try{
     const user=await User.findOne({
         ID:req.body.id
@@ -98,27 +99,27 @@ router.post('/login',async(req,res)=>{
     }   
   }
   catch(err){
-      console.log(err);
+    console.log('the error is',err);
   }
 
 })
 
-router.post("/logout/:id",async(req,res)=>{
+
+
+router.post('/logout/:id', async (req, res) => {
+    console.log('logged out route');
     try{
         const user=await User.findOne({
             ID:req.params.id
         })
         user.isLogged=false;
-        newUser.save()
+        user.save()
        .then(()=>res.json({"Login":"Logged out successfully "}))
     }
     catch(err){
-        console.log(err);
+        console.log('the error is',err);
     }
-
-
-
-})
+  });
 
 router.post("/update/:id",async(req,res)=>{
    try{
@@ -139,7 +140,7 @@ router.post("/update/:id",async(req,res)=>{
    
    }
    catch(err){
-       console.log(err);
+    console.log('the error is',err);
    }
    
 })

@@ -523,7 +523,7 @@ class Ui_friend_msgBox(object):
                 for msg in msgs:
                     self.chat_text.addItem(msg[0] + " > " + msg[1])
 
-        get_msgs_history()
+        #get_msgs_history()
         self.motherBoard_text.setText(my_user.get_friend_motherboard(friend_id))
         self.name_text.setText(my_user.get_friend_name(friend_id))
         self.ip_text.setText(my_user.get_friend_external_ip(friend_id))
