@@ -172,14 +172,18 @@ class Ui_mainWindow(object):
             if len(self.my_user.connect_friend_queue) > 0:
                 # change background according to disconnect/connect status
                 data = self.my_user.connect_friend_queue.pop()["sender_id"]
-                item = self.listWidget.findItems(data, QtCore.Qt.MatchRegExp)
-                item.setBackground(QtGui.QColor('#ff944d'))
+                items = self.listWidget.findItems(str(data), QtCore.Qt.MatchExactly)
+                if len(items) > 0:
+                    for item in items:
+                        item.setBackground(QtGui.QColor('#808000'))
 
             if len(self.my_user.disconnect_friend_queue) > 0:
                 # change background according to disconnect/connect status
                 data = self.my_user.connect_friend_queue.pop()["sender_id"]
-                item = self.listWidget.findItems(data, QtCore.Qt.MatchRegExp)
-                item.setBackground(QtGui.QColor('#ff944d'))
+                items = self.listWidget.findItems(str(data), QtCore.Qt.MatchExactly)
+                if len(items) > 0:
+                    for item in items:
+                        item.setBackground(QtGui.QColor('#ff944d'))
 
             self.my_user.connect_status_waiter.acquire()
             self.my_user.connect_status_waiter.wait()
@@ -189,6 +193,7 @@ class Ui_mainWindow(object):
         here we need to get the user details by the id and put it in place.
         """
     def logout(self):
+        self.my_user.disconnect()
         os.system("pwd")
         login_screen_process = Process(target= os.system , args=("python3 login_ui.py" , ))
         login_screen_process.start()
