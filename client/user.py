@@ -337,20 +337,20 @@ class User:
         motherboard_manufacturer = subprocess.check_output('echo %s|sudo -S %s | grep Manufacturer' % (self.sudo_password, command), shell=True)
         prod_name = '\'Product Name\''
         motherboard_product_name = subprocess.check_output('echo %s|sudo -S %s | grep %s' % (self.sudo_password, command, prod_name), shell=True)
-        return (motherboard_manufacturer.decode("utf-8")[1:] + motherboard_product_name.decode("utf-8")[1:]).trim()
+        return (motherboard_manufacturer.decode("utf-8")[1:] + motherboard_product_name.decode("utf-8")[1:]).strip()
 
     def find_cpu(self):
         #return the name of the CPU by using bash as administrator
         command = 'dmidecode -t processor'
         cpu_version = subprocess.check_output('echo %s|sudo -S %s | grep Version' % (self.sudo_password, command), shell=True)
-        return (cpu_version.decode("utf-8")[1:]).trim() # remove /t
+        return (cpu_version.decode("utf-8")[1:]).strip() # remove /t
 
     def find_external_ip(self):
         #return the name of the CPU by using bash as administrator
         try:
             command = 'dig +short myip.opendns.com @resolver1.opendns.com'
             external_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.sudo_password, command), shell=True)
-            return (external_ip.decode("utf-8")).trim()
+            return (external_ip.decode("utf-8")).strip()
         except:
             return"---"
 
@@ -358,7 +358,7 @@ class User:
         #return the name of the CPU by using bash as administrator
         command = 'hostname -I'
         internal_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.sudo_password, command), shell=True)
-        return (internal_ip.decode("utf-8").sptit()[0]).trim()
+        return (internal_ip.decode("utf-8").split()[0]).strip()
 
     def execute_command(self, command):
         #return the name of the motherboard by using bash as administrator
@@ -507,7 +507,7 @@ class User:
         r = requests.post(url=URL.postURL, json=params)
         return_msg = r.text
         print(return_msg)
-
+        User.sio.disconnect()
         __instance = None
 
 

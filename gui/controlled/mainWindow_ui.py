@@ -168,6 +168,7 @@ class Ui_mainWindow(object):
         msg_alarm_thread.start()
         friend_status = self.my_user.get_friend_status()
         for name in friend_status.keys():
+            print(friend_status[name])
             if friend_status[name]:
                 item = QListWidgetItem('%s' % (name))
                 self.listWidget.addItem(item)
