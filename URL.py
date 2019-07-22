@@ -1,5 +1,4 @@
 URL = "http://linuxchat.herokuapp.com/"
-
 postURL = URL + "api/chat/"
 getURL = URL + "api/chat/"
 usersURL = URL + "api/users/"
