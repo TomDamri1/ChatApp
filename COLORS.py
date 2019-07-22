@@ -1,0 +1,8 @@
+red= '#ff0000'
+white = '#ffffff'
+black = '#000000'
+orange = '#FF5500'
+blue = '#000FFF'
+green = '#3B9700'
+light_blue = '#00B6C4'
+purple = '#9400C4'
