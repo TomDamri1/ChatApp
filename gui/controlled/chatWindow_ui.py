@@ -529,6 +529,7 @@ class Ui_friend_msgBox(object):
         self.ip_in_text.setText(my_user.get_friend_internal_ip(friend_id))
         self.label_2.setText(my_user.get_friend_cpu(friend_id))
         self.lastName_text.setText(my_user.get_friend_last_name(friend_id))
+        self.chat_text.scrollToBottom()
 
         # define buttons click events
         self.message_button.clicked.connect(self.send_msg)
@@ -556,7 +557,7 @@ class Ui_friend_msgBox(object):
                         item = QListWidgetItem('%s' % (data['sender_name'] + " > " + data['text']))
                         item.setBackground(QtGui.QColor('#00ffff'))
                         self.chat_text.addItem(item)
-
+                        self.chat_text.scrollToBottom()
                 else:
                     self.my_user.my_queue_waiter.acquire()
                     print("wating...")
@@ -573,6 +574,7 @@ class Ui_friend_msgBox(object):
                         item = QListWidgetItem('%s' % (data['sender_id'] + " > " + data['ssh_cmd']))
                         item.setBackground(QtGui.QColor('#808000'))
                         self.chat_text.addItem(item)
+                        self.chat_text.scrollToBottom()
 
 
                 else:

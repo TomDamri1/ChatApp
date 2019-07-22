@@ -13,7 +13,7 @@ from multiprocessing import Process
 import sys
 from client import user
 from threading import Thread, Condition
-
+import time
 friendList = []
 
 
@@ -160,8 +160,11 @@ class Ui_mainWindow(object):
         self.deleteFriend_button.clicked.connect(self.remove_friend)
         self.logout_button.clicked.connect(self.logout)
 
-        my_thread = Thread(target=self.my_friend_status)
-        my_thread.start()
+        friend_status_thread = Thread(target=self.my_friend_status)
+        friend_status_thread.start()
+
+        msg_alarm_thread = Thread(target=self.msg_alarm)
+        msg_alarm_thread.start()
 
         for name in self.get_friends():
             # add background according to disconnect/connect status
@@ -170,7 +173,7 @@ class Ui_mainWindow(object):
     def my_friend_status(self):
         while True:
             if len(self.my_user.connect_friend_queue) > 0:
-                # change background according to disconnect/connect status
+                # change background of item for connected status
                 data = self.my_user.connect_friend_queue.pop()["sender_id"]
                 items = self.listWidget.findItems(str(data), QtCore.Qt.MatchExactly)
                 if len(items) > 0:
@@ -178,8 +181,8 @@ class Ui_mainWindow(object):
                         item.setBackground(QtGui.QColor('#808000'))
 
             if len(self.my_user.disconnect_friend_queue) > 0:
-                # change background according to disconnect/connect status
-                data = self.my_user.connect_friend_queue.pop()["sender_id"]
+                # change background of item for disconnect status
+                data = self.my_user.disconnect_friend_queue.pop()["sender_id"]
                 items = self.listWidget.findItems(str(data), QtCore.Qt.MatchExactly)
                 if len(items) > 0:
                     for item in items:
@@ -189,9 +192,34 @@ class Ui_mainWindow(object):
             self.my_user.connect_status_waiter.wait()
             self.my_user.connect_status_waiter.release()
 
+
         """
         here we need to get the user details by the id and put it in place.
         """
+
+    def msg_alarm(self):
+        while True:
+            if len(self.my_user.sender_queue) > 0:
+                data = self.my_user.sender_queue.pop()
+                items = self.listWidget.findItems(str(data), QtCore.Qt.MatchExactly)
+                if len(items) > 0:
+                    for item in items:
+                        blink_msg_thread = Thread(target=self.blink_msg, args=[item])
+                        blink_msg_thread.start()
+            self.my_user.my_queue_waiter.acquire()
+            print("wating...")
+            self.my_user.my_queue_waiter.wait()
+            print("interupted")
+            self.my_user.my_queue_waiter.release()
+
+    def blink_msg(self, item):
+        while True:
+            print("orange")
+            item.setBackground(QtGui.QColor('#ff944d'))
+            time.sleep(3)
+            print("black")
+            item.setBackground(QtGui.QColor('#000000'))
+
     def logout(self):
         self.my_user.disconnect()
         os.system("pwd")

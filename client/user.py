@@ -5,6 +5,7 @@ import os
 from collections import deque
 from threading import Thread, Condition, Lock
 import URL
+import time
 #import socket
 #HEADER_LENGTH = 10
 
@@ -49,10 +50,13 @@ class User:
         self.sudo_password = sudo_password
         self.show_ssh_res = True
 
-        # queue of simple msgs
+        # queue of simple msgs for chat windows
         self.my_queue = deque()
         lock_for_my_queue = Lock()
         self.my_queue_waiter = Condition(lock_for_my_queue)
+
+        # queue of sender name for main windows
+        self.sender_queue = deque()
 
         # queue of ssh requests msgs
         self.ssh_requests_command_queue = deque()  # for waiting if ssh_requests_command_queue is empty, notify when get new command
@@ -176,8 +180,10 @@ class User:
                         new_msg = {"sender_id": data['ID'], "sender_name": data['chat']['senderName'],
                                    "text": data['chat']['text']}
                         self.my_queue.append(new_msg)
+                        # for alert to main windows that the user get a new msg
+                        self.sender_queue.append(new_msg["sender_id"])
                         self.my_queue_waiter.acquire()
-                        self.my_queue_waiter.notify()
+                        self.my_queue_waiter.notifyAll()
                         self.my_queue_waiter.release()
                         '''
                         if len(self.my_dict_of_queue[data['ID']]) > 0:
@@ -203,6 +209,7 @@ class User:
                     elif str(data['chat']['text']) == 'i am disconnected!@#$':
                         new_msg = {"sender_id": data['ID']}
                         self.disconnect_friend_queue.append(new_msg)
+                        #time.sleep(.1)
                         self.connect_status_waiter.acquire()
                         self.connect_status_waiter.notify()
                         self.connect_status_waiter.release()
