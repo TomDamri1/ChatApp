@@ -12,6 +12,7 @@ import os
 from multiprocessing import Process
 import sys
 from client import user
+from threading import Thread, Condition
 
 friendList = []
 
@@ -159,15 +160,34 @@ class Ui_mainWindow(object):
         self.deleteFriend_button.clicked.connect(self.remove_friend)
         self.logout_button.clicked.connect(self.logout)
 
-        #self.user
+        my_thread = Thread(target=self.my_friend_status)
+        my_thread.start()
 
         for name in self.get_friends():
+            # add background according to disconnect/connect status
             self.listWidget.addItem(name)
+
+    def my_friend_status(self):
+        while True:
+            if len(self.my_user.connect_friend_queue) > 0:
+                # change background according to disconnect/connect status
+                data = self.my_user.connect_friend_queue.pop()["sender_id"]
+                item = self.listWidget.findItems(data, QtCore.Qt.MatchRegExp)
+                item.setBackground(QtGui.QColor('#ff944d'))
+
+            if len(self.my_user.disconnect_friend_queue) > 0:
+                # change background according to disconnect/connect status
+                data = self.my_user.connect_friend_queue.pop()["sender_id"]
+                item = self.listWidget.findItems(data, QtCore.Qt.MatchRegExp)
+                item.setBackground(QtGui.QColor('#ff944d'))
+
+            self.my_user.connect_status_waiter.acquire()
+            self.my_user.connect_status_waiter.wait()
+            self.my_user.connect_status_waiter.release()
 
         """
         here we need to get the user details by the id and put it in place.
         """
-
     def logout(self):
         os.system("pwd")
         login_screen_process = Process(target= os.system , args=("python3 login_ui.py" , ))

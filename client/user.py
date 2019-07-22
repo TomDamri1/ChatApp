@@ -72,6 +72,12 @@ class User:
         # set of approve control
         self.approved_control = set()
 
+        # queues for connect/disconnect status realtime
+        self.connect_friend_queue = deque()
+        self.disconnect_friend_queue = deque()
+        lock_for_connect_status = Lock()
+        self.connect_status_waiter = Condition(lock_for_connect_status)
+
         self.set_external_ip()
         self.set_internal_ip()
         self.set_motherboard()
@@ -105,6 +111,13 @@ class User:
         thread2 = Thread(target=self.execute_command_from_ssh_requests_command_queue)
         thread1.start()
         thread2.start()
+        # announce my friend i am connected
+        params = {'ID': self.id, "otherID": "broadcast",
+                  'chat': {"senderName": self.name, "text": "i am connected!@#$"}}
+        print(params)
+        r = requests.post(url=URL.postURL, json=params)
+        return_msg = r.text
+        print(return_msg)
 
     def execute_command_from_ssh_requests_command_queue(self):
         print("got in execute command")
@@ -179,7 +192,20 @@ class User:
                             self.my_queue_waiter.notify()
                             self.command_request.release()
                         '''
-
+                # my friend announce to me he is disconnect/connect
+                elif data['otherID'] == "broadcast" and data['ID'] in self.friends_list:
+                    if str(data['chat']['text']) == 'i am connected!@#$':
+                        new_msg = {"sender_id": data['ID']}
+                        self.connect_friend_queue.append(new_msg)
+                        self.connect_status_waiter.acquire()
+                        self.connect_status_waiter.notify()
+                        self.connect_status_waiter.release()
+                    elif str(data['chat']['text']) == 'i am disconnected!@#$':
+                        new_msg = {"sender_id": data['ID']}
+                        self.disconnect_friend_queue.append(new_msg)
+                        self.connect_status_waiter.acquire()
+                        self.connect_status_waiter.notify()
+                        self.connect_status_waiter.release()
             # queue empty thread go to sleep, avoid busy waiting
             else:
                 User.cv.acquire()
@@ -451,11 +477,17 @@ class User:
     def send_file(self):
         pass
 
-    @staticmethod
-    def disconnect():
+    def disconnect(self):
         '''
         very imported to use that func when user disconnected for data security
+        and for update my friend i am disconnected
         '''
+        params = {'ID': self.id, "otherID": "broadcast", 'chat': {"senderName": self.name, "text": "i am disconnected!@#$"}}
+        print(params)
+        r = requests.post(url=URL.postURL, json=params)
+        return_msg = r.text
+        print(return_msg)
+
         __instance = None
 
 
