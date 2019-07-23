@@ -148,6 +148,8 @@ class Ui_mainWindow(object):
         self.user_sudo = user_sudo
         self.app = QtWidgets.QApplication(sys.argv)
         self.mainPage = QtWidgets.QMainWindow()
+        # override a contain object method
+        self.mainPage.closeEvent = self.closeEvent
         self.setupUi(self.mainPage)
         self.Jtag_text.setText(str(user_id))
         self.addFriend_button.clicked.connect(lambda: self.add_friend(self.addFriend_text.text()))
@@ -237,9 +239,9 @@ class Ui_mainWindow(object):
             sys.stdout.flush()
             time.sleep(1)
 
-    def closeEvent(self, *args, **kwargs):
-        super(QtGui.QMainWindow, self).closeEvent(*args, **kwargs)
-        print("you just closed the pyqt window!!! you are awesome!!!")
+    def closeEvent(self, *args):
+        self.my_user.disconnect()
+        print("at the next time logout before you close the window")
 
     def logout(self):
         self.my_user.disconnect()
