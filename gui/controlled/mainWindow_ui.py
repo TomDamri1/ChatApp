@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import QListWidgetItem
 import os
 from multiprocessing import Process
 import sys
-from threading import Thread, Condition
+from threading import Thread
 import time
 sys.path.append("../..")
 from client import user
@@ -161,8 +161,9 @@ class Ui_mainWindow(object):
         self.cpu_text.setText(self.my_user.get_my_cpu().strip().partition('\n')[0])
         self.deleteFriend_button.clicked.connect(self.remove_friend)
         self.logout_button.clicked.connect(self.logout)
-
+        self.blink_items_dict = dict()
         friend_status_thread = Thread(target=self.my_friend_status)
+        friend_status_thread.daemon = True
         friend_status_thread.start()
 
         msg_alarm_thread = Thread(target=self.msg_alarm)
@@ -175,10 +176,12 @@ class Ui_mainWindow(object):
                 item = QListWidgetItem('%s' % (name))
                 self.listWidget.addItem(item)
                 item.setBackground(QtGui.QColor('#808000'))
+                self.blink_items_dict[item.text()] = False
             else:
                 item = QListWidgetItem('%s' % (name))
                 self.listWidget.addItem(item)
                 item.setBackground(QtGui.QColor('#ff0000'))
+                self.blink_items_dict[item.text()] = False
 
     def my_friend_status(self):
         while True:
@@ -200,12 +203,11 @@ class Ui_mainWindow(object):
 
             self.my_user.connect_status_waiter.acquire()
             self.my_user.connect_status_waiter.wait()
+            print("friend connect/disconnect")
             self.my_user.connect_status_waiter.release()
 
 
-        """
-        here we need to get the user details by the id and put it in place.
-        """
+
 
     def msg_alarm(self):
         while True:
@@ -214,8 +216,10 @@ class Ui_mainWindow(object):
                 items = self.listWidget.findItems(str(data), QtCore.Qt.MatchExactly)
                 if len(items) > 0:
                     for item in items:
-                        blink_msg_thread = Thread(target=self.blink_msg, args=[item])
-                        blink_msg_thread.start()
+                        self.blink_items_dict[item.text()] = True
+                        self.blink_msg_thread = Thread(target=self.blink_msg, args=[item])
+                        self.blink_msg_thread.daemon = True
+                        self.blink_msg_thread.start()
             self.my_user.my_queue_waiter.acquire()
             print("wating for new messages...")
             self.my_user.my_queue_waiter.wait()
@@ -223,15 +227,19 @@ class Ui_mainWindow(object):
             self.my_user.my_queue_waiter.release()
 
     def blink_msg(self, item):
-        while True:
+        while self.blink_items_dict[item.text()]:
             #print("orange")
             item.setBackground(QtGui.QColor('#ff944d'))
             sys.stdout.flush()
-            time.sleep(3)
+            time.sleep(1)
             #print("black")
             item.setBackground(QtGui.QColor('#000000'))
             sys.stdout.flush()
-            time.sleep(3)
+            time.sleep(1)
+
+    def closeEvent(self, *args, **kwargs):
+        super(QtGui.QMainWindow, self).closeEvent(*args, **kwargs)
+        print("you just closed the pyqt window!!! you are awesome!!!")
 
     def logout(self):
         self.my_user.disconnect()
@@ -255,6 +263,7 @@ class Ui_mainWindow(object):
         for item in list_items:
             self.listWidget.takeItem(self.listWidget.row(item))
             self.my_user.remove_friend(item.text())
+            self.blink_items_dict.pop(item, None)
 
 
     def add_friend(self, friend):
@@ -287,7 +296,8 @@ class Ui_mainWindow(object):
         def open_chat_window(friend_id):
             chat_window_process = Process(target=os.system, args=("python3 chatWindow_ui.py " + str(self.user_id)+" "+str(self.user_password)+" "+str(self.user_sudo)+" "+str(friend_id),))
             chat_window_process.start()
-
+            self.blink_items_dict[item.text()] = False
+            item.setBackground(QtGui.QColor('#808000'))
         open_chat_window(item.text())
 
 
