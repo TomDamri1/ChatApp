@@ -168,12 +168,13 @@ class Ui_mainWindow(object):
         msg_alarm_thread = Thread(target=self.msg_alarm)
         msg_alarm_thread.start()
         friend_status = self.my_user.get_friend_status()
+        print(friend_status)
         for name in friend_status.keys():
-            #print(friend_status[name])
+            print(friend_status[name])
             if friend_status[name]:
                 item = QListWidgetItem('%s' % (name))
                 self.listWidget.addItem(item)
-                item.setBackground(QtGui.QColor('#ff944d'))
+                item.setBackground(QtGui.QColor('#808000'))
             else:
                 item = QListWidgetItem('%s' % (name))
                 self.listWidget.addItem(item)
@@ -195,7 +196,7 @@ class Ui_mainWindow(object):
                 items = self.listWidget.findItems(str(data), QtCore.Qt.MatchExactly)
                 if len(items) > 0:
                     for item in items:
-                        item.setBackground(QtGui.QColor('#ff944d'))
+                        item.setBackground(QtGui.QColor('#ff0000'))
 
             self.my_user.connect_status_waiter.acquire()
             self.my_user.connect_status_waiter.wait()

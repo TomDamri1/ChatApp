@@ -151,8 +151,10 @@ class User:
     def get_friend_status(self):
         friends_status = dict()
         friends = self.get_friends()
+        print("my friends:", end=' ')
+        print(friends)
         for friend in friends:
-            user_data_from_server = requests.get(url=(URL.usersURL + "/" + self.id))
+            user_data_from_server = requests.get(url=(URL.usersURL + "/" + friend))
             data = user_data_from_server.json()
             print(data)
             status = data['isLogged']
@@ -340,8 +342,8 @@ class User:
             prod_name = '\'Product Name\''
             motherboard_product_name = subprocess.check_output('echo %s|sudo -S %s | grep %s' % (self.sudo_password, command, prod_name), shell=True)
             my_motherboard = (motherboard_manufacturer.decode("utf-8")[1:] + motherboard_product_name.decode("utf-8")[1:]).strip()
-            print("field to find my motherboard")
         except:
+            print("field to find my motherboard")
             my_motherboard = '-----'
         return my_motherboard
 

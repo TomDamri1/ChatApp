@@ -639,6 +639,7 @@ class Ui_friend_msgBox(object):
         self.allow_yes_button.setEnabled(False)
         self.allow_no_button.setCheckable(False)
         self.allow_no_button.setEnabled(False)
+        self.control_text.setText("Allowed")
 
     def reject_ask_for_control(self):
         self.my_user.approve_control(self.friend_id, False)
