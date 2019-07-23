@@ -169,6 +169,7 @@ class Ui_mainWindow(object):
         friend_status_thread.start()
 
         msg_alarm_thread = Thread(target=self.msg_alarm)
+        msg_alarm_thread.daemon = True
         msg_alarm_thread.start()
         friend_status = self.my_user.get_friend_status()
         print(friend_status)
@@ -241,6 +242,8 @@ class Ui_mainWindow(object):
 
     def closeEvent(self, *args):
         self.my_user.disconnect()
+        while not user.User.can_exit_safe:
+            time.sleep(1)
         print("at the next time logout before you close the window")
 
     def logout(self):
@@ -253,7 +256,6 @@ class Ui_mainWindow(object):
     def open(self):
         self.mainPage.show()
         sys.exit(self.app.exec_())
-
     def remove_friend(self):
         """
         problem fixed!!!!
@@ -311,7 +313,7 @@ if __name__ == '__main__':
         usersudo = sys.argv[3]
     except:
         if len(sys.argv) != 3:
-            userid = "testUser2"
+            userid = "mmttdd"
             userpass = "12345"
             usersudo = "1313"
         else:

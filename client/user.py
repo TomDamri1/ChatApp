@@ -16,6 +16,7 @@ An singleton class represent the connect user
 
 
 class User:
+    can_exit_safe = False
     # hold singleton instance
     __instance = None
     # queue that store all the receive messages
@@ -112,7 +113,9 @@ class User:
         self.last_name = data['lastname']
         self.friends_list = data['friends']
         thread1 = Thread(target=self.listen_to_server)
+        thread1.daemon = True
         thread2 = Thread(target=self.execute_command_from_ssh_requests_command_queue)
+        thread2.daemon = True
         thread1.start()
         thread2.start()
         # announce my friend i am connected
@@ -539,18 +542,17 @@ class User:
         and for update my friend i am disconnected
         '''
         url = URL.loguotURL + self.id
-        print(url)
         r = requests.post(url=url)
-        print(r.json())
+        #print(r.json())
 
         params = {'ID': self.id, "otherID": "broadcast", 'chat': {"senderName": self.name, "text": "i am disconnected!@#$"}}
-        print(params)
+        #print(params)
         r = requests.post(url=URL.postURL, json=params)
-        return_msg = r.text
-        print(return_msg)
+        # return_msg = r.text
+        # print(return_msg)
         User.sio.disconnect()
         __instance = None
-
+        User.can_exit_safe = True
 
 if __name__ == '__main__':
     """
