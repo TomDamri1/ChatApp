@@ -154,15 +154,25 @@ class User:
     def get_friend_status(self):
         friends_status = dict()
         friends = self.get_friends()
-        print("my friends:", end=' ')
-        print(friends)
+        # print("my friends:", end=' ')
+        # print(friends)
         for friend in friends:
+            '''
             user_data_from_server = requests.get(url=(URL.usersURL + "/" + friend))
             data = user_data_from_server.json()
-            print(data)
+            # print(data)
             status = data['isLogged']
-            friends_status[friend] = status
+            '''
+            friends_status[friend] = self.check_friend_status(friend)
         return friends_status
+
+    def check_friend_status(self, friend_id):
+        user_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
+        data = user_data_from_server.json()
+        # print(data)
+        status = data['isLogged']
+        return status
+
     def listen_to_server(self):
         while True:
             # queue not empty - got new message

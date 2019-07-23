@@ -301,7 +301,10 @@ class Ui_mainWindow(object):
             chat_window_process = Process(target=os.system, args=("python3 chatWindow_ui.py " + str(self.user_id)+" "+str(self.user_password)+" "+str(self.user_sudo)+" "+str(friend_id),))
             chat_window_process.start()
             self.blink_items_dict[item.text()] = False
-            item.setBackground(QtGui.QColor('#808000'))
+            if self.my_user.check_friend_status(item.text()):
+                item.setBackground(QtGui.QColor('#808000'))
+            else:
+                item.setBackground(QtGui.QColor('#FF0000'))
         open_chat_window(item.text())
 
 
