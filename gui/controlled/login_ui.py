@@ -124,11 +124,15 @@ class Ui_LoginPage(object):
     def check_login_details(self,user_id, user_password, user_sudo_password):
         print("checking detials..")
         my_user = user_login.connect(user_id, user_password, user_sudo_password)
-        if isinstance(my_user, str):
-            print("wrong username or password")
+        try:
+            if isinstance(my_user, str):
+                print("wrong username or password")
+                return False
+            print("authenticated succsesfuly!")
+            return True
+        except:
+            print("connection Error. please check the details again.")
             return False
-        print("authenticated succsesfuly!")
-        return True
 
     def close(self):
         self.app.quit()
