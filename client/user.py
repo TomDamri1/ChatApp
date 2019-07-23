@@ -5,7 +5,7 @@ import os
 from collections import deque
 from threading import Thread, Condition, Lock
 import URL
-import time
+#import time
 #import socket
 #HEADER_LENGTH = 10
 

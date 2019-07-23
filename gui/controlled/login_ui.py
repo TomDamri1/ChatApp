@@ -7,12 +7,17 @@
 # WARNING! All changes made in this file will be lost!
 
 import os
-from multiprocessing import Process
-from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
-#from client import user
-from client import user_login
+from multiprocessing import Process
 
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+# from client import user
+print(sys.path)
+sys.path.insert(0, '/home/matan/PycharmProjects/ChatApp/client')
+sys.path.insert(0, '/home/matan/PycharmProjects/ChatApp')
+print(sys.path)
+import user_login
 
 
 class Ui_LoginPage(object):
