@@ -12,9 +12,11 @@ from PyQt5.QtWidgets import QListWidgetItem
 import os
 from multiprocessing import Process
 import sys
-from client import user
 from threading import Thread, Condition
 import time
+sys.path.insert(0, '/home/matan/PycharmProjects/ChatApp/client')
+sys.path.insert(0, '/home/matan/PycharmProjects/ChatApp')
+import user
 friendList = []
 
 

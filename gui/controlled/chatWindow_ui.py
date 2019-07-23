@@ -7,6 +7,10 @@ from PyQt5.QtWidgets import QWidget, QLabel, QListWidgetItem, QMessageBox
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 import sys
+sys.path.insert(0, '/home/matan/PycharmProjects/ChatApp/client')
+sys.path.insert(0, '/home/matan/PycharmProjects/ChatApp')
+import user
+
 
 """popUP class
 class AskForControlPopup(QWidget):
@@ -498,7 +502,7 @@ class Ui_friend_msgBox(object):
 
 
     def __init__(self, user_id, user_pass, user_sudo, friend_id):
-        from client import user
+        #from client import user
         #self.get_ask_for_control = False
         #self.main_wake_up = Condition()
         self.user_id = user_id
