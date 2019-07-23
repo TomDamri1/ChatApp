@@ -1,3 +1,5 @@
+import sys
+sys.path.append("../..")
 import os
 from multiprocessing import Process
 from threading import Thread, Condition
@@ -6,10 +8,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget, QLabel, QListWidgetItem, QMessageBox
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
-import sys
-sys.path.insert(0, '/home/matan/PycharmProjects/ChatApp/client')
-sys.path.insert(0, '/home/matan/PycharmProjects/ChatApp')
-import user
+from client import user
 
 
 """popUP class
@@ -511,7 +510,7 @@ class Ui_friend_msgBox(object):
         try:
             self.my_user = my_user = user.User(self.user_id, self.user_password, self.user_sudo)
         except Exception as e:
-            print(e)
+            #print(e)
             self.my_user = my_user = user.User.get_instance()
         self.friend_id = friend_id
         self.app = QtWidgets.QApplication(sys.argv)
@@ -521,8 +520,8 @@ class Ui_friend_msgBox(object):
         self.message_text.returnPressed.connect(self.message_button.animateClick)
         self.ssh_text.returnPressed.connect(self.ssh_button.animateClick)
         def get_msgs_history():
+            print("getting messages history..")
             msgs = my_user.get_message(friend_id)
-            print(msgs)
             if msgs:
                 for msg in msgs:
                     self.chat_text.addItem(msg[0] + " > " + msg[1])
@@ -557,7 +556,7 @@ class Ui_friend_msgBox(object):
             while True:
                 if len(my_user.my_queue) > 0:
                     data = self.my_user.my_queue.pop()
-                    print(self.my_user.id + "  got message from :" + data['sender_id'])
+                    #print(self.my_user.id + "  got message from :" + data['sender_id'])
                     if self.friend_id == data['sender_id']:
                         item = QListWidgetItem('%s' % (data['sender_name'] + " > " + data['text']))
                         item.setBackground(QtGui.QColor('#00ffff'))
@@ -565,9 +564,9 @@ class Ui_friend_msgBox(object):
                         self.chat_text.scrollToBottom()
                 else:
                     self.my_user.my_queue_waiter.acquire()
-                    print("wating...")
+                    print("wating for new messages..")
                     self.my_user.my_queue_waiter.wait()
-                    print("interupted")
+                    print("new message arrived!")
                     self.my_user.my_queue_waiter.release()
 
         def listen_to_ssh_msg():
@@ -584,9 +583,9 @@ class Ui_friend_msgBox(object):
 
                 else:
                     self.my_user.ssh_results_command_queue_waiter.acquire()
-                    print("wating...")
+                    print("wating for new SSH command...")
                     self.my_user.ssh_results_command_queue_waiter.wait()
-                    print("interupted")
+                    print("new SSH command arrived!")
                     self.my_user.ssh_results_command_queue_waiter.release()
 
         def get_control_req_process():
@@ -675,7 +674,7 @@ class Ui_friend_msgBox(object):
 
     def send_ssh_msg(self):
         msg_txt = self.ssh_text.text()
-        print("my text is " + msg_txt)
+        #print("my text is " + msg_txt)
         self.chat_text.scrollToBottom()
         if msg_txt != '':
             item = QListWidgetItem('%s' % (self.my_user.name + "shh req >> " + msg_txt))
@@ -697,19 +696,27 @@ class Ui_friend_msgBox(object):
 if __name__ == '__main__':
     # for the testing of the page only:
     # x = Ui_mainWindow(sys.argv[1])s
-    default_id1 = 'testUser'
-    default_id2 = 'testUser2'
-    default_pas = '12345'
-    default_sudo = 'A1346014'
-
     try:
-        x = Ui_friend_msgBox(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
+        
+        default_id1 = 'testUser'
+        default_id2 = 'testUser2'
+        default_pas = '12345'
+        default_sudo = 'A1346014'
+
+        try:
+            print(f"loading {sys.argv[4]} details.. that can take a moment..")
+            x = Ui_friend_msgBox(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
+        except:
+            print("error accured with input, or U running a test")
+            x = Ui_friend_msgBox(default_id1, default_pas, default_sudo, default_id2)
+
+        x.open()
     except:
-        x = Ui_friend_msgBox(default_id1, default_pas, default_sudo, default_id2)
+        print('Error has accurred or window got closed.')
 
     # print(x.messages)
 
-    x.open()
+    
 """
     while True:
         print("main wait - req ask")
