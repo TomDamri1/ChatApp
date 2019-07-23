@@ -3,7 +3,7 @@ import sys
 
 
 print("started2")
-URL = "http://localhost:5000/api/users/register"
+URL = "http://linuxchat.herokuapp.com/api/users/register"
 try:
     msg = sys.argv[1]
 except:

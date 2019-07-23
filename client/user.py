@@ -154,6 +154,7 @@ class User:
         for friend in friends:
             user_data_from_server = requests.get(url=(URL.usersURL + "/" + self.id))
             data = user_data_from_server.json()
+            print(data)
             status = data['isLogged']
             friends_status[friend] = status
         return friends_status
