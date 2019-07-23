@@ -252,6 +252,7 @@ class Ui_mainWindow(object):
         login_screen_process = Process(target= os.system , args=("python3 login_ui.py" , ))
         login_screen_process.start()
         self.mainPage.hide()
+        sys.exit(self.app.exec_())
 
     def open(self):
         self.mainPage.show()

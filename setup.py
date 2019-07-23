@@ -6,7 +6,5 @@ setup(
     packages=['gui', 'gui.controlled'],
     url='https://github.com/AlexKreinis/ChatApp.git',
     license='',
-    author='matan/tom/tomer/alex',
-    author_email='matanda1@ac.sce.ac.il',
     description='Chat with remote control'
 )

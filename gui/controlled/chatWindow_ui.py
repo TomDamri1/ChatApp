@@ -515,6 +515,7 @@ class Ui_friend_msgBox(object):
         self.friend_id = friend_id
         self.app = QtWidgets.QApplication(sys.argv)
         self.friend_msgBox = QtWidgets.QMainWindow()
+        # override a contain object method
         self.friend_msgBox.closeEvent = self.closeEvent
         self.setupUi(self.friend_msgBox)
 
