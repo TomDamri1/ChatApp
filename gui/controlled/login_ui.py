@@ -9,15 +9,9 @@
 import os
 import sys
 from multiprocessing import Process
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-
-# from client import user
-print(sys.path)
-sys.path.insert(0, '/home/matan/PycharmProjects/ChatApp/client')
-sys.path.insert(0, '/home/matan/PycharmProjects/ChatApp')
-print(sys.path)
-import user_login
+sys.path.append("../..")
+from client import user_login
 
 
 class Ui_LoginPage(object):
@@ -92,8 +86,12 @@ class Ui_LoginPage(object):
         self.pushButton.clicked.connect(self.login)
 
 
+
     def open(self):
-        self.LoginPage.show()
+        try:
+            self.LoginPage.show()
+        except:
+            pass
         sys.exit(self.app.exec_())
 
 
@@ -112,7 +110,7 @@ class Ui_LoginPage(object):
             user_id = self.user_id = self.username_text.text()
             user_password = self.user_password = self.password_text.text()
             user_sudo = self.user_sudo = self.sudo_password_text.text()
-            print(user_id , user_password)
+            print(user_id+" loggin in..")
             if self.check_login_details(user_id , user_password , user_sudo):
                 self.login_flag = True
                 enter_main_page(user_id , user_password , user_sudo)
@@ -124,10 +122,12 @@ class Ui_LoginPage(object):
 
 
     def check_login_details(self,user_id, user_password, user_sudo_password):
+        print("checking detials..")
         my_user = user_login.connect(user_id, user_password, user_sudo_password)
         if isinstance(my_user, str):
-            print(my_user)
+            print("wrong username or password")
             return False
+        print("authenticated succsesfuly!")
         return True
 
     def close(self):
@@ -136,10 +136,14 @@ class Ui_LoginPage(object):
 
 
 try:
+    print("opening login page..")
     def run_login():
         x = Ui_LoginPage()
         x.open()
     login_process = Process(target=run_login)
+    print("starting..")
     login_process.start()
+    print("started")
 except Exception as e:
-    print(e)
+    print("we got error")
+    pass

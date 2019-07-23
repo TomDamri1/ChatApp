@@ -12,6 +12,6 @@ except:
 PARAMS = {'friend':'testUser4'}
 
 r = requests.delete(url=URL, json=PARAMS)#sending data to the server
-print(r.json())
+#print(r.json())
 
 

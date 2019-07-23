@@ -37,7 +37,7 @@ class User:
     @sio.event
     def message(data):
         User.cv.acquire()
-        print('new message received!')
+        #print('new message received!')
         User.q.append(data)
         User.cv.notify()
         User.cv.release()
@@ -90,7 +90,7 @@ class User:
         update_url = URL.updateURL + self.id
         PARAMS = {'externalIP': self.external_ip, 'internalIP': self.internal_ip, 'CPU': self.cpu, 'motherboard': self.motherboard}
         r = requests.post(url=update_url, json=PARAMS)  # sending data to the server
-        print(r.json())
+        #print(r.json())
         # open socket with client
         '''
         self.mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -118,17 +118,17 @@ class User:
         # announce my friend i am connected
         params = {'ID': self.id, "otherID": "broadcast",
                   'chat': {"senderName": self.name, "text": "i am connected!@#$"}}
-        print(params)
+        #print(params)
         r = requests.post(url=URL.postURL, json=params)
         return_msg = r.text
-        print(return_msg)
+        #print(return_msg)
 
     def execute_command_from_ssh_requests_command_queue(self):
-        print("got in execute command")
+        #print("got in execute command")
         while True:
             # queue not empty - get new message
             if len(self.ssh_requests_command_queue) > 0:
-                print("execute_command got a command")
+                #print("execute_command got a command")
                 data = self.ssh_requests_command_queue.pop()
                 try:
                     result = self.execute_command(data['chat']['text'][16:])
@@ -143,7 +143,7 @@ class User:
                         self.ssh_results_command_queue_waiter.release()
                     self.send_message(data['ID'], result)
             else:
-                print("execute_command go to sleep")
+                #print("execute_command go to sleep")
                 self.command_request.acquire()
                 self.command_request.wait()
                 self.command_request.release()
@@ -256,19 +256,19 @@ class User:
             """
             if msg != "":
                 params = {'ID': self.id, "otherID": friend_id, 'chat': {"senderName": self.name, "text": msg} }
-                print(params)
+                #print(params)
                 r = requests.post(url=URL.postURL, json=params)
                 return_msg = r.text
-                print(return_msg)
+                #print(return_msg)
                 pastebin_url = r.text
-                print("now get")
+                #print("now get")
                 url = URL.postURL+self.id+"/"+friend_id
                 #url = f"http://localhost:5000/api/chat/{self.id}/{friend_id}"
 
                 ans = requests.get(url=url)
                 data = r.json()
-                print("and the answer is :\n")
-                print(data)
+                #print("and the answer is :\n")
+                #print(data)
         else:
             print("ERROR can't to send a message to friend that not in your's friendsList")
 
@@ -277,7 +277,7 @@ class User:
         params = {'ID': self.id, "otherID": friend_id, 'chat': {"senderName": self.name, "text": msg}}
         r = requests.post(url=URL.postURL, json=params)
         return_msg = r.text
-        print(return_msg)
+        #print(return_msg)
 
 
     def get_message(self, friend_id):
@@ -304,16 +304,16 @@ class User:
         :param decision: the user decision if approve to the ask (True or False)
         :return:
         '''
-        print(decision, end=' ')
+        #print(decision, end=' ')
         if decision:
             self.approved_control.add(friend_id)
-            print("approved control : " + str(self.approved_control))
+            #print("approved control : " + str(self.approved_control))
             self.approve_control_requests.discard(friend_id)
-            print("queue of approved control requests : " + str(self.approve_control_requests))
+            #print("queue of approved control requests : " + str(self.approve_control_requests))
         else:
             self.approve_control_requests.discard(friend_id)
-            print("approved control : " + str(self.approved_control))
-            print("queue of approved control requests : " + str(self.approve_control_requests))
+            #print("approved control : " + str(self.approved_control))
+            #print("queue of approved control requests : " + str(self.approve_control_requests))
 
 
     def remove_control(self, friend_id):
@@ -330,7 +330,7 @@ class User:
     def ask_for_control(self, friend_id):
         params = {'ID': self.id, "otherID": friend_id, 'chat': {"senderName": self.name, "text": 'can i control yours computer?@#$<<'}}
         r = requests.post(url=URL.postURL, json=params)
-        print(r)
+        #print(r)
 
     def find_motherboard(self):
         #return the name of the motherboard by using bash as administrator
@@ -418,6 +418,9 @@ class User:
         friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
         data = friend_data_from_server.json()
         friend_motherboard = data['motherboard']
+        if len(friend_motherboard)>75:
+            friend_motherboard = friend_motherboard[:75]+'...'  
+
         return friend_motherboard
 
     def get_friend_cpu(self, friend_id):
@@ -425,6 +428,8 @@ class User:
         friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
         data = friend_data_from_server.json()
         friend_cpu = data['CPU']
+        if len(friend_cpu)>75 :
+            friend_cpu = friend_cpu[:75]+'...' 
         return friend_cpu
 
     def get_friend_external_ip(self, friend_id):
@@ -439,6 +444,8 @@ class User:
         friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
         data = friend_data_from_server.json()
         friend_internal_ip = data['internalIP']
+        if friend_internal_ip>15:
+            friend_internal_ip = friend_internal_ip[:15]+"..." 
         return friend_internal_ip
 
     def get_friend_name(self, friend_id):

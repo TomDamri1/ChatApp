@@ -14,9 +14,8 @@ from multiprocessing import Process
 import sys
 from threading import Thread, Condition
 import time
-sys.path.insert(0, '/home/matan/PycharmProjects/ChatApp/client')
-sys.path.insert(0, '/home/matan/PycharmProjects/ChatApp')
-import user
+sys.path.append("../..")
+from client import user
 friendList = []
 
 
@@ -170,7 +169,7 @@ class Ui_mainWindow(object):
         msg_alarm_thread.start()
         friend_status = self.my_user.get_friend_status()
         for name in friend_status.keys():
-            print(friend_status[name])
+            #print(friend_status[name])
             if friend_status[name]:
                 item = QListWidgetItem('%s' % (name))
                 self.listWidget.addItem(item)
@@ -217,18 +216,18 @@ class Ui_mainWindow(object):
                         blink_msg_thread = Thread(target=self.blink_msg, args=[item])
                         blink_msg_thread.start()
             self.my_user.my_queue_waiter.acquire()
-            print("wating...")
+            print("wating for new messages...")
             self.my_user.my_queue_waiter.wait()
-            print("interupted")
+            print("new message arrived!")
             self.my_user.my_queue_waiter.release()
 
     def blink_msg(self, item):
         while True:
-            print("orange")
+            #print("orange")
             item.setBackground(QtGui.QColor('#ff944d'))
             sys.stdout.flush()
             time.sleep(3)
-            print("black")
+            #print("black")
             item.setBackground(QtGui.QColor('#000000'))
             sys.stdout.flush()
             time.sleep(3)
@@ -283,7 +282,7 @@ class Ui_mainWindow(object):
 
 
     def itemActivated_event(self,item):
-        print(item.text())
+        #print(item.text())
         def open_chat_window(friend_id):
             chat_window_process = Process(target=os.system, args=("python3 chatWindow_ui.py " + str(self.user_id)+" "+str(self.user_password)+" "+str(self.user_sudo)+" "+str(friend_id),))
             chat_window_process.start()
