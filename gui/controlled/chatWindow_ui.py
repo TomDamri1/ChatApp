@@ -698,10 +698,10 @@ if __name__ == '__main__':
     # x = Ui_mainWindow(sys.argv[1])s
     try:
         
-        default_id1 = 'testUser'
-        default_id2 = 'testUser2'
+        default_id1 = 'mmttdd'
+        default_id2 = 'tomdamri'
         default_pas = '12345'
-        default_sudo = 'A1346014'
+        default_sudo = '1313'
 
         try:
             print(f"loading {sys.argv[4]} details.. that can take a moment..")

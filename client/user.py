@@ -333,33 +333,47 @@ class User:
         #print(r)
 
     def find_motherboard(self):
-        #return the name of the motherboard by using bash as administrator
-        command = 'dmidecode -t baseboard'
-        motherboard_manufacturer = subprocess.check_output('echo %s|sudo -S %s | grep Manufacturer' % (self.sudo_password, command), shell=True)
-        prod_name = '\'Product Name\''
-        motherboard_product_name = subprocess.check_output('echo %s|sudo -S %s | grep %s' % (self.sudo_password, command, prod_name), shell=True)
-        return (motherboard_manufacturer.decode("utf-8")[1:] + motherboard_product_name.decode("utf-8")[1:]).strip()
+        try:
+            #return the name of the motherboard by using bash as administrator
+            command = 'dmidecode -t baseboard'
+            motherboard_manufacturer = subprocess.check_output('echo %s|sudo -S %s | grep Manufacturer' % (self.sudo_password, command), shell=True)
+            prod_name = '\'Product Name\''
+            motherboard_product_name = subprocess.check_output('echo %s|sudo -S %s | grep %s' % (self.sudo_password, command, prod_name), shell=True)
+            my_motherboard = (motherboard_manufacturer.decode("utf-8")[1:] + motherboard_product_name.decode("utf-8")[1:]).strip()
+            print("field to find my motherboard")
+        except:
+            my_motherboard = '-----'
+        return my_motherboard
 
     def find_cpu(self):
-        #return the name of the CPU by using bash as administrator
-        command = 'dmidecode -t processor'
-        cpu_version = subprocess.check_output('echo %s|sudo -S %s | grep Version' % (self.sudo_password, command), shell=True)
-        return (cpu_version.decode("utf-8")[1:]).strip() # remove /t
+        try:
+            #return the name of the CPU by using bash as administrator
+            command = 'dmidecode -t processor'
+            cpu_version = subprocess.check_output('echo %s|sudo -S %s | grep Version' % (self.sudo_password, command), shell=True)
+            my_cpu = (cpu_version.decode("utf-8")[1:]).strip()# remove /t
+        except:
+            my_cpu = '----'
+        return my_cpu
 
     def find_external_ip(self):
         #return the name of the CPU by using bash as administrator
         try:
             command = 'dig +short myip.opendns.com @resolver1.opendns.com'
             external_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.sudo_password, command), shell=True)
-            return (external_ip.decode("utf-8")).strip()
+            my_external_ip = (external_ip.decode("utf-8")).strip()
         except:
-            return"---"
+            my_external_ip = '---'
+        return my_external_ip
 
     def find_internal_ip(self):
-        #return the name of the CPU by using bash as administrator
-        command = 'hostname -I'
-        internal_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.sudo_password, command), shell=True)
-        return (internal_ip.decode("utf-8").split()[0]).strip()
+        try:
+            #return the name of the CPU by using bash as administrator
+            command = 'hostname -I'
+            internal_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.sudo_password, command), shell=True)
+            my_internal_ip = (internal_ip.decode("utf-8")).strip()
+        except:
+            my_internal_ip = '----'
+        return my_internal_ip
 
     def execute_command(self, command):
         #return the name of the motherboard by using bash as administrator
@@ -414,52 +428,69 @@ class User:
         return self.internal_ip
 
     def get_friend_motherboard(self, friend_id):
-        # return the friend motherboard
-        friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
-        data = friend_data_from_server.json()
-        friend_motherboard = data['motherboard']
-        if len(friend_motherboard)>75:
-            friend_motherboard = friend_motherboard[:75]+'...'  
-
+        try:
+            # return the friend motherboard
+            friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
+            data = friend_data_from_server.json()
+            friend_motherboard = data['motherboard']
+            if len(friend_motherboard)>75:
+                friend_motherboard = friend_motherboard[:75]+'...'
+        except:
+            friend_motherboard = '----'
         return friend_motherboard
 
     def get_friend_cpu(self, friend_id):
-        # return the friend cpu
-        friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
-        data = friend_data_from_server.json()
-        friend_cpu = data['CPU']
-        if len(friend_cpu)>75 :
-            friend_cpu = friend_cpu[:75]+'...' 
+        try:
+            # return the friend cpu
+            friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
+            data = friend_data_from_server.json()
+            friend_cpu = data['CPU']
+            if len(friend_cpu)>75 :
+                friend_cpu = friend_cpu[:75]+'...'
+        except:
+            friend_cpu = '----'
         return friend_cpu
 
     def get_friend_external_ip(self, friend_id):
-        # return the friend external ip
-        friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
-        data = friend_data_from_server.json()
-        friend_external_ip = data['externalIP']
+        try:
+            # return the friend external ip
+            friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
+            data = friend_data_from_server.json()
+            friend_external_ip = data['externalIP']
+        except:
+            friend_external_ip = "-------"
         return friend_external_ip
 
     def get_friend_internal_ip(self, friend_id):
-        # return the friend internal ip
-        friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
-        data = friend_data_from_server.json()
-        friend_internal_ip = data['internalIP']
-        if friend_internal_ip>15:
-            friend_internal_ip = friend_internal_ip[:15]+"..." 
+        try:
+            # return the friend internal ip
+            friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
+            data = friend_data_from_server.json()
+            friend_internal_ip = data['internalIP']
+            if friend_internal_ip>15:
+                friend_internal_ip = friend_internal_ip[:15]+"..."
+        except:
+            friend_internal_ip = '----'
         return friend_internal_ip
 
     def get_friend_name(self, friend_id):
-        # return the friend name
-        friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
-        data = friend_data_from_server.json()
-        friend_name = data['name']
+        try:
+            # return the friend name
+            friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
+            data = friend_data_from_server.json()
+            friend_name = data['name']
+        except:
+            friend_name = '----'
         return friend_name
 
     def get_friend_last_name(self, friend_id):
-        # return the friend name
-        friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
-        data = friend_data_from_server.json()
-        friend_last_name = data['lastname']
+        try:
+            # return the friend name
+            friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
+            data = friend_data_from_server.json()
+            friend_last_name = data['lastname']
+        except:
+            friend_last_name = '----'
         return friend_last_name
 
     def add_friend(self, friend_id):
