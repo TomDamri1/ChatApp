@@ -554,6 +554,9 @@ class User:
         __instance = None
         User.can_exit_safe = True
 
+    def disconnect_from_chat(self):
+        User.sio.disconnect()
+
 if __name__ == '__main__':
     """
     result = connect('testUser', '12345', '2323')
