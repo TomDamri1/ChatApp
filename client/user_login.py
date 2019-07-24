@@ -29,6 +29,7 @@ def connect(user_id, password, sudo_password):
         """
         PARAMS = {'id': user_id, 'password': password}
         r = requests.post(url=URL.loginURL, json=PARAMS)  # sending data to the server
+        print(r)
         if r.json()['Login'] == 'No login found':
             return False
         elif r.json()['Login'] == "Logged in successfully ":

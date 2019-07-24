@@ -81,6 +81,8 @@ class Ui_LoginPage(object):
     def __init__(self):
         self.app = QtWidgets.QApplication([])
         self.LoginPage = QtWidgets.QMainWindow()
+        # override a contain object method
+        self.LoginPage.closeEvent = self.closeEvent
         self.setupUi(self.LoginPage)
         self.login_flag = False
         self.pushButton.clicked.connect(self.login)
@@ -115,11 +117,14 @@ class Ui_LoginPage(object):
                 self.login_flag = True
                 enter_main_page(user_id , user_password , user_sudo)
                 self.LoginPage.hide()
+                sys.exit(self.app.exec_())
 
 
                 #open_new_socket(user_id)
 
 
+    def closeEvent(self, *args):
+        print("exit from login window")
 
     def check_login_details(self,user_id, user_password, user_sudo_password):
         print("checking detials..")
@@ -138,16 +143,16 @@ class Ui_LoginPage(object):
         self.app.quit()
 
 
-
-try:
-    print("opening login page..")
-    def run_login():
-        x = Ui_LoginPage()
-        x.open()
-    login_process = Process(target=run_login)
-    print("starting..")
-    login_process.start()
-    print("started")
-except Exception as e:
-    print("we got error")
-    pass
+if __name__ == '__main__':
+    try:
+        print("opening login page..")
+        def run_login():
+            x = Ui_LoginPage()
+            x.open()
+        login_process = Process(target=run_login)
+        print("starting..")
+        login_process.start()
+        print("started")
+    except Exception as e:
+        print("we got error")
+        pass

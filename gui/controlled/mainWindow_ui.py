@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import QListWidgetItem
 import os
 from multiprocessing import Process
 import sys
-from threading import Thread, Condition
+from threading import Thread
 import time
 sys.path.append("../..")
 from client import user
@@ -148,6 +148,8 @@ class Ui_mainWindow(object):
         self.user_sudo = user_sudo
         self.app = QtWidgets.QApplication(sys.argv)
         self.mainPage = QtWidgets.QMainWindow()
+        # override a contain object method
+        self.mainPage.closeEvent = self.closeEvent
         self.setupUi(self.mainPage)
         self.Jtag_text.setText(str(user_id))
         self.addFriend_button.clicked.connect(lambda: self.add_friend(self.addFriend_text.text()))
@@ -161,23 +163,28 @@ class Ui_mainWindow(object):
         self.cpu_text.setText(self.my_user.get_my_cpu().strip().partition('\n')[0])
         self.deleteFriend_button.clicked.connect(self.remove_friend)
         self.logout_button.clicked.connect(self.logout)
-
+        self.blink_items_dict = dict()
         friend_status_thread = Thread(target=self.my_friend_status)
+        friend_status_thread.daemon = True
         friend_status_thread.start()
 
         msg_alarm_thread = Thread(target=self.msg_alarm)
+        msg_alarm_thread.daemon = True
         msg_alarm_thread.start()
         friend_status = self.my_user.get_friend_status()
+        print(friend_status)
         for name in friend_status.keys():
-            #print(friend_status[name])
+            print(friend_status[name])
             if friend_status[name]:
                 item = QListWidgetItem('%s' % (name))
                 self.listWidget.addItem(item)
-                item.setBackground(QtGui.QColor('#ff944d'))
+                item.setBackground(QtGui.QColor('#808000'))
+                self.blink_items_dict[item.text()] = False
             else:
                 item = QListWidgetItem('%s' % (name))
                 self.listWidget.addItem(item)
                 item.setBackground(QtGui.QColor('#ff0000'))
+                self.blink_items_dict[item.text()] = False
 
     def my_friend_status(self):
         while True:
@@ -195,16 +202,15 @@ class Ui_mainWindow(object):
                 items = self.listWidget.findItems(str(data), QtCore.Qt.MatchExactly)
                 if len(items) > 0:
                     for item in items:
-                        item.setBackground(QtGui.QColor('#ff944d'))
+                        item.setBackground(QtGui.QColor('#ff0000'))
 
             self.my_user.connect_status_waiter.acquire()
             self.my_user.connect_status_waiter.wait()
+            print("friend connect/disconnect")
             self.my_user.connect_status_waiter.release()
 
 
-        """
-        here we need to get the user details by the id and put it in place.
-        """
+
 
     def msg_alarm(self):
         while True:
@@ -213,8 +219,10 @@ class Ui_mainWindow(object):
                 items = self.listWidget.findItems(str(data), QtCore.Qt.MatchExactly)
                 if len(items) > 0:
                     for item in items:
-                        blink_msg_thread = Thread(target=self.blink_msg, args=[item])
-                        blink_msg_thread.start()
+                        self.blink_items_dict[item.text()] = True
+                        self.blink_msg_thread = Thread(target=self.blink_msg, args=[item])
+                        self.blink_msg_thread.daemon = True
+                        self.blink_msg_thread.start()
             self.my_user.my_queue_waiter.acquire()
             print("wating for new messages...")
             self.my_user.my_queue_waiter.wait()
@@ -222,15 +230,21 @@ class Ui_mainWindow(object):
             self.my_user.my_queue_waiter.release()
 
     def blink_msg(self, item):
-        while True:
+        while self.blink_items_dict[item.text()]:
             #print("orange")
             item.setBackground(QtGui.QColor('#ff944d'))
             sys.stdout.flush()
-            time.sleep(3)
+            time.sleep(1)
             #print("black")
             item.setBackground(QtGui.QColor('#000000'))
             sys.stdout.flush()
-            time.sleep(3)
+            time.sleep(1)
+
+    def closeEvent(self, *args):
+        self.my_user.disconnect()
+        while not user.User.can_exit_safe:
+            time.sleep(1)
+        print("at the next time logout before you close the window")
 
     def logout(self):
         self.my_user.disconnect()
@@ -238,11 +252,11 @@ class Ui_mainWindow(object):
         login_screen_process = Process(target= os.system , args=("python3 login_ui.py" , ))
         login_screen_process.start()
         self.mainPage.hide()
+        sys.exit(self.app.exec_())
 
     def open(self):
         self.mainPage.show()
         sys.exit(self.app.exec_())
-
     def remove_friend(self):
         """
         problem fixed!!!!
@@ -254,6 +268,7 @@ class Ui_mainWindow(object):
         for item in list_items:
             self.listWidget.takeItem(self.listWidget.row(item))
             self.my_user.remove_friend(item.text())
+            self.blink_items_dict.pop(item, None)
 
 
     def add_friend(self, friend):
@@ -286,6 +301,16 @@ class Ui_mainWindow(object):
         def open_chat_window(friend_id):
             chat_window_process = Process(target=os.system, args=("python3 chatWindow_ui.py " + str(self.user_id)+" "+str(self.user_password)+" "+str(self.user_sudo)+" "+str(friend_id),))
             chat_window_process.start()
+            self.blink_items_dict[item.text()] = False
+            print("check friend status")
+            # waite for stop blinking
+            time.sleep(1)
+            if self.my_user.check_friend_status(item.text()):
+                print("friend connect")
+                item.setBackground(QtGui.QColor('#808000'))
+            else:
+                item.setBackground(QtGui.QColor('#ff0000'))
+                print("friend disconnect")
 
         open_chat_window(item.text())
 
@@ -298,7 +323,7 @@ if __name__ == '__main__':
         usersudo = sys.argv[3]
     except:
         if len(sys.argv) != 3:
-            userid = "testUser2"
+            userid = "mmttdd"
             userpass = "12345"
             usersudo = "1313"
         else:

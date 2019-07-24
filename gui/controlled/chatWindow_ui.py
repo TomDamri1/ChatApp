@@ -1,8 +1,8 @@
 import sys
 sys.path.append("../..")
 import os
-from multiprocessing import Process
-from threading import Thread, Condition
+import datetime
+from threading import Thread
 import time
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget, QLabel, QListWidgetItem, QMessageBox
@@ -501,9 +501,9 @@ class Ui_friend_msgBox(object):
 
 
     def __init__(self, user_id, user_pass, user_sudo, friend_id):
-        #from client import user
-        #self.get_ask_for_control = False
-        #self.main_wake_up = Condition()
+        # from client import user
+        # self.get_ask_for_control = False
+        # self.main_wake_up = Condition()
         self.user_id = user_id
         self.user_password = user_pass
         self.user_sudo = user_sudo
@@ -513,12 +513,16 @@ class Ui_friend_msgBox(object):
             #print(e)
             self.my_user = my_user = user.User.get_instance()
         self.friend_id = friend_id
+        self.first_msg = True
         self.app = QtWidgets.QApplication(sys.argv)
         self.friend_msgBox = QtWidgets.QMainWindow()
+        # override a contain object method
+        self.friend_msgBox.closeEvent = self.closeEvent
         self.setupUi(self.friend_msgBox)
 
         self.message_text.returnPressed.connect(self.message_button.animateClick)
         self.ssh_text.returnPressed.connect(self.ssh_button.animateClick)
+
         def get_msgs_history():
             print("getting messages history..")
             msgs = my_user.get_message(friend_id)
@@ -526,7 +530,7 @@ class Ui_friend_msgBox(object):
                 for msg in msgs:
                     self.chat_text.addItem(msg[0] + " > " + msg[1])
 
-        #get_msgs_history()
+        get_msgs_history()
         self.motherBoard_text.setText(my_user.get_friend_motherboard(friend_id))
         self.name_text.setText(my_user.get_friend_name(friend_id))
         self.ip_text.setText(my_user.get_friend_external_ip(friend_id))
@@ -543,13 +547,19 @@ class Ui_friend_msgBox(object):
         self.ssh_button.clicked.connect(self.send_ssh_msg)
         self.commandLinkButton_2.clicked.connect(self.disable_control)
         self.chat_text.scrollToBottom()
-
+        self.show_his_ssh_commands_rb.toggled.connect(self.show_his_ssh_commands)
+        self.radioButton_2.toggled.connect(self.dont_show_his_ssh_commands)
 
         def get_messages_process():
             #from multiprocessing.pool import ThreadPool
             my_thread_for_simple_msgs = Thread(target=listen_msg)
-            my_thread_for_simple_msgs.start()
+            my_thread_for_simple_msgs.daemon = True
+            try:
+                my_thread_for_simple_msgs.start()
+            except:
+                print("stop wating for new messages")
             my_thread_for_ssh_msgs = Thread(target=listen_to_ssh_msg)
+            my_thread_for_ssh_msgs.daemon = True
             my_thread_for_ssh_msgs.start()
 
         def listen_msg():
@@ -590,6 +600,7 @@ class Ui_friend_msgBox(object):
 
         def get_control_req_process():
             my_thread = Thread(target=listen_to_control_req)
+            my_thread.daemon = True
             my_thread.start()
 
         # class represent popup
@@ -633,12 +644,19 @@ class Ui_friend_msgBox(object):
         for msg in self.messages:
             self.chat_text.addItem(msg[0]+" > "+msg[1])
         """
+    def show_his_ssh_commands(self):
+        self.my_user.show_ssh_res = True
+
+    def dont_show_his_ssh_commands(self):
+        self.my_user.show_ssh_res = False
+
     def approve_control(self):
         self.my_user.approve_control(self.friend_id, True)
         self.allow_yes_button.setCheckable(False)
         self.allow_yes_button.setEnabled(False)
         self.allow_no_button.setCheckable(False)
         self.allow_no_button.setEnabled(False)
+        self.control_text.setText("Allowed")
 
     def reject_ask_for_control(self):
         self.my_user.approve_control(self.friend_id, False)
@@ -661,16 +679,29 @@ class Ui_friend_msgBox(object):
         print("my text is " + msg_txt)
         self.chat_text.scrollToBottom()
         if msg_txt != '':
+            # send date at the start of conversation
+            if self.first_msg:
+                date = datetime.date.today().strftime("%B %d, %Y")
+                item = QListWidgetItem('%s' % (date))
+                self.chat_text.addItem(item)
+                item.setBackground(QtGui.QColor('#fad000'))
+                t = Thread(target=self.my_user.send_message, args=(self.friend_id, date))
+                t.daemon = True
+                # self.my_user.send_message(self.friend_id, msg_txt)
+                t.start()
+                self.first_msg = False
             item = QListWidgetItem('%s' % (self.my_user.name + " > " + msg_txt))
             self.chat_text.addItem(item)
             item.setBackground(QtGui.QColor('#ff944d'))
             self.message_text.setText("")
-            t = Thread(target=self.my_user.send_message , args=(self.friend_id , msg_txt))
+            t = Thread(target=self.my_user.send_message, args=(self.friend_id , msg_txt))
+            t.daemon = True
             #self.my_user.send_message(self.friend_id, msg_txt)
             t.start()
 
-
-
+    def closeEvent(self, *args):
+        self.my_user.disconnect_from_chat()
+        print("window closed")
 
     def send_ssh_msg(self):
         msg_txt = self.ssh_text.text()
@@ -682,6 +713,7 @@ class Ui_friend_msgBox(object):
             self.chat_text.addItem(item)
             self.ssh_text.setText("")
             t = Thread(target=self.my_user.send_ssh_message, args=(self.friend_id, msg_txt))
+            t.daemon = True
             t.start()
             #self.my_user.send_ssh_message(self.friend_id, msg_txt)
 
@@ -698,10 +730,10 @@ if __name__ == '__main__':
     # x = Ui_mainWindow(sys.argv[1])s
     try:
         
-        default_id1 = 'testUser'
-        default_id2 = 'testUser2'
+        default_id1 = 'mmttdd'
+        default_id2 = 'tomdamri'
         default_pas = '12345'
-        default_sudo = 'A1346014'
+        default_sudo = '1313'
 
         try:
             print(f"loading {sys.argv[4]} details.. that can take a moment..")
@@ -711,9 +743,10 @@ if __name__ == '__main__':
             x = Ui_friend_msgBox(default_id1, default_pas, default_sudo, default_id2)
 
         x.open()
-    except:
+    except Exception as e:
+        print(e)
         print('Error has accurred or window got closed.')
-
+    print("main thread closed")
     # print(x.messages)
 
     

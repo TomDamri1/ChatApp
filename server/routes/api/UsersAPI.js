@@ -91,7 +91,7 @@ router.post('/login',async(req,res)=>{
     }
     else if(user.password===req.body.password){
         user.isLogged=true;
-        newUser.save()
+        user.save()
        .then(()=>res.json({"Login":"Logged in successfully "}))
     }
     else{

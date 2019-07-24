@@ -16,6 +16,7 @@ An singleton class represent the connect user
 
 
 class User:
+    can_exit_safe = False
     # hold singleton instance
     __instance = None
     # queue that store all the receive messages
@@ -112,7 +113,9 @@ class User:
         self.last_name = data['lastname']
         self.friends_list = data['friends']
         thread1 = Thread(target=self.listen_to_server)
+        thread1.daemon = True
         thread2 = Thread(target=self.execute_command_from_ssh_requests_command_queue)
+        thread2.daemon = True
         thread1.start()
         thread2.start()
         # announce my friend i am connected
@@ -133,7 +136,7 @@ class User:
                 try:
                     result = self.execute_command(data['chat']['text'][16:])
                 except:
-                    result = "illegal command"
+                    result = "no respond"
                 if result != '':
                     new_msg = {"sender_id": data['ID'], "ssh_cmd": result}
                     if self.show_ssh_res:
@@ -151,12 +154,25 @@ class User:
     def get_friend_status(self):
         friends_status = dict()
         friends = self.get_friends()
+        # print("my friends:", end=' ')
+        # print(friends)
         for friend in friends:
-            user_data_from_server = requests.get(url=(URL.usersURL + "/" + self.id))
+            '''
+            user_data_from_server = requests.get(url=(URL.usersURL + "/" + friend))
             data = user_data_from_server.json()
+            # print(data)
             status = data['isLogged']
-            friends_status[friend] = status
+            '''
+            friends_status[friend] = self.check_friend_status(friend)
         return friends_status
+
+    def check_friend_status(self, friend_id):
+        user_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
+        data = user_data_from_server.json()
+        print(data)
+        status = data['isLogged']
+        return status
+
     def listen_to_server(self):
         while True:
             # queue not empty - got new message
@@ -332,33 +348,47 @@ class User:
         #print(r)
 
     def find_motherboard(self):
-        #return the name of the motherboard by using bash as administrator
-        command = 'dmidecode -t baseboard'
-        motherboard_manufacturer = subprocess.check_output('echo %s|sudo -S %s | grep Manufacturer' % (self.sudo_password, command), shell=True)
-        prod_name = '\'Product Name\''
-        motherboard_product_name = subprocess.check_output('echo %s|sudo -S %s | grep %s' % (self.sudo_password, command, prod_name), shell=True)
-        return (motherboard_manufacturer.decode("utf-8")[1:] + motherboard_product_name.decode("utf-8")[1:]).strip()
+        try:
+            #return the name of the motherboard by using bash as administrator
+            command = 'dmidecode -t baseboard'
+            motherboard_manufacturer = subprocess.check_output('echo %s|sudo -S %s | grep Manufacturer' % (self.sudo_password, command), shell=True)
+            prod_name = '\'Product Name\''
+            motherboard_product_name = subprocess.check_output('echo %s|sudo -S %s | grep %s' % (self.sudo_password, command, prod_name), shell=True)
+            my_motherboard = (motherboard_manufacturer.decode("utf-8")[1:] + motherboard_product_name.decode("utf-8")[1:]).strip()
+        except:
+            print("field to find my motherboard")
+            my_motherboard = '-----'
+        return my_motherboard
 
     def find_cpu(self):
-        #return the name of the CPU by using bash as administrator
-        command = 'dmidecode -t processor'
-        cpu_version = subprocess.check_output('echo %s|sudo -S %s | grep Version' % (self.sudo_password, command), shell=True)
-        return (cpu_version.decode("utf-8")[1:]).strip() # remove /t
+        try:
+            #return the name of the CPU by using bash as administrator
+            command = 'dmidecode -t processor'
+            cpu_version = subprocess.check_output('echo %s|sudo -S %s | grep Version' % (self.sudo_password, command), shell=True)
+            my_cpu = (cpu_version.decode("utf-8")[1:]).strip()# remove /t
+        except:
+            my_cpu = '----'
+        return my_cpu
 
     def find_external_ip(self):
         #return the name of the CPU by using bash as administrator
         try:
             command = 'dig +short myip.opendns.com @resolver1.opendns.com'
             external_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.sudo_password, command), shell=True)
-            return (external_ip.decode("utf-8")).strip()
+            my_external_ip = (external_ip.decode("utf-8")).strip()
         except:
-            return"---"
+            my_external_ip = '---'
+        return my_external_ip
 
     def find_internal_ip(self):
-        #return the name of the CPU by using bash as administrator
-        command = 'hostname -I'
-        internal_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.sudo_password, command), shell=True)
-        return (internal_ip.decode("utf-8").split()[0]).strip()
+        try:
+            #return the name of the CPU by using bash as administrator
+            command = 'hostname -I'
+            internal_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.sudo_password, command), shell=True)
+            my_internal_ip = (internal_ip.decode("utf-8")).strip()
+        except:
+            my_internal_ip = '----'
+        return my_internal_ip
 
     def execute_command(self, command):
         #return the name of the motherboard by using bash as administrator
@@ -368,7 +398,11 @@ class User:
                 new_command = new_command[:i] + " 2>/dev/null " + new_command[i:]
         new_command += " 2>/dev/null "
         result = subprocess.check_output('echo %s|sudo -S %s' % (self.password, new_command), shell=True)
-        return result.decode("utf-8")
+        if isinstance(result, bytes):
+            decode_result = result.decode("utf-8")
+        else:
+            decode_result = "no response"
+        return decode_result
 
     def take_all_screenshot(self):
         '''
@@ -413,52 +447,69 @@ class User:
         return self.internal_ip
 
     def get_friend_motherboard(self, friend_id):
-        # return the friend motherboard
-        friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
-        data = friend_data_from_server.json()
-        friend_motherboard = data['motherboard']
-        if len(friend_motherboard)>75:
-            friend_motherboard = friend_motherboard[:75]+'...'  
-
+        try:
+            # return the friend motherboard
+            friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
+            data = friend_data_from_server.json()
+            friend_motherboard = data['motherboard']
+            if len(friend_motherboard)>75:
+                friend_motherboard = friend_motherboard[:75]+'...'
+        except:
+            friend_motherboard = '----'
         return friend_motherboard
 
     def get_friend_cpu(self, friend_id):
-        # return the friend cpu
-        friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
-        data = friend_data_from_server.json()
-        friend_cpu = data['CPU']
-        if len(friend_cpu)>75 :
-            friend_cpu = friend_cpu[:75]+'...' 
+        try:
+            # return the friend cpu
+            friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
+            data = friend_data_from_server.json()
+            friend_cpu = data['CPU']
+            if len(friend_cpu)>75 :
+                friend_cpu = friend_cpu[:75]+'...'
+        except:
+            friend_cpu = '----'
         return friend_cpu
 
     def get_friend_external_ip(self, friend_id):
-        # return the friend external ip
-        friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
-        data = friend_data_from_server.json()
-        friend_external_ip = data['externalIP']
+        try:
+            # return the friend external ip
+            friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
+            data = friend_data_from_server.json()
+            friend_external_ip = data['externalIP']
+        except:
+            friend_external_ip = "-------"
         return friend_external_ip
 
     def get_friend_internal_ip(self, friend_id):
-        # return the friend internal ip
-        friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
-        data = friend_data_from_server.json()
-        friend_internal_ip = data['internalIP']
-        if friend_internal_ip>15:
-            friend_internal_ip = friend_internal_ip[:15]+"..." 
+        try:
+            # return the friend internal ip
+            friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
+            data = friend_data_from_server.json()
+            friend_internal_ip = data['internalIP']
+            if friend_internal_ip>15:
+                friend_internal_ip = friend_internal_ip[:15]+"..."
+        except:
+            friend_internal_ip = '----'
         return friend_internal_ip
 
     def get_friend_name(self, friend_id):
-        # return the friend name
-        friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
-        data = friend_data_from_server.json()
-        friend_name = data['name']
+        try:
+            # return the friend name
+            friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
+            data = friend_data_from_server.json()
+            friend_name = data['name']
+        except:
+            friend_name = '----'
         return friend_name
 
     def get_friend_last_name(self, friend_id):
-        # return the friend name
-        friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
-        data = friend_data_from_server.json()
-        friend_last_name = data['lastname']
+        try:
+            # return the friend name
+            friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
+            data = friend_data_from_server.json()
+            friend_last_name = data['lastname']
+        except:
+            friend_last_name = '----'
         return friend_last_name
 
     def add_friend(self, friend_id):
@@ -505,18 +556,20 @@ class User:
         and for update my friend i am disconnected
         '''
         url = URL.loguotURL + self.id
-        print(url)
         r = requests.post(url=url)
-        print(r.json())
+        #print(r.json())
 
         params = {'ID': self.id, "otherID": "broadcast", 'chat': {"senderName": self.name, "text": "i am disconnected!@#$"}}
-        print(params)
+        #print(params)
         r = requests.post(url=URL.postURL, json=params)
-        return_msg = r.text
-        print(return_msg)
+        # return_msg = r.text
+        # print(return_msg)
         User.sio.disconnect()
         __instance = None
+        User.can_exit_safe = True
 
+    def disconnect_from_chat(self):
+        User.sio.disconnect()
 
 if __name__ == '__main__':
     """
