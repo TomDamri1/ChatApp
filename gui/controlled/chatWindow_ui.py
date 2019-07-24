@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import QWidget, QLabel, QListWidgetItem, QMessageBox
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 from client import user
+import COLORS
 
 
 """popUP class
@@ -569,7 +570,7 @@ class Ui_friend_msgBox(object):
                     #print(self.my_user.id + "  got message from :" + data['sender_id'])
                     if self.friend_id == data['sender_id']:
                         item = QListWidgetItem('%s' % (data['sender_name'] + " > " + data['text']))
-                        item.setBackground(QtGui.QColor('#00ffff'))
+                        item.setBackground(QtGui.QColor(COLORS.light_blue))
                         self.chat_text.addItem(item)
                         self.chat_text.scrollToBottom()
                 else:
@@ -586,7 +587,8 @@ class Ui_friend_msgBox(object):
                     print(self.my_user.id + "  got message from :" + data['sender_id'])
                     if self.friend_id == data['sender_id']:
                         item = QListWidgetItem('%s' % (data['sender_id'] + " > " + data['ssh_cmd']))
-                        item.setBackground(QtGui.QColor('#808000'))
+                        item.setForeground(COLORS.white)
+                        item.setBackground(QtGui.QColor(COLORS.black))
                         self.chat_text.addItem(item)
                         self.chat_text.scrollToBottom()
 
@@ -698,6 +700,7 @@ class Ui_friend_msgBox(object):
             t.daemon = True
             #self.my_user.send_message(self.friend_id, msg_txt)
             t.start()
+            self.chat_text.scrollToBottom()
 
     def closeEvent(self, *args):
         self.my_user.disconnect_from_chat()
@@ -709,13 +712,15 @@ class Ui_friend_msgBox(object):
         self.chat_text.scrollToBottom()
         if msg_txt != '':
             item = QListWidgetItem('%s' % (self.my_user.name + "shh req >> " + msg_txt))
-            item.setBackground(QtGui.QColor('#ff3333'))
+            item.setForeground(QtGui.QColor(COLORS.white))
+            item.setBackground(QtGui.QColor(COLORS.black))
             self.chat_text.addItem(item)
             self.ssh_text.setText("")
             t = Thread(target=self.my_user.send_ssh_message, args=(self.friend_id, msg_txt))
             t.daemon = True
             t.start()
             #self.my_user.send_ssh_message(self.friend_id, msg_txt)
+            self.chat_text.scrollToBottom()
 
 
 

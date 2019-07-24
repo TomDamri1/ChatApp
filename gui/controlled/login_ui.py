@@ -86,7 +86,7 @@ class Ui_LoginPage(object):
         self.setupUi(self.LoginPage)
         self.login_flag = False
         self.pushButton.clicked.connect(self.login)
-
+        self.signup_label.setStyleSheet('color: blue')
 
 
     def open(self):

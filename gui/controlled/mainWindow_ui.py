@@ -16,6 +16,7 @@ from threading import Thread
 import time
 sys.path.append("../..")
 from client import user
+import COLORS
 friendList = []
 
 
@@ -178,12 +179,12 @@ class Ui_mainWindow(object):
             if friend_status[name]:
                 item = QListWidgetItem('%s' % (name))
                 self.listWidget.addItem(item)
-                item.setBackground(QtGui.QColor('#808000'))
+                item.setBackground(QtGui.QColor(COLORS.green))
                 self.blink_items_dict[item.text()] = False
             else:
                 item = QListWidgetItem('%s' % (name))
                 self.listWidget.addItem(item)
-                item.setBackground(QtGui.QColor('#ff0000'))
+                item.setBackground(QtGui.QColor(COLORS.red))
                 self.blink_items_dict[item.text()] = False
 
     def my_friend_status(self):
@@ -194,7 +195,7 @@ class Ui_mainWindow(object):
                 items = self.listWidget.findItems(str(data), QtCore.Qt.MatchExactly)
                 if len(items) > 0:
                     for item in items:
-                        item.setBackground(QtGui.QColor('#808000'))
+                        item.setBackground(QtGui.QColor(COLORS.green))
 
             if len(self.my_user.disconnect_friend_queue) > 0:
                 # change background of item for disconnect status
@@ -232,11 +233,11 @@ class Ui_mainWindow(object):
     def blink_msg(self, item):
         while self.blink_items_dict[item.text()]:
             #print("orange")
-            item.setBackground(QtGui.QColor('#ff944d'))
+            item.setBackground(QtGui.QColor(COLORS.light_blue))
             sys.stdout.flush()
             time.sleep(1)
             #print("black")
-            item.setBackground(QtGui.QColor('#000000'))
+            item.setBackground(QtGui.QColor(COLORS.grey))
             sys.stdout.flush()
             time.sleep(1)
 
@@ -307,9 +308,9 @@ class Ui_mainWindow(object):
             time.sleep(1)
             if self.my_user.check_friend_status(item.text()):
                 print("friend connect")
-                item.setBackground(QtGui.QColor('#808000'))
+                item.setBackground(QtGui.QColor(COLORS.green))
             else:
-                item.setBackground(QtGui.QColor('#ff0000'))
+                item.setBackground(QtGui.QColor(COLORS.red))
                 print("friend disconnect")
 
         open_chat_window(item.text())
@@ -317,6 +318,8 @@ class Ui_mainWindow(object):
 
 if __name__ == '__main__':
     #for the testing of the page only:
+    #for the testing of the page only:#
+
     try:
         userid = sys.argv[1]
         userpass = sys.argv[2]
