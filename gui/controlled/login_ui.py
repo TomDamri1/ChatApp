@@ -89,7 +89,7 @@ class Ui_LoginPage(object):
         self.signup_label.mousePressEvent = self.register
         self.signup_label.setStyleSheet("color : blue")
     def register(self, *args):
-        main_page_process = Process(target=os.system, args=("gnome-terminal -x python3 ../../client/registerUser.py ", ))
+        main_page_process = Process(target=os.system, args=("gnome-terminal -- python3 ../../client/registerUser.py ", ))
         main_page_process.start()
 
 
