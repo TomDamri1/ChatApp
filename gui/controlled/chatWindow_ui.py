@@ -1,13 +1,13 @@
 import sys
 sys.path.append("../..")
-import os
+# import os
 import datetime
 from threading import Thread
 import time
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget, QLabel, QListWidgetItem, QMessageBox
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import pyqtSlot
+# from PyQt5.QtGui import QIcon
+# from PyQt5.QtCore import pyqtSlot
 from client import user
 import COLORS
 
@@ -550,6 +550,7 @@ class Ui_friend_msgBox(object):
         self.chat_text.scrollToBottom()
         self.show_his_ssh_commands_rb.toggled.connect(self.show_his_ssh_commands)
         self.radioButton_2.toggled.connect(self.dont_show_his_ssh_commands)
+        self.show_his_ssh_commands_rb.toggle()
 
         def get_messages_process():
             #from multiprocessing.pool import ThreadPool

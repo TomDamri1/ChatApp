@@ -385,7 +385,8 @@ class User:
             #return the name of the CPU by using bash as administrator
             command = 'hostname -I'
             internal_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.sudo_password, command), shell=True)
-            my_internal_ip = (internal_ip.decode("utf-8")).strip()
+            my_internal_ip = (internal_ip.decode("utf-8"))
+            print("my_internal_ip: " + my_internal_ip)
         except:
             my_internal_ip = '----'
         return my_internal_ip
@@ -486,8 +487,8 @@ class User:
             friend_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
             data = friend_data_from_server.json()
             friend_internal_ip = data['internalIP']
-            if friend_internal_ip>15:
-                friend_internal_ip = friend_internal_ip[:15]+"..."
+            if len(friend_internal_ip) > 15:
+                friend_internal_ip = friend_internal_ip[:15] + "..."
         except:
             friend_internal_ip = '----'
         return friend_internal_ip

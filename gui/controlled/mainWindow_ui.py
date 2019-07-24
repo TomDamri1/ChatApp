@@ -269,7 +269,7 @@ class Ui_mainWindow(object):
         for item in list_items:
             self.listWidget.takeItem(self.listWidget.row(item))
             self.my_user.remove_friend(item.text())
-            self.blink_items_dict.pop(item, None)
+            self.blink_items_dict.pop(item.text(), None)
 
 
     def add_friend(self, friend):
@@ -277,6 +277,12 @@ class Ui_mainWindow(object):
         if my_user.add_friend(friend) and friend != "":
             friendList.append(friend)
             self.listWidget.addItem(friend)
+            items = self.listWidget.findItems(friend, QtCore.Qt.MatchExactly)
+            for item in items:
+                if self.my_user.check_friend_status(item.text()):
+                    item.setBackground(QtGui.QColor(COLORS.green))
+                else:
+                    item.setBackground(QtGui.QColor(COLORS.red))
 
 
     def open_chat(self,user_id):
@@ -303,15 +309,12 @@ class Ui_mainWindow(object):
             chat_window_process = Process(target=os.system, args=("python3 chatWindow_ui.py " + str(self.user_id)+" "+str(self.user_password)+" "+str(self.user_sudo)+" "+str(friend_id),))
             chat_window_process.start()
             self.blink_items_dict[item.text()] = False
-            print("check friend status")
             # waite for stop blinking
             time.sleep(1)
             if self.my_user.check_friend_status(item.text()):
-                print("friend connect")
                 item.setBackground(QtGui.QColor(COLORS.green))
             else:
                 item.setBackground(QtGui.QColor(COLORS.red))
-                print("friend disconnect")
 
         open_chat_window(item.text())
 
