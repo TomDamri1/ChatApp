@@ -19,7 +19,7 @@ class Ui_LoginPage(object):
         LoginPage.setObjectName("LoginPage")
         LoginPage.resize(279, 173)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("Jicon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("../icon/Jicon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         LoginPage.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(LoginPage)
         self.centralwidget.setObjectName("centralwidget")
@@ -86,7 +86,11 @@ class Ui_LoginPage(object):
         self.setupUi(self.LoginPage)
         self.login_flag = False
         self.pushButton.clicked.connect(self.login)
-        self.signup_label.setStyleSheet('color: blue')
+        self.signup_label.mousePressEvent = self.register
+        self.signup_label.setStyleSheet("color : blue")
+    def register(self, *args):
+        main_page_process = Process(target=os.system, args=("gnome-terminal -x python3 ../../client/registerUser.py ", ))
+        main_page_process.start()
 
 
     def open(self):
@@ -129,15 +133,11 @@ class Ui_LoginPage(object):
     def check_login_details(self,user_id, user_password, user_sudo_password):
         print("checking detials..")
         my_user = user_login.connect(user_id, user_password, user_sudo_password)
-        try:
-            if isinstance(my_user, str):
-                print("wrong username or password")
-                return False
-            print("authenticated succsesfuly!")
-            return True
-        except:
-            print("connection Error. please check the details again.")
+        if isinstance(my_user, str):
+            print("wrong username or password")
             return False
+        print("authenticated succsesfuly!")
+        return True
 
     def close(self):
         self.app.quit()

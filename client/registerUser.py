@@ -3,7 +3,7 @@ import sys
 sys.path.append("..")
 import URL
 
-
+print("*******************************REGISTER*******************************")
 #print("started2")
 my_url = URL.registerURL
 try:

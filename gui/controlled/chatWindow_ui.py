@@ -692,6 +692,7 @@ class Ui_friend_msgBox(object):
                 # self.my_user.send_message(self.friend_id, msg_txt)
                 t.start()
                 self.first_msg = False
+                time.sleep(0.8)
             item = QListWidgetItem('%s' % (self.my_user.name + " > " + msg_txt))
             self.chat_text.addItem(item)
             item.setBackground(QtGui.QColor('#ff944d'))
