@@ -30,7 +30,7 @@ class Ui_friend_msgBox(object):
         font.setKerning(True)
         friend_msgBox.setFont(font)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../icon/Jicon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("Jicon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         friend_msgBox.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(friend_msgBox)
         self.centralwidget.setObjectName("centralwidget")
