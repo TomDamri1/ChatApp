@@ -311,6 +311,7 @@ class Ui_mainWindow(object):
             else:
                 item.setBackground(QtGui.QColor('#ff0000'))
                 print("friend disconnect")
+
         open_chat_window(item.text())
 
 

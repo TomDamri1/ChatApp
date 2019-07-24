@@ -1,7 +1,7 @@
 import sys
 sys.path.append("../..")
 import os
-from multiprocessing import Process
+import datetime
 from threading import Thread
 import time
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -513,6 +513,7 @@ class Ui_friend_msgBox(object):
             #print(e)
             self.my_user = my_user = user.User.get_instance()
         self.friend_id = friend_id
+        self.first_msg = True
         self.app = QtWidgets.QApplication(sys.argv)
         self.friend_msgBox = QtWidgets.QMainWindow()
         # override a contain object method
@@ -643,7 +644,6 @@ class Ui_friend_msgBox(object):
         for msg in self.messages:
             self.chat_text.addItem(msg[0]+" > "+msg[1])
         """
-
     def show_his_ssh_commands(self):
         self.my_user.show_ssh_res = True
 
@@ -679,6 +679,17 @@ class Ui_friend_msgBox(object):
         print("my text is " + msg_txt)
         self.chat_text.scrollToBottom()
         if msg_txt != '':
+            # send date at the start of conversation
+            if self.first_msg:
+                date = datetime.date.today().strftime("%B %d, %Y")
+                item = QListWidgetItem('%s' % (date))
+                self.chat_text.addItem(item)
+                item.setBackground(QtGui.QColor('#fad000'))
+                t = Thread(target=self.my_user.send_message, args=(self.friend_id, date))
+                t.daemon = True
+                # self.my_user.send_message(self.friend_id, msg_txt)
+                t.start()
+                self.first_msg = False
             item = QListWidgetItem('%s' % (self.my_user.name + " > " + msg_txt))
             self.chat_text.addItem(item)
             item.setBackground(QtGui.QColor('#ff944d'))
