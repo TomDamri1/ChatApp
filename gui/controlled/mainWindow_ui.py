@@ -137,7 +137,7 @@ class Ui_mainWindow(object):
         try:
             self.my_user = user.User(user_id, user_pass, user_sudo)
         except Exception as e:
-            print(e)
+            # print(e)
             self.my_user = user.User.get_instance()
         """
         # remove all my friend
@@ -173,9 +173,9 @@ class Ui_mainWindow(object):
         msg_alarm_thread.daemon = True
         msg_alarm_thread.start()
         friend_status = self.my_user.get_friend_status()
-        print(friend_status)
+        # print(friend_status)
         for name in friend_status.keys():
-            print(friend_status[name])
+            # print(friend_status[name])
             if friend_status[name]:
                 item = QListWidgetItem('%s' % (name))
                 self.listWidget.addItem(item)
@@ -207,7 +207,7 @@ class Ui_mainWindow(object):
 
             self.my_user.connect_status_waiter.acquire()
             self.my_user.connect_status_waiter.wait()
-            print("friend connect/disconnect")
+            # print("friend connect/disconnect")
             self.my_user.connect_status_waiter.release()
 
 
@@ -225,9 +225,9 @@ class Ui_mainWindow(object):
                         self.blink_msg_thread.daemon = True
                         self.blink_msg_thread.start()
             self.my_user.my_queue_waiter.acquire()
-            print("wating for new messages...")
+            # print("wating for new messages...")
             self.my_user.my_queue_waiter.wait()
-            print("new message arrived!")
+            # print("new message arrived!")
             self.my_user.my_queue_waiter.release()
 
     def blink_msg(self, item):
@@ -245,7 +245,7 @@ class Ui_mainWindow(object):
         self.my_user.disconnect()
         while not user.User.can_exit_safe:
             time.sleep(1)
-        print("at the next time logout before you close the window")
+        # print("at the next time logout before you close the window")
 
     def logout(self):
         self.my_user.disconnect()

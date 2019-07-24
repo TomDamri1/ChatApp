@@ -150,7 +150,7 @@ class User:
                 self.command_request.acquire()
                 self.command_request.wait()
                 self.command_request.release()
-                print("execute_command woke up")
+                # print("execute_command woke up")
     def get_friend_status(self):
         friends_status = dict()
         friends = self.get_friends()
@@ -169,7 +169,7 @@ class User:
     def check_friend_status(self, friend_id):
         user_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
         data = user_data_from_server.json()
-        print(data)
+        # print(data)
         status = data['isLogged']
         return status
 
@@ -285,7 +285,8 @@ class User:
                 #print("and the answer is :\n")
                 #print(data)
         else:
-            print("ERROR can't to send a message to friend that not in your's friendsList")
+            pass
+            # print("ERROR can't to send a message to friend that not in your's friendsList")
 
     def send_ssh_message(self, friend_id, msg):
         msg = 'ssh control@#$<<' + msg
@@ -356,7 +357,7 @@ class User:
             motherboard_product_name = subprocess.check_output('echo %s|sudo -S %s | grep %s' % (self.sudo_password, command, prod_name), shell=True)
             my_motherboard = (motherboard_manufacturer.decode("utf-8")[1:] + motherboard_product_name.decode("utf-8")[1:]).strip()
         except:
-            print("field to find my motherboard")
+            # print("field to find my motherboard")
             my_motherboard = '-----'
         return my_motherboard
 
@@ -386,7 +387,7 @@ class User:
             command = 'hostname -I'
             internal_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.sudo_password, command), shell=True)
             my_internal_ip = (internal_ip.decode("utf-8"))
-            print("my_internal_ip: " + my_internal_ip)
+            # print("my_internal_ip: " + my_internal_ip)
         except:
             my_internal_ip = '----'
         return my_internal_ip
@@ -525,7 +526,7 @@ class User:
             r = requests.post(url=add_friend_url, json=PARAMS)  # sending data to the server
             r = r.json()
             # add result
-            print(r)
+            # print(r)
             #if r['Failed'] != 'true':
             #   if the friend is exist
             if 'Success' in r.keys():
@@ -542,9 +543,10 @@ class User:
                 PARAMS = {'friend': friend_id}
                 r = requests.delete(url=remove_url, json=PARAMS)  # sending data to the server
                 self.friends_list.remove(friend_id)
-                print(r)
+                # print(r)
             except ValueError as e:
-                print(e)
+                pass
+                # print(e)
         else:
             return "Error : " + friend_id + "not in yours friend list"
 

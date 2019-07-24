@@ -525,7 +525,7 @@ class Ui_friend_msgBox(object):
         self.ssh_text.returnPressed.connect(self.ssh_button.animateClick)
 
         def get_msgs_history():
-            print("getting messages history..")
+            # print("getting messages history..")
             msgs = my_user.get_message(friend_id)
             if msgs:
                 for msg in msgs:
@@ -559,7 +559,8 @@ class Ui_friend_msgBox(object):
             try:
                 my_thread_for_simple_msgs.start()
             except:
-                print("stop wating for new messages")
+                pass
+                # print("stop wating for new messages")
             my_thread_for_ssh_msgs = Thread(target=listen_to_ssh_msg)
             my_thread_for_ssh_msgs.daemon = True
             my_thread_for_ssh_msgs.start()
@@ -576,16 +577,16 @@ class Ui_friend_msgBox(object):
                         self.chat_text.scrollToBottom()
                 else:
                     self.my_user.my_queue_waiter.acquire()
-                    print("wating for new messages..")
+                    # print("wating for new messages..")
                     self.my_user.my_queue_waiter.wait()
-                    print("new message arrived!")
+                    # print("new message arrived!")
                     self.my_user.my_queue_waiter.release()
 
         def listen_to_ssh_msg():
             while True:
                 if len(my_user.ssh_results_command_queue) > 0:
                     data = self.my_user.ssh_results_command_queue.pop()
-                    print(self.my_user.id + "  got message from :" + data['sender_id'])
+                    # print(self.my_user.id + "  got message from :" + data['sender_id'])
                     if self.friend_id == data['sender_id']:
                         item = QListWidgetItem('%s' % (data['sender_id'] + " > " + data['ssh_cmd']))
                         item.setForeground(COLORS.white)
@@ -596,9 +597,9 @@ class Ui_friend_msgBox(object):
 
                 else:
                     self.my_user.ssh_results_command_queue_waiter.acquire()
-                    print("wating for new SSH command...")
+                    # print("wating for new SSH command...")
                     self.my_user.ssh_results_command_queue_waiter.wait()
-                    print("new SSH command arrived!")
+                    # print("new SSH command arrived!")
                     self.my_user.ssh_results_command_queue_waiter.release()
 
         def get_control_req_process():
@@ -611,10 +612,10 @@ class Ui_friend_msgBox(object):
 
         def listen_to_control_req():
             while True:
-                print("listen to req ask")
+                # print("listen to req ask")
                 set_of_req = my_user.approve_control_requests
                 if len(set_of_req) > 0 and friend_id in set_of_req:
-                    print("get req ask")
+                    # print("get req ask")
                     self.allow_yes_button.setCheckable(True)
                     self.allow_yes_button.setEnabled(True)
                     self.allow_no_button.setCheckable(True)
@@ -673,13 +674,13 @@ class Ui_friend_msgBox(object):
 
     def disable_control(self):
         self.my_user.remove_control(self.friend_id)
-        print(self.my_user.approved_control)
+        # print(self.my_user.approved_control)
         self.get_ask_for_control = False
         self.control_text.setText("Not Allowed")
 
     def send_msg(self):
         msg_txt = self.message_text.text()
-        print("my text is " + msg_txt)
+        # print("my text is " + msg_txt)
         self.chat_text.scrollToBottom()
         if msg_txt != '':
             # send date at the start of conversation
@@ -706,7 +707,7 @@ class Ui_friend_msgBox(object):
 
     def closeEvent(self, *args):
         self.my_user.disconnect_from_chat()
-        print("window closed")
+        # print("window closed")
 
     def send_ssh_msg(self):
         msg_txt = self.ssh_text.text()
@@ -743,10 +744,10 @@ if __name__ == '__main__':
         default_sudo = '1313'
 
         try:
-            print(f"loading {sys.argv[4]} details.. that can take a moment..")
+            # print(f"loading {sys.argv[4]} details.. that can take a moment..")
             x = Ui_friend_msgBox(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
         except:
-            print("error accured with input, or U running a test")
+            # print("error accured with input, or U running a test")
             x = Ui_friend_msgBox(default_id1, default_pas, default_sudo, default_id2)
 
         x.open()
