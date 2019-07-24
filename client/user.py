@@ -136,7 +136,7 @@ class User:
                 try:
                     result = self.execute_command(data['chat']['text'][16:])
                 except:
-                    result = "illegal command"
+                    result = "no respond"
                 if result != '':
                     new_msg = {"sender_id": data['ID'], "ssh_cmd": result}
                     if self.show_ssh_res:
@@ -169,7 +169,7 @@ class User:
     def check_friend_status(self, friend_id):
         user_data_from_server = requests.get(url=(URL.usersURL + "/" + friend_id))
         data = user_data_from_server.json()
-        # print(data)
+        print(data)
         status = data['isLogged']
         return status
 
@@ -398,7 +398,11 @@ class User:
                 new_command = new_command[:i] + " 2>/dev/null " + new_command[i:]
         new_command += " 2>/dev/null "
         result = subprocess.check_output('echo %s|sudo -S %s' % (self.password, new_command), shell=True)
-        return result.decode("utf-8")
+        if isinstance(result, bytes):
+            decode_result = result.decode("utf-8")
+        else:
+            decode_result = "no response"
+        return decode_result
 
     def take_all_screenshot(self):
         '''
