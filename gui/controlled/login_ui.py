@@ -93,6 +93,7 @@ class Ui_LoginPage(object):
         main_page_process.start()
 
 
+
     def open(self):
         try:
             self.LoginPage.show()
