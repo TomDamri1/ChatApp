@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import QWidget, QLabel, QListWidgetItem, QMessageBox
 # from PyQt5.QtCore import pyqtSlot
 from client import user
 import COLORS
+import os
 
 
 """popUP class
@@ -713,6 +714,7 @@ class Ui_friend_msgBox(object):
 
     def closeEvent(self, *args):
         self.my_user.disconnect_from_chat()
+        os.remove('../../url.txt')
         # print("window closed")
 
     def send_ssh_msg(self):

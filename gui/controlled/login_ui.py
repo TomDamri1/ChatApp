@@ -103,10 +103,10 @@ class Ui_LoginPage(object):
         self.pushButton.clicked.connect(self.login)
         self.signup_label.mousePressEvent = self.register
         self.signup_label.setStyleSheet("color : blue")
-        self.use_server_checkbox.setChecked(True)
+        self.use_server_checkbox.setChecked(False)
         try:
             f = open("../../url.txt", 'w')
-            f.write("http://localhost:5000/")
+            f.write("http://linuxchat.herokuapp.com/")
             f.close()
         except:
             print("an error occurred during create url.txt file please contact the developer team.")
@@ -151,6 +151,7 @@ class Ui_LoginPage(object):
 
     def closeEvent(self, *args):
         print("exit from login window")
+        os.remove('../../url.txt')
 
     def check_login_details(self,user_id, user_password, user_sudo_password):
         print("checking detials..")
