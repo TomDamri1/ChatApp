@@ -81,7 +81,7 @@ class Ui_LoginPage(object):
         self.sudo_password_label.setText(_translate("LoginPage", "sudo passowrd:"))
         self.pushButton.setText(_translate("LoginPage", "Login"))
         self.signup_label.setText(_translate("LoginPage", "Sign up!"))
-        self.use_server_checkbox.setText(_translate("LoginPage", "Use Server"))
+        self.use_server_checkbox.setText(_translate("LoginPage", "Use local server"))
 
     def __init__(self):
         self.app = QtWidgets.QApplication([])
