@@ -592,8 +592,8 @@ class Ui_friend_msgBox(object):
                     # print(self.my_user.id + "  got message from :" + data['sender_id'])
                     if self.friend_id == data['sender_id']:
                         item = QListWidgetItem('%s' % (data['sender_id'] + " > " + data['ssh_cmd']))
-                        item.setForeground(COLORS.white)
-                        item.setBackground(QtGui.QColor(COLORS.black))
+                        # item.setForeground(COLORS.white)
+                        item.setBackground(QtGui.QColor(COLORS.red))
                         self.chat_text.addItem(item)
                         self.chat_text.scrollToBottom()
 
