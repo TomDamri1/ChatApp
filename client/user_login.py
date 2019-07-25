@@ -29,12 +29,14 @@ def connect(user_id, password, sudo_password):
         """
         PARAMS = {'id': user_id, 'password': password}
         r = requests.post(url=URL.loginURL, json=PARAMS)  # sending data to the server
-        print(r)
-        if r.json()['Login'] == 'No login found':
+        if r.json()['Login'] == 'Login Failed Wrong password':
+            return False
+        elif r.json()['Login'] == 'No login found':
             return False
         elif r.json()['Login'] == "Logged in successfully ":
             return True
         else:
+            print("user check on server return diff msg")
             return "user check on server return diff msg"
     if not user_password_check():
         return 'Wrong username or password'
