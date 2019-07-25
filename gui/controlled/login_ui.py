@@ -70,8 +70,18 @@ class Ui_LoginPage(object):
         self.password_text.returnPressed.connect(self.sudo_password_text.selectAll)
         self.sudo_password_text.returnPressed.connect(self.pushButton.animateClick)
         QtCore.QMetaObject.connectSlotsByName(LoginPage)
-
         self.pushButton.clicked.connect(self.login)
+        self.use_server_checkbox.clicked.connect(self.switch_url)
+
+    def switch_url(self):
+        if self.use_server_checkbox.isChecked():
+            f = open("../../url.txt", 'w')
+            f.write("http://localhost:5000/")
+            f.close()
+        else:
+            f = open("../../url.txt", 'w')
+            f.write("http://linuxchat.herokuapp.com/")
+            f.close()
 
     def retranslateUi(self, LoginPage):
         _translate = QtCore.QCoreApplication.translate
@@ -94,11 +104,16 @@ class Ui_LoginPage(object):
         self.signup_label.mousePressEvent = self.register
         self.signup_label.setStyleSheet("color : blue")
         self.use_server_checkbox.setChecked(True)
+        try:
+            f = open("../../url.txt", 'w')
+            f.write("http://localhost:5000/")
+            f.close()
+        except:
+            print("an error occurred during create url.txt file please contact the developer team.")
 
     def register(self, *args):
         register_page_process = Process(target=os.system, args=("python3 ../../client/registerUser.py ", ))
         register_page_process.start()
-
 
 
     def open(self):
@@ -124,7 +139,6 @@ class Ui_LoginPage(object):
             user_id = self.user_id = self.username_text.text()
             user_password = self.user_password = self.password_text.text()
             user_sudo = self.user_sudo = self.sudo_password_text.text()
-            print(user_id+" loggin in..")
             if self.check_login_details(user_id , user_password , user_sudo):
                 self.login_flag = True
                 enter_main_page(user_id , user_password , user_sudo)
