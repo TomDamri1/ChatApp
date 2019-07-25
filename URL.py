@@ -5,7 +5,7 @@ try:
     if f.mode == 'r':
         URL = f.read()
     f.close()
-except Exception as e:
+except Exception as error:
     try:
         sleep(0.1)
         f = open("../url.txt", 'r')
@@ -21,7 +21,7 @@ except Exception as e:
             f.close()
         except:
             pass
-    print(e)
+    print(error)
     URL = "http://localhost:5000/"
 '''
 URL1 = "http://linuxchat.herokuapp.com/"
