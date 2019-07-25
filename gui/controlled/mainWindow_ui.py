@@ -245,7 +245,10 @@ class Ui_mainWindow(object):
         self.my_user.disconnect()
         while not user.User.can_exit_safe:
             time.sleep(1)
-        os.remove('../../url.txt')
+        try:
+            os.remove('../../url.txt')
+        except:
+ 	        pass
         # print("at the next time logout before you close the window")
 
     def logout(self):

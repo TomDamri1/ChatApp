@@ -714,9 +714,11 @@ class Ui_friend_msgBox(object):
 
     def closeEvent(self, *args):
         self.my_user.disconnect_from_chat()
-        os.remove('../../url.txt')
+        try:
+            os.remove('../../url.txt')
+        except:
+	        pass
         # print("window closed")
-
     def send_ssh_msg(self):
         msg_txt = self.ssh_text.text()
         #print("my text is " + msg_txt)

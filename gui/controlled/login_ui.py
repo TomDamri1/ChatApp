@@ -151,8 +151,10 @@ class Ui_LoginPage(object):
 
     def closeEvent(self, *args):
         print("exit from login window")
-        os.remove('../../url.txt')
-
+        try:
+            os.remove('../../url.txt')
+        except:
+            pass
     def check_login_details(self,user_id, user_password, user_sudo_password):
         print("checking detials..")
         my_user = user_login.connect(user_id, user_password, user_sudo_password)
