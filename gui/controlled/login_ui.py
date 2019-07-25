@@ -60,6 +60,10 @@ class Ui_LoginPage(object):
         self.statusbar = QtWidgets.QStatusBar(LoginPage)
         self.statusbar.setObjectName("statusbar")
         LoginPage.setStatusBar(self.statusbar)
+        self.use_server_checkbox = QtWidgets.QCheckBox(self.centralwidget)
+        self.use_server_checkbox.setObjectName("use_server_checkbox")
+        self.gridLayout.addWidget(self.use_server_checkbox, 4, 0, 1, 1)
+        LoginPage.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(LoginPage)
         self.username_text.returnPressed.connect(self.password_text.selectAll)
@@ -77,6 +81,7 @@ class Ui_LoginPage(object):
         self.sudo_password_label.setText(_translate("LoginPage", "sudo passowrd:"))
         self.pushButton.setText(_translate("LoginPage", "Login"))
         self.signup_label.setText(_translate("LoginPage", "Sign up!"))
+        self.use_server_checkbox.setText(_translate("LoginPage", "Use Server"))
 
     def __init__(self):
         self.app = QtWidgets.QApplication([])
@@ -88,6 +93,7 @@ class Ui_LoginPage(object):
         self.pushButton.clicked.connect(self.login)
         self.signup_label.mousePressEvent = self.register
         self.signup_label.setStyleSheet("color : blue")
+        self.use_server_checkbox.setChecked(True)
 
     def register(self, *args):
         register_page_process = Process(target=os.system, args=("python3 ../../client/registerUser.py ", ))
