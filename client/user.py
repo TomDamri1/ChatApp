@@ -187,6 +187,14 @@ class User:
                         self.approve_control_requests_waiter.acquire()
                         self.approve_control_requests_waiter.notify()
                         self.approve_control_requests_waiter.release()
+                        '''
+                        new_msg = {"sender_id": data['ID'], "sender_name": data['chat']['senderName'],
+                                   "text": "can i control yours computer? (press 'yes' or 'no' button)"}
+                        self.my_queue.append(new_msg)
+                        self.my_queue_waiter.acquire()
+                        self.my_queue_waiter.notifyAll()
+                        self.my_queue_waiter.release()
+                        '''
                     elif str(data['chat']['text']).startswith('ssh control@#$<<') and data['ID'] in self.approved_control:
                         self.ssh_requests_command_queue.append(data)
                         self.command_request.acquire()

@@ -674,6 +674,9 @@ class Ui_friend_msgBox(object):
 
     def ask_for_control(self):
         self.my_user.ask_for_control(self.friend_id)
+        t = Thread(target=self.my_user.send_message, args=(self.friend_id, "can i control yours computer? (press 'yes' or 'no' button)"))
+        t.daemon = True
+        t.start()
 
     def disable_control(self):
         self.my_user.remove_control(self.friend_id)
