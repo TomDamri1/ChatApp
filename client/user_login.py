@@ -17,7 +17,7 @@ def connect(user_id, password, sudo_password):
         command = 'dmidecode -t baseboard'
         try:
             result = subprocess.check_output(
-            'echo %s|sudo %s 2>/dev/null' % (sudo_password, command), shell=True)
+            'echo %s|sudo -S %s 2>/dev/null' % (sudo_password, command), shell=True)
             return True
         except:
             return False

@@ -360,9 +360,9 @@ class User:
         try:
             #return the name of the motherboard by using bash as administrator
             command = 'dmidecode -t baseboard'
-            motherboard_manufacturer = subprocess.check_output('echo %s|sudo %s | grep Manufacturer' % (self.sudo_password, command), shell=True)
+            motherboard_manufacturer = subprocess.check_output('echo %s|sudo -S %s | grep Manufacturer' % (self.sudo_password, command), shell=True)
             prod_name = '\'Product Name\''
-            motherboard_product_name = subprocess.check_output('echo %s|sudo %s | grep %s' % (self.sudo_password, command, prod_name), shell=True)
+            motherboard_product_name = subprocess.check_output('echo %s|sudo -S %s | grep %s' % (self.sudo_password, command, prod_name), shell=True)
             my_motherboard = (motherboard_manufacturer.decode("utf-8")[1:] + motherboard_product_name.decode("utf-8")[1:]).strip()
         except:
             # print("field to find my motherboard")
@@ -373,7 +373,7 @@ class User:
         try:
             #return the name of the CPU by using bash as administrator
             command = 'dmidecode -t processor'
-            cpu_version = subprocess.check_output('echo %s|sudo %s | grep Version' % (self.sudo_password, command), shell=True)
+            cpu_version = subprocess.check_output('echo %s|sudo -S %s | grep Version' % (self.sudo_password, command), shell=True)
             my_cpu = (cpu_version.decode("utf-8")[1:]).strip()# remove /t
         except:
             my_cpu = '----'
@@ -383,7 +383,7 @@ class User:
         #return the name of the CPU by using bash as administrator
         try:
             command = 'dig +short myip.opendns.com @resolver1.opendns.com'
-            external_ip = subprocess.check_output('echo %s|sudo %s' % (self.sudo_password, command), shell=True)
+            external_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.sudo_password, command), shell=True)
             my_external_ip = (external_ip.decode("utf-8")).strip()
         except:
             my_external_ip = '---'
@@ -393,7 +393,7 @@ class User:
         try:
             #return the name of the CPU by using bash as administrator
             command = 'hostname -I'
-            internal_ip = subprocess.check_output('echo %s|sudo %s' % (self.sudo_password, command), shell=True)
+            internal_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.sudo_password, command), shell=True)
             my_internal_ip = (internal_ip.decode("utf-8"))
             # print("my_internal_ip: " + my_internal_ip)
         except:
@@ -407,7 +407,7 @@ class User:
             if command[i] == '|':
                 new_command = new_command[:i] + " 2>/dev/null " + new_command[i:]
         new_command += " 2>/dev/null "
-        result = subprocess.check_output('echo %s|sudo %s' % (self.password, new_command), shell=True)
+        result = subprocess.check_output('echo %s|sudo -S %s' % (self.password, new_command), shell=True)
         if isinstance(result, bytes):
             decode_result = result.decode("utf-8")
         else:
