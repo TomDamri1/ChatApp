@@ -75,11 +75,15 @@ class Ui_LoginPage(object):
 
     def switch_url(self):
         if self.use_server_checkbox.isChecked():
-            f = open("../../url.txt", 'w')
+            path = os.path.expanduser('~')
+            path = path + '/url.txt'
+            f = open(path, 'w')
             f.write("http://localhost:5000/")
             f.close()
         else:
-            f = open("../../url.txt", 'w')
+            path = os.path.expanduser('~')
+            path = path + '/url.txt'
+            f = open(path, 'w')
             f.write("http://linuxchat.herokuapp.com/")
             f.close()
 
@@ -105,7 +109,11 @@ class Ui_LoginPage(object):
         self.signup_label.setStyleSheet("color : blue")
         self.use_server_checkbox.setChecked(False)
         try:
-            f = open("../../url.txt", 'w')
+            path = os.path.expanduser('~')
+            path = path + '/url.txt'
+            print('Path is:' + path)
+            f = open(path, 'w')
+            print("create")
             f.write("http://linuxchat.herokuapp.com/")
             f.close()
         except:
@@ -152,7 +160,9 @@ class Ui_LoginPage(object):
     def closeEvent(self, *args):
         print("exit from login window")
         try:
-            os.remove('../../url.txt')
+            path = os.path.expanduser('~')
+            path = path + '/url.txt'
+            os.remove(path)
         except:
             pass
 

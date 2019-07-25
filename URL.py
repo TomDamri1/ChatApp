@@ -1,8 +1,11 @@
 from time import sleep
+import os
 try:
     # print('try')
     sleep(0.1)
-    f = open("../../url.txt", 'r')
+    path = os.path.expanduser('~')
+    path = path + '/url.txt'
+    f = open(path, 'r')
     if f.mode == 'r':
         URL = f.read()
     f.close()

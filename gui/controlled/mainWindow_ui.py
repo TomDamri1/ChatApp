@@ -246,7 +246,9 @@ class Ui_mainWindow(object):
         while not user.User.can_exit_safe:
             time.sleep(1)
         try:
-            os.remove('../../url.txt')
+            path = os.path.expanduser('~')
+            path = path + '/url.txt'
+            os.remove(path)
         except:
             pass
         # print("at the next time logout before you close the window")

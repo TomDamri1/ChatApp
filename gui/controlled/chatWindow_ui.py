@@ -715,7 +715,9 @@ class Ui_friend_msgBox(object):
     def closeEvent(self, *args):
         self.my_user.disconnect_from_chat()
         try:
-            os.remove('../../url.txt')
+            path = os.path.expanduser('~')
+            path = path + '/url.txt'
+            os.remove(path)
         except:
             pass
         # print("window closed")
