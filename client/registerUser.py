@@ -24,3 +24,6 @@ try:
     pastebin_url = r.text
 except:
     print("Error - check your internet connection.\nif the server is local, check configuration and that the server is running.\nif all above are ok, check the server at: "+URL.URL)
+
+if __name__ == '__main__':
+    pass
