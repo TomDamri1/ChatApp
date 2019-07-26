@@ -34,7 +34,7 @@ sudo -H pip3 install python-socketio
 4.click on install after it finishes, close the window.
 5.open the terminal.
 6.run the command 'Login'
-7.enjoy
+7.enjoy!
 
 
 
