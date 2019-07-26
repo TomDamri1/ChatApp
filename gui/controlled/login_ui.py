@@ -111,9 +111,7 @@ class Ui_LoginPage(object):
         try:
             path = os.path.expanduser('~')
             path = path + '/url.txt'
-            print('Path is:' + path)
             f = open(path, 'w')
-            print("create")
             f.write("http://linuxchat.herokuapp.com/")
             f.close()
         except:
