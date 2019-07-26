@@ -139,7 +139,6 @@ class Ui_LoginPage(object):
 
             '''
             def open_new_socket(userid):
-                new_socket_process = Process(target= os.system , args=("python3 ../../client/socketClient.py",))
                 new_socket_process.start()
             '''
             user_id = self.user_id = self.username_text.text()
