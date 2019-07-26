@@ -163,6 +163,13 @@ class Ui_mainWindow(object):
         internal_ip = self.my_user.get_my_internal_ip()
         if len(internal_ip) > 30:
             internal_ip = internal_ip[:29]
+        try:
+            for i in range(len(internal_ip)):
+                if internal_ip[i] ==" ":
+                    internal_ip = internal_ip[:i]
+                    break
+        except:
+            pass
         self.ip_in_text.setText(internal_ip)
         self.cpu_text.setText(self.my_user.get_my_cpu().strip().partition('\n')[0])
         self.deleteFriend_button.clicked.connect(self.remove_friend)
