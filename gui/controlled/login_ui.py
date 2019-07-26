@@ -19,7 +19,7 @@ class Ui_LoginPage(object):
         LoginPage.setObjectName("LoginPage")
         LoginPage.resize(279, 173)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../icon/Jicon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("Jicon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         LoginPage.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(LoginPage)
         self.centralwidget.setObjectName("centralwidget")
