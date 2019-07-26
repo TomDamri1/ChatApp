@@ -395,6 +395,7 @@ class User:
             command = 'hostname -I'
             internal_ip = subprocess.check_output('echo %s|sudo -S %s' % (self.sudo_password, command), shell=True)
             my_internal_ip = (internal_ip.decode("utf-8"))
+            print(my_internal_ip)
             ''''
             print(my_internal_ip)
             print("1")

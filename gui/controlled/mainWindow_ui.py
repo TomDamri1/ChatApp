@@ -160,7 +160,10 @@ class Ui_mainWindow(object):
         self.name_text.setText(self.my_user.name)
         self.motherBoard_text.setText(self.my_user.get_my_motherboard())
         self.ip_ex_text.setText(self.my_user.get_my_external_ip())
-        self.ip_in_text.setText(self.my_user.get_my_internal_ip())
+        internal_ip = self.my_user.get_my_internal_ip()
+        if len(internal_ip) > 30:
+            internal_ip = internal_ip[:29]
+        self.ip_in_text.setText(internal_ip)
         self.cpu_text.setText(self.my_user.get_my_cpu().strip().partition('\n')[0])
         self.deleteFriend_button.clicked.connect(self.remove_friend)
         self.logout_button.clicked.connect(self.logout)
