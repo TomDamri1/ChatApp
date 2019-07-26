@@ -145,6 +145,9 @@ class Ui_LoginPage(object):
             user_id = self.user_id = self.username_text.text()
             user_password = self.user_password = self.password_text.text()
             user_sudo = self.user_sudo = self.sudo_password_text.text()
+            if user_sudo == '':
+                print("in if1")
+                user_sudo = self.user_sudo = "1"
             if self.check_login_details(user_id , user_password , user_sudo):
                 self.login_flag = True
                 enter_main_page(user_id , user_password , user_sudo)
