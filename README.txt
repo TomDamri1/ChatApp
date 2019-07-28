@@ -29,7 +29,7 @@ sudo -H pip3 install python-socketio
 
 ## TO INSATLL:
 1.extract the files at your home directory.
-2.make sure only Login folder and python-jbm_1.0-1_all.deb file are in the home directory
+2.make sure Login folder and python-jbm_1.0-1_all.deb file are in the home directory
 3.run the file python-jbm_1.0.1_all.deb
 4.click on install after it finishes, close the window.
 5.open the terminal.
