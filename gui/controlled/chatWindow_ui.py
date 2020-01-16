@@ -1,5 +1,7 @@
 import sys
-from random import random
+import random
+
+from encryption.DES.driver import encrypt
 
 sys.path.append("../..")
 # import os
@@ -516,7 +518,7 @@ class Ui_friend_msgBox(object):
         except Exception as e:
             #print(e)
             self.my_user = my_user = user.User.get_instance()
-        self.my_user.swap_keys(self, friend_id)
+        self.my_user.swap_keys(friend_id)
         self.friend_id = friend_id
         self.first_msg = True
         self.app = QtWidgets.QApplication(sys.argv)
@@ -588,16 +590,18 @@ class Ui_friend_msgBox(object):
                             my_user.my_private_key=my_private_key
                             my_user.p=p
                             my_user.alpha=alpha
-
                             my_public_key = ((alpha) ** my_private_key) % p
                             my_user.chat_key = (friend_public_key**my_private_key)%p
-                            self.send_msg("DH-protocol_getting_pub_key!@#$ " + str(my_public_key) + " "+str(p) + " " + str(alpha))
-                        if str(data['text']).startswith('DH-protocol_getting_pub_key!@#$'):
+                            print(my_user.chat_key)
+                            self.send_key("DH-protocol_getting_pub_key!@#$ " + str(my_public_key) + " "+str(p) + " " + str(alpha))
+                        elif str(data['text']).startswith('DH-protocol_getting_pub_key!@#$'):
                             keys= data['text'].split()
                             friend_public_key = int(keys[1])
                             my_user.chat_key = (friend_public_key ** int(my_user.my_private_key)) % my_user.p
+                            print(my_user.chat_key)
                         else:
-                            item = QListWidgetItem('%s' % (data['sender_name'] + " > " + data['text']))
+                            decrypt_msg=decrypt_msg(data['text'])
+                            item = QListWidgetItem('%s' % (data['sender_name'] + " > " + decrypt_msg))
                             item.setBackground(QtGui.QColor(COLORS.light_blue))
                             self.chat_text.addItem(item)
                             self.chat_text.scrollToBottom()
@@ -707,11 +711,9 @@ class Ui_friend_msgBox(object):
         self.get_ask_for_control = False
         self.control_text.setText("Not Allowed")
 
-    def send_msg(self,text=None):
-        if text==None:
-            msg_txt = self.message_text.text()
-        else:
-            msg_txt = text
+    def send_msg(self):
+        msg_txt = self.message_text.text()
+        msg_txt= encrypt(msg_txt,self.my_user.chat_key)
         # print("my text is " + msg_txt)
         self.chat_text.scrollToBottom()
         if msg_txt != '':
@@ -734,6 +736,36 @@ class Ui_friend_msgBox(object):
             t = Thread(target=self.my_user.send_message, args=(self.friend_id , msg_txt))
             t.daemon = True
             #self.my_user.send_message(self.friend_id, msg_txt)
+            t.start()
+            self.chat_text.scrollToBottom()
+
+    def send_key(self, text=""):
+        if text == "":
+            msg_txt = self.message_text.text()
+        else:
+            msg_txt = str(text)
+        # print("my text is " + msg_txt)
+        self.chat_text.scrollToBottom()
+        if msg_txt != '':
+            # send date at the start of conversation
+            if self.first_msg:
+                date = datetime.date.today().strftime("%B %d, %Y")
+                item = QListWidgetItem('%s' % (date))
+                self.chat_text.addItem(item)
+                item.setBackground(QtGui.QColor('#fad000'))
+                t = Thread(target=self.my_user.send_message, args=(self.friend_id, date))
+                t.daemon = True
+                # self.my_user.send_message(self.friend_id, msg_txt)
+                t.start()
+                self.first_msg = False
+                time.sleep(0.8)
+            item = QListWidgetItem('%s' % (self.my_user.name + " > " + msg_txt))
+            self.chat_text.addItem(item)
+            item.setBackground(QtGui.QColor('#ff944d'))
+            self.message_text.setText("")
+            t = Thread(target=self.my_user.send_message, args=(self.friend_id, msg_txt))
+            t.daemon = True
+            # self.my_user.send_message(self.friend_id, msg_txt)
             t.start()
             self.chat_text.scrollToBottom()
 
