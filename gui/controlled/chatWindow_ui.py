@@ -601,6 +601,8 @@ class Ui_friend_msgBox(object):
                             print(my_user.chat_key)
                         else:
                             decrypt_msg=decrypt(data['text'],self.my_user.chat_key)
+                            while decrypt_msg[-1:]=="0":
+                                decrypt_msg=decrypt_msg[:-1]
                             item = QListWidgetItem('%s' % (data['sender_name'] + " > " + decrypt_msg))
                             item.setBackground(QtGui.QColor(COLORS.light_blue))
                             self.chat_text.addItem(item)
