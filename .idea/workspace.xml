@@ -2,16 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3aa7de4e-011d-4313-9c10-9defd505ae4a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/encryption/DES/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/encryption/DES/des_algorithm/des.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/encryption/DES/des_algorithm/functions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/encryption/DES/des_tools/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/encryption/DES/des_tools/tables.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/encryption/DES/des_tools/text_to_bits.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/encryption/DES/driver.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/controlled/chatWindow_ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/controlled/chatWindow_ui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/encryption/DES/des_algorithm/des.py" beforeDir="false" afterPath="$PROJECT_DIR$/encryption/DES/des_algorithm/des.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/encryption/DES/des_algorithm/functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/encryption/DES/des_algorithm/functions.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -186,7 +179,7 @@
       <workItem from="1564085549373" duration="396000" />
       <workItem from="1578344585711" duration="2516000" />
       <workItem from="1579178431886" duration="8873000" />
-      <workItem from="1579188262229" duration="4926000" />
+      <workItem from="1579188262229" duration="5346000" />
     </task>
     <task id="LOCAL-00001" summary="123">
       <created>1563668654362</created>
@@ -237,7 +230,21 @@
       <option name="project" value="LOCAL" />
       <updated>1579188620568</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="added - des encrypt">
+      <created>1579193208425</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1579193208425</updated>
+    </task>
+    <task id="LOCAL-00009" summary="added - des encrypt - fix">
+      <created>1579193319302</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1579193319302</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -262,45 +269,47 @@
     <MESSAGE value="fixed popup" />
     <MESSAGE value="color to msg" />
     <MESSAGE value="added - hellman protocol" />
-    <option name="LAST_COMMIT_MESSAGE" value="added - hellman protocol" />
+    <MESSAGE value="added - des encrypt" />
+    <MESSAGE value="added - des encrypt - fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="added - des encrypt - fix" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="560" y="150" width="860" height="814" key="CommitChangelistDialog2" timestamp="1579193208366">
+    <state x="560" y="150" width="860" height="814" key="CommitChangelistDialog2" timestamp="1579193319248">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
-    <state x="560" y="150" width="860" height="814" key="CommitChangelistDialog2/70.27.1850.1053@70.27.1850.1053" timestamp="1579193208366" />
-    <state width="1804" height="303" key="GridCell.Tab.0.bottom" timestamp="1579191121971">
+    <state x="560" y="150" width="860" height="814" key="CommitChangelistDialog2/70.27.1850.1053@70.27.1850.1053" timestamp="1579193319248" />
+    <state width="1804" height="303" key="GridCell.Tab.0.bottom" timestamp="1579193574157">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.bottom.inPresentationMode" timestamp="1579178863318">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.bottom.inPresentationMode/70.27.1850.1053@70.27.1850.1053" timestamp="1579178863318" />
-    <state width="1804" height="303" key="GridCell.Tab.0.bottom/70.27.1850.1053@70.27.1850.1053" timestamp="1579191121971" />
-    <state width="1804" height="303" key="GridCell.Tab.0.center" timestamp="1579191121970">
+    <state width="1804" height="303" key="GridCell.Tab.0.bottom/70.27.1850.1053@70.27.1850.1053" timestamp="1579193574157" />
+    <state width="1804" height="303" key="GridCell.Tab.0.center" timestamp="1579193574157">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.center.inPresentationMode" timestamp="1579178863318">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.center.inPresentationMode/70.27.1850.1053@70.27.1850.1053" timestamp="1579178863318" />
-    <state width="1804" height="303" key="GridCell.Tab.0.center/70.27.1850.1053@70.27.1850.1053" timestamp="1579191121970" />
-    <state width="1804" height="303" key="GridCell.Tab.0.left" timestamp="1579191121970">
+    <state width="1804" height="303" key="GridCell.Tab.0.center/70.27.1850.1053@70.27.1850.1053" timestamp="1579193574157" />
+    <state width="1804" height="303" key="GridCell.Tab.0.left" timestamp="1579193574157">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.left.inPresentationMode" timestamp="1579178863317">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.left.inPresentationMode/70.27.1850.1053@70.27.1850.1053" timestamp="1579178863317" />
-    <state width="1804" height="303" key="GridCell.Tab.0.left/70.27.1850.1053@70.27.1850.1053" timestamp="1579191121970" />
-    <state width="1804" height="303" key="GridCell.Tab.0.right" timestamp="1579191121970">
+    <state width="1804" height="303" key="GridCell.Tab.0.left/70.27.1850.1053@70.27.1850.1053" timestamp="1579193574157" />
+    <state width="1804" height="303" key="GridCell.Tab.0.right" timestamp="1579193574157">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.right.inPresentationMode" timestamp="1579178863318">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.right.inPresentationMode/70.27.1850.1053@70.27.1850.1053" timestamp="1579178863318" />
-    <state width="1804" height="303" key="GridCell.Tab.0.right/70.27.1850.1053@70.27.1850.1053" timestamp="1579191121970" />
+    <state width="1804" height="303" key="GridCell.Tab.0.right/70.27.1850.1053@70.27.1850.1053" timestamp="1579193574157" />
     <state width="1804" height="340" key="GridCell.Tab.1.bottom" timestamp="1578347684384">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
@@ -321,10 +330,10 @@
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state x="484" y="188" width="1022" height="737" key="SettingsEditor/70.27.1850.1053@70.27.1850.1053" timestamp="1578346306766" />
-    <state x="590" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1579193215933">
+    <state x="590" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1579193322789">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
-    <state x="590" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2/70.27.1850.1053@70.27.1850.1053" timestamp="1579193215933" />
+    <state x="590" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2/70.27.1850.1053@70.27.1850.1053" timestamp="1579193322789" />
     <state x="651" y="381" key="com.intellij.ide.util.TipDialog" timestamp="1579188265767">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
@@ -342,7 +351,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ChatApp$login_ui.coverage" NAME="login_ui Coverage Results" MODIFIED="1579191121962" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />
+    <SUITE FILE_PATH="coverage/ChatApp$login_ui.coverage" NAME="login_ui Coverage Results" MODIFIED="1579193574149" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />
     <SUITE FILE_PATH="coverage/ChatApp$chatWindow_ui.coverage" NAME="chatWindow_ui Coverage Results" MODIFIED="1578347123339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />
     <SUITE FILE_PATH="coverage/ChatApp$registerUser.coverage" NAME="registerUser Coverage Results" MODIFIED="1563888528719" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/client" />
     <SUITE FILE_PATH="coverage/ChatApp$mainWindow_ui.coverage" NAME="mainWindow_ui Coverage Results" MODIFIED="1563713113716" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />

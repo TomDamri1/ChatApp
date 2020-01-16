@@ -13,9 +13,8 @@ HOW TO USE:
         use this guide , the other one was wrong.
 
 """
-
-from des_tools.tables import PC1, PC2, ITERATION_TABLE, E, P
-from des_tools.text_to_bits import text_to_bits
+from encryption.DES.des_tools.tables import PC2, PC1, ITERATION_TABLE, E, P, S_TABLES
+from encryption.DES.des_tools.text_to_bits import text_to_bits
 
 
 def permutate(item, table):
@@ -102,9 +101,6 @@ def get_keys(inital_key, in_bits=False):
 
 def xor(L1, L2):
     return [str(int(a) ^ int(b)) for a, b in zip(L1, L2)]
-
-
-from des_tools.tables import S_TABLES
 
 """
 MAKE THE 4 STEPS:

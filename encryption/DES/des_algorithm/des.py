@@ -1,6 +1,6 @@
-from des_algorithm.functions import get_keys, permutate, xor, Step
-from des_tools.tables import PI_1, PI
-from des_tools.text_to_bits import *
+from encryption.DES.des_algorithm.functions import permutate, get_keys, Step, xor
+from encryption.DES.des_tools.tables import PI, PI_1
+from encryption.DES.des_tools.text_to_bits import string_to_bit_array, bit_array_to_string
 
 ENCRYPT = True
 DECRYPT = False
