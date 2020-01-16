@@ -34,7 +34,7 @@ def gen_key(key):
 	while len(new_key) < 8:
 		new_key += key[cnt%l]
 		cnt += 1
-	return key
+	return new_key
 
 def encrypt(msg,key):
 	rest = 0
@@ -58,17 +58,18 @@ def encrypt(msg,key):
 	return result
 
 def decrypt(msg,key):
-	print(key)
 	key = str(key)
+	print("decrypt:" + key)
 	key = gen_key(key)
 	print(key)
 	result = ""
 	decrypted_text = result
-	print('encrypt : ', msg, "\t\tto=>: ", result)
-	text_to_encrypt = result
+
+	text_to_encrypt = msg
 	result = ""
 	# decrypt 8 bytes any iteration
 	while len(text_to_encrypt) >= 8:
 		result += des(text_to_encrypt[:8], key, DECRYPT)
 		text_to_encrypt = text_to_encrypt[8:]
+	print('encrypt : ', msg, "\t\tto=>: ", result)
 	return result
