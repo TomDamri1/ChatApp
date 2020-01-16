@@ -19,23 +19,27 @@ des encrypt and decrypt machine
 from encryption.DES.des_algorithm.des import des, DECRYPT
 
 def gen_key(key):
+	key = str(key)
 	# fix key for encryption from the user.
 	if len(key)==8:
 		return key
 	if len(key)>8:
 		return key[:8]
-	cnt = 0
+	cnt = 1
 	l=len(key)
-	key = str(key)
+
 	new_key=""
+	print("key: " + key)
+	new_key+=key[0]
 	while len(new_key) < 8:
 		new_key += key[cnt%l]
 		cnt += 1
 	return key
 
-def encrypt(key,msg):
+def encrypt(msg,key):
 	rest = 0
-	print(key)
+	key=str(key)
+	print("encrypt key: " + key)
 	key=gen_key(key)
 	print(key)
 	text_to_encrypt = msg
@@ -53,8 +57,9 @@ def encrypt(key,msg):
 		result += des(text_to_encrypt, key)
 	return result
 
-def decrypt(key,msg):
+def decrypt(msg,key):
 	print(key)
+	key = str(key)
 	key = gen_key(key)
 	print(key)
 	result = ""
