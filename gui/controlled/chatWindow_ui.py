@@ -1,7 +1,7 @@
 import sys
 import random
 
-from encryption.DES.driver import encrypt
+from encryption.DES.driver import encrypt, decrypt
 
 sys.path.append("../..")
 # import os
@@ -600,7 +600,7 @@ class Ui_friend_msgBox(object):
                             my_user.chat_key = (friend_public_key ** int(my_user.my_private_key)) % my_user.p
                             print(my_user.chat_key)
                         else:
-                            decrypt_msg=decrypt_msg(data['text'])
+                            decrypt_msg=decrypt(data['text'],self.my_user.chat_key)
                             item = QListWidgetItem('%s' % (data['sender_name'] + " > " + decrypt_msg))
                             item.setBackground(QtGui.QColor(COLORS.light_blue))
                             self.chat_text.addItem(item)
