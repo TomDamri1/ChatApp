@@ -1,4 +1,6 @@
 import sys
+from random import random
+
 sys.path.append("../..")
 # import os
 import datetime
@@ -514,6 +516,7 @@ class Ui_friend_msgBox(object):
         except Exception as e:
             #print(e)
             self.my_user = my_user = user.User.get_instance()
+        self.swap_keys(self, friend_id)
         self.friend_id = friend_id
         self.first_msg = True
         self.app = QtWidgets.QApplication(sys.argv)
@@ -524,7 +527,7 @@ class Ui_friend_msgBox(object):
 
         self.message_text.returnPressed.connect(self.message_button.animateClick)
         self.ssh_text.returnPressed.connect(self.ssh_button.animateClick)
-
+        """
         def get_msgs_history():
             # print("getting messages history..")
             msgs = my_user.get_message(friend_id)
@@ -534,8 +537,9 @@ class Ui_friend_msgBox(object):
                             'can i control yours computer?@#$<<') and not msg[1].startswith('i am connected!@#$')) or msg[1].startswith('i am disconnected!@#$'):
                         continue
                     self.chat_text.addItem(msg[0] + " > " + msg[1])
-
+        
         get_msgs_history()
+        """
         self.motherBoard_text.setText(my_user.get_friend_motherboard(friend_id))
         self.name_text.setText(my_user.get_friend_name(friend_id))
         self.ip_text.setText(my_user.get_friend_external_ip(friend_id))
@@ -575,10 +579,28 @@ class Ui_friend_msgBox(object):
                     data = self.my_user.my_queue.pop()
                     #print(self.my_user.id + "  got message from :" + data['sender_id'])
                     if self.friend_id == data['sender_id']:
-                        item = QListWidgetItem('%s' % (data['sender_name'] + " > " + data['text']))
-                        item.setBackground(QtGui.QColor(COLORS.light_blue))
-                        self.chat_text.addItem(item)
-                        self.chat_text.scrollToBottom()
+                        if str(data['text']).startswith('DH-protocol!@#$'):
+                            keys= data['text'].split()
+                            p=int(keys[1])
+                            alpha=int(keys[2])
+                            friend_public_key=int(keys[3])
+                            my_private_key = random.randrange(1, p)
+                            my_user.my_private_key=my_private_key
+                            my_user.p=p
+                            my_user.alpha=alpha
+
+                            my_public_key = ((alpha) ** my_private_key) % p
+                            my_user.chat_key = (friend_public_key**my_private_key)%p
+                            self.send_msg("DH-protocol_getting_pub_key!@#$ " + str(my_public_key) + " "+str(p) + " " + str(alpha))
+                        if str(data['text']).startswith('DH-protocol_getting_pub_key!@#$'):
+                            keys= data['text'].split()
+                            friend_public_key = int(keys[1])
+                            my_user.chat_key = (friend_public_key ** int(my_user.my_private_key)) % my_user.p
+                        else:
+                            item = QListWidgetItem('%s' % (data['sender_name'] + " > " + data['text']))
+                            item.setBackground(QtGui.QColor(COLORS.light_blue))
+                            self.chat_text.addItem(item)
+                            self.chat_text.scrollToBottom()
                 else:
                     self.my_user.my_queue_waiter.acquire()
                     # print("wating for new messages..")
@@ -685,8 +707,11 @@ class Ui_friend_msgBox(object):
         self.get_ask_for_control = False
         self.control_text.setText("Not Allowed")
 
-    def send_msg(self):
-        msg_txt = self.message_text.text()
+    def send_msg(self,text=None):
+        if text==None:
+            msg_txt = self.message_text.text()
+        else:
+            msg_txt = text
         # print("my text is " + msg_txt)
         self.chat_text.scrollToBottom()
         if msg_txt != '':
@@ -754,7 +779,7 @@ if __name__ == '__main__':
         default_id1 = 'mmttdd'
         default_id2 = 'tomdamri'
         default_pas = '12345'
-        default_sudo = '1313'
+        default_sudo = '123'
 
         try:
             # print(f"loading {sys.argv[4]} details.. that can take a moment..")

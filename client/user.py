@@ -1,3 +1,5 @@
+from random import random
+
 import requests
 import socketio
 import subprocess
@@ -8,7 +10,7 @@ import URL
 #import time
 #import socket
 #HEADER_LENGTH = 10
-
+from encryption.DH.prime_dict import primes
 
 """
 An singleton class represent the connect user
@@ -50,6 +52,11 @@ class User:
         self.password = password
         self.sudo_password = sudo_password
         self.show_ssh_res = True
+        #hellman encryption related
+        self.my_private_key = ""
+        self.chat_key=""
+        self.alpha=0
+        self.p=0
 
         # queue of simple msgs for chat windows
         self.my_queue = deque()
@@ -105,7 +112,7 @@ class User:
 
     def connect(self):
         # pull the friend list from the server
-        # pull  my derails from the server
+        # pull  my details from the server
         # create new thread that listen to server for changes
         user_data_from_server = requests.get(url=(URL.usersURL + "/" + self.id))
         data = user_data_from_server.json()
@@ -208,6 +215,8 @@ class User:
                         self.my_queue_waiter.acquire()
                         self.my_queue_waiter.notify()
                         self.my_queue_waiter.release()
+                    #elif str(data['chat']['text']).startswith('DH-protocol!@#$'):
+
                     else:
                         new_msg = {"sender_id": data['ID'], "sender_name": data['chat']['senderName'],
                                    "text": data['chat']['text']}
@@ -295,6 +304,34 @@ class User:
         else:
             pass
             # print("ERROR can't to send a message to friend that not in your's friendsList")
+
+    def swap_keys(self, friend_id):
+        msg = "DH-protocol!@#$ "
+        p= primes[random.randrange(0, len(primes))]
+        # choose integer in range 2 to p-2
+        alpha = random.randrange(2, p - 1)
+        self.alpha=alpha
+        self.p=p
+        # choose random private key in range 1 to p-1
+        a=random.randrange(1, p)
+        self.my_private_key=a
+        # compute A (kpub A)
+        A = ((alpha) ** a) % p
+        # need to be sent to bob
+        msg +=  str(p) + " " + str(alpha) + " " + str(A)
+
+        params = {'ID': self.id, "otherID": friend_id, 'chat': {"senderName": self.name, "text": msg} }
+        #print(params)
+        r = requests.post(url=URL.postURL, json=params)
+        return_msg = r.text
+        #print(return_msg)
+        pastebin_url = r.text
+        #print("now get")
+        url = URL.postURL+self.id+"/"+friend_id
+        #url = f"http://localhost:5000/api/chat/{self.id}/{friend_id}"
+
+        ans = requests.get(url=url)
+        data = r.json()
 
     def send_ssh_message(self, friend_id, msg):
         msg = 'ssh control@#$<<' + msg
