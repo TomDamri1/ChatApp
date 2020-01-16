@@ -516,7 +516,7 @@ class Ui_friend_msgBox(object):
         except Exception as e:
             #print(e)
             self.my_user = my_user = user.User.get_instance()
-        self.swap_keys(self, friend_id)
+        self.my_user.swap_keys(self, friend_id)
         self.friend_id = friend_id
         self.first_msg = True
         self.app = QtWidgets.QApplication(sys.argv)

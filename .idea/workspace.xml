@@ -238,42 +238,42 @@
     <option name="LAST_COMMIT_MESSAGE" value="color to msg" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="560" y="150" width="860" height="814" key="CommitChangelistDialog2" timestamp="1579188416329">
+    <state x="560" y="150" width="860" height="814" key="CommitChangelistDialog2" timestamp="1579188466911">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
-    <state x="560" y="150" width="860" height="814" key="CommitChangelistDialog2/70.27.1850.1053@70.27.1850.1053" timestamp="1579188416329" />
-    <state width="1804" height="340" key="GridCell.Tab.0.bottom" timestamp="1578347684384">
+    <state x="560" y="150" width="860" height="814" key="CommitChangelistDialog2/70.27.1850.1053@70.27.1850.1053" timestamp="1579188466911" />
+    <state width="1804" height="303" key="GridCell.Tab.0.bottom" timestamp="1579188491645">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.bottom.inPresentationMode" timestamp="1579178863318">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.bottom.inPresentationMode/70.27.1850.1053@70.27.1850.1053" timestamp="1579178863318" />
-    <state width="1804" height="340" key="GridCell.Tab.0.bottom/70.27.1850.1053@70.27.1850.1053" timestamp="1578347684384" />
-    <state width="1804" height="340" key="GridCell.Tab.0.center" timestamp="1578347684384">
+    <state width="1804" height="303" key="GridCell.Tab.0.bottom/70.27.1850.1053@70.27.1850.1053" timestamp="1579188491645" />
+    <state width="1804" height="303" key="GridCell.Tab.0.center" timestamp="1579188491644">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.center.inPresentationMode" timestamp="1579178863318">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.center.inPresentationMode/70.27.1850.1053@70.27.1850.1053" timestamp="1579178863318" />
-    <state width="1804" height="340" key="GridCell.Tab.0.center/70.27.1850.1053@70.27.1850.1053" timestamp="1578347684384" />
-    <state width="1804" height="340" key="GridCell.Tab.0.left" timestamp="1578347684383">
+    <state width="1804" height="303" key="GridCell.Tab.0.center/70.27.1850.1053@70.27.1850.1053" timestamp="1579188491644" />
+    <state width="1804" height="303" key="GridCell.Tab.0.left" timestamp="1579188491644">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.left.inPresentationMode" timestamp="1579178863317">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.left.inPresentationMode/70.27.1850.1053@70.27.1850.1053" timestamp="1579178863317" />
-    <state width="1804" height="340" key="GridCell.Tab.0.left/70.27.1850.1053@70.27.1850.1053" timestamp="1578347684383" />
-    <state width="1804" height="340" key="GridCell.Tab.0.right" timestamp="1578347684384">
+    <state width="1804" height="303" key="GridCell.Tab.0.left/70.27.1850.1053@70.27.1850.1053" timestamp="1579188491644" />
+    <state width="1804" height="303" key="GridCell.Tab.0.right" timestamp="1579188491644">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.right.inPresentationMode" timestamp="1579178863318">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.right.inPresentationMode/70.27.1850.1053@70.27.1850.1053" timestamp="1579178863318" />
-    <state width="1804" height="340" key="GridCell.Tab.0.right/70.27.1850.1053@70.27.1850.1053" timestamp="1578347684384" />
+    <state width="1804" height="303" key="GridCell.Tab.0.right/70.27.1850.1053@70.27.1850.1053" timestamp="1579188491644" />
     <state width="1804" height="340" key="GridCell.Tab.1.bottom" timestamp="1578347684384">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
@@ -294,10 +294,10 @@
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state x="484" y="188" width="1022" height="737" key="SettingsEditor/70.27.1850.1053@70.27.1850.1053" timestamp="1578346306766" />
-    <state x="590" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1579188422845">
+    <state x="590" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1579188478709">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
-    <state x="590" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2/70.27.1850.1053@70.27.1850.1053" timestamp="1579188422845" />
+    <state x="590" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2/70.27.1850.1053@70.27.1850.1053" timestamp="1579188478709" />
     <state x="651" y="381" key="com.intellij.ide.util.TipDialog" timestamp="1579188265767">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
@@ -315,7 +315,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ChatApp$login_ui.coverage" NAME="login_ui Coverage Results" MODIFIED="1579188321417" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />
+    <SUITE FILE_PATH="coverage/ChatApp$login_ui.coverage" NAME="login_ui Coverage Results" MODIFIED="1579188491632" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />
     <SUITE FILE_PATH="coverage/ChatApp$chatWindow_ui.coverage" NAME="chatWindow_ui Coverage Results" MODIFIED="1578347123339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />
     <SUITE FILE_PATH="coverage/ChatApp$registerUser.coverage" NAME="registerUser Coverage Results" MODIFIED="1563888528719" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/client" />
     <SUITE FILE_PATH="coverage/ChatApp$mainWindow_ui.coverage" NAME="mainWindow_ui Coverage Results" MODIFIED="1563713113716" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />
