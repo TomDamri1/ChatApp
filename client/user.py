@@ -54,7 +54,7 @@ class User:
         self.show_ssh_res = True
         #hellman encryption related
         self.my_private_key = ""
-        self.chat_key=""
+        self.chat_key="12345678"
         self.alpha=0
         self.p=0
 

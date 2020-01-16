@@ -713,7 +713,7 @@ class Ui_friend_msgBox(object):
 
     def send_msg(self):
         msg_txt = self.message_text.text()
-        msg_txt= encrypt(msg_txt,self.my_user.chat_key)
+        encrypt_msg= encrypt(msg_txt,self.my_user.chat_key)
         # print("my text is " + msg_txt)
         self.chat_text.scrollToBottom()
         if msg_txt != '':
@@ -723,6 +723,7 @@ class Ui_friend_msgBox(object):
                 item = QListWidgetItem('%s' % (date))
                 self.chat_text.addItem(item)
                 item.setBackground(QtGui.QColor('#fad000'))
+                date= encrypt(date,self.my_user.chat_key)
                 t = Thread(target=self.my_user.send_message, args=(self.friend_id, date))
                 t.daemon = True
                 # self.my_user.send_message(self.friend_id, msg_txt)
@@ -733,7 +734,7 @@ class Ui_friend_msgBox(object):
             self.chat_text.addItem(item)
             item.setBackground(QtGui.QColor('#ff944d'))
             self.message_text.setText("")
-            t = Thread(target=self.my_user.send_message, args=(self.friend_id , msg_txt))
+            t = Thread(target=self.my_user.send_message, args=(self.friend_id , encrypt_msg))
             t.daemon = True
             #self.my_user.send_message(self.friend_id, msg_txt)
             t.start()
