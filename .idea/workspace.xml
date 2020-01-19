@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3aa7de4e-011d-4313-9c10-9defd505ae4a" name="Default Changelist" comment="">
+    <list default="true" id="3aa7de4e-011d-4313-9c10-9defd505ae4a" name="Default Changelist" comment="added - des encrypt - fixed again">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui/controlled/chatWindow_ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/controlled/chatWindow_ui.py" afterDir="false" />
     </list>
@@ -178,7 +178,8 @@
       <workItem from="1564085549373" duration="396000" />
       <workItem from="1578344585711" duration="2516000" />
       <workItem from="1579178431886" duration="8873000" />
-      <workItem from="1579188262229" duration="8216000" />
+      <workItem from="1579188262229" duration="8608000" />
+      <workItem from="1579432060342" duration="1131000" />
     </task>
     <task id="LOCAL-00001" summary="123">
       <created>1563668654362</created>
@@ -271,7 +272,14 @@
       <option name="project" value="LOCAL" />
       <updated>1579195727653</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="added - des encrypt - fixed again">
+      <created>1579196597265</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1579196597265</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -302,42 +310,42 @@
     <option name="LAST_COMMIT_MESSAGE" value="added - des encrypt - fixed again" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="560" y="150" width="860" height="814" key="CommitChangelistDialog2" timestamp="1579195727568">
+    <state x="560" y="150" width="860" height="814" key="CommitChangelistDialog2" timestamp="1579432489048">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
-    <state x="560" y="150" width="860" height="814" key="CommitChangelistDialog2/70.27.1850.1053@70.27.1850.1053" timestamp="1579195727568" />
-    <state width="1804" height="303" key="GridCell.Tab.0.bottom" timestamp="1579196478921">
+    <state x="560" y="150" width="860" height="814" key="CommitChangelistDialog2/70.27.1850.1053@70.27.1850.1053" timestamp="1579432489048" />
+    <state width="1804" height="253" key="GridCell.Tab.0.bottom" timestamp="1579432987848">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.bottom.inPresentationMode" timestamp="1579178863318">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.bottom.inPresentationMode/70.27.1850.1053@70.27.1850.1053" timestamp="1579178863318" />
-    <state width="1804" height="303" key="GridCell.Tab.0.bottom/70.27.1850.1053@70.27.1850.1053" timestamp="1579196478921" />
-    <state width="1804" height="303" key="GridCell.Tab.0.center" timestamp="1579196478920">
+    <state width="1804" height="253" key="GridCell.Tab.0.bottom/70.27.1850.1053@70.27.1850.1053" timestamp="1579432987848" />
+    <state width="1804" height="253" key="GridCell.Tab.0.center" timestamp="1579432987847">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.center.inPresentationMode" timestamp="1579178863318">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.center.inPresentationMode/70.27.1850.1053@70.27.1850.1053" timestamp="1579178863318" />
-    <state width="1804" height="303" key="GridCell.Tab.0.center/70.27.1850.1053@70.27.1850.1053" timestamp="1579196478920" />
-    <state width="1804" height="303" key="GridCell.Tab.0.left" timestamp="1579196478920">
+    <state width="1804" height="253" key="GridCell.Tab.0.center/70.27.1850.1053@70.27.1850.1053" timestamp="1579432987847" />
+    <state width="1804" height="253" key="GridCell.Tab.0.left" timestamp="1579432987847">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.left.inPresentationMode" timestamp="1579178863317">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.left.inPresentationMode/70.27.1850.1053@70.27.1850.1053" timestamp="1579178863317" />
-    <state width="1804" height="303" key="GridCell.Tab.0.left/70.27.1850.1053@70.27.1850.1053" timestamp="1579196478920" />
-    <state width="1804" height="303" key="GridCell.Tab.0.right" timestamp="1579196478920">
+    <state width="1804" height="253" key="GridCell.Tab.0.left/70.27.1850.1053@70.27.1850.1053" timestamp="1579432987847" />
+    <state width="1804" height="253" key="GridCell.Tab.0.right" timestamp="1579432987848">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.right.inPresentationMode" timestamp="1579178863318">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.right.inPresentationMode/70.27.1850.1053@70.27.1850.1053" timestamp="1579178863318" />
-    <state width="1804" height="303" key="GridCell.Tab.0.right/70.27.1850.1053@70.27.1850.1053" timestamp="1579196478920" />
+    <state width="1804" height="253" key="GridCell.Tab.0.right/70.27.1850.1053@70.27.1850.1053" timestamp="1579432987848" />
     <state width="1804" height="340" key="GridCell.Tab.1.bottom" timestamp="1578347684384">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
@@ -358,14 +366,14 @@
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state x="484" y="188" width="1022" height="737" key="SettingsEditor/70.27.1850.1053@70.27.1850.1053" timestamp="1578346306766" />
-    <state x="590" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1579195731628">
+    <state x="590" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1579432491807">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
-    <state x="590" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2/70.27.1850.1053@70.27.1850.1053" timestamp="1579195731628" />
-    <state x="651" y="381" key="com.intellij.ide.util.TipDialog" timestamp="1579188265767">
+    <state x="590" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2/70.27.1850.1053@70.27.1850.1053" timestamp="1579432491807" />
+    <state x="651" y="381" key="com.intellij.ide.util.TipDialog" timestamp="1579432061095">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
-    <state x="651" y="381" key="com.intellij.ide.util.TipDialog/70.27.1850.1053@70.27.1850.1053" timestamp="1579188265767" />
+    <state x="651" y="381" key="com.intellij.ide.util.TipDialog/70.27.1850.1053@70.27.1850.1053" timestamp="1579432061095" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -379,7 +387,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ChatApp$login_ui.coverage" NAME="login_ui Coverage Results" MODIFIED="1579196478913" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />
+    <SUITE FILE_PATH="coverage/ChatApp$login_ui.coverage" NAME="login_ui Coverage Results" MODIFIED="1579432987831" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />
     <SUITE FILE_PATH="coverage/ChatApp$chatWindow_ui.coverage" NAME="chatWindow_ui Coverage Results" MODIFIED="1578347123339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />
     <SUITE FILE_PATH="coverage/ChatApp$registerUser.coverage" NAME="registerUser Coverage Results" MODIFIED="1563888528719" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/client" />
     <SUITE FILE_PATH="coverage/ChatApp$mainWindow_ui.coverage" NAME="mainWindow_ui Coverage Results" MODIFIED="1563713113716" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />
