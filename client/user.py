@@ -291,7 +291,7 @@ class User:
                 #print(params)
                 r = requests.post(url=URL.postURL, json=params)
                 return_msg = r.text
-                #print(return_msg)
+                #print(retsuccsesfulyurn_msg)
                 pastebin_url = r.text
                 #print("now get")
                 url = URL.postURL+self.id+"/"+friend_id

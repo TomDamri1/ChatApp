@@ -12,7 +12,7 @@ try:
 except Exception as error:
     # print('except')
     print(error)
-    URL = "http://linuxchat.herokuapp.com/"
+    URL = "http://linuxchatappsha.herokuapp.com/"
 # print('URL is:' + URL)
 '''
 URL = "http://linuxchatappsha.herokuapp.com/"

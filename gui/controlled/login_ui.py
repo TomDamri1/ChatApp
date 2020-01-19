@@ -112,7 +112,7 @@ class Ui_LoginPage(object):
             path = os.path.expanduser('~')
             path = path + '/url.txt'
             f = open(path, 'w')
-            f.write("http://linuxchat.herokuapp.com/")
+            f.write("http://linuxchatappsha.herokuapp.com/")
             f.close()
         except:
             print("an error occurred during create url.txt file please contact the developer team.")

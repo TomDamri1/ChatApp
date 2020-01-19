@@ -46,12 +46,14 @@ router.delete("/removefriend/:id", async (req, res) => {
     user.friends = newfriends;
     user.save();
     res.json({ Success: "Friend removed successfully" });
-  } catch (err) {
+  } catch (err) {loginURL = URL + "api/users/login"
+
     console.log("the error is", err);
   }
 });
 
 router.post("/register", async (req, res) => {
+  console.log("enter register");
   const user = await User.findOne({
     ID: req.body.id
   });
@@ -83,9 +85,11 @@ router.post("/login", async (req, res) => {
     const user = await User.findOne({
       ID: req.body.id
     });
+    console.log(user);
     if (user) {
       isMatch = await bcrypt.compare(req.body.user, user.password);
     }
+    console.log(isMatch)
     if (!user) {
       res.json({ Login: "No login found" });
     } else if (isMatch) {
