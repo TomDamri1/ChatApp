@@ -616,8 +616,10 @@ class Ui_friend_msgBox(object):
 
         def listen_to_ssh_msg():
             while True:
+                print("ssh message")
                 if len(my_user.ssh_results_command_queue) > 0:
                     data = self.my_user.ssh_results_command_queue.pop()
+                    print(data['ssh_cmd'])
                     # print(self.my_user.id + "  got message from :" + data['sender_id'])
                     if self.friend_id == data['sender_id']:
                         item = QListWidgetItem('%s' % (data['sender_id'] + " > " + data['ssh_cmd']))
