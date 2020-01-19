@@ -84,7 +84,7 @@ class Ui_LoginPage(object):
             path = os.path.expanduser('~')
             path = path + '/url.txt'
             f = open(path, 'w')
-            f.write("http://linuxchat.herokuapp.com/")
+            f.write("http://linuxchatappsha.herokuapp.com/")
             f.close()
 
     def retranslateUi(self, LoginPage):

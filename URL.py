@@ -15,7 +15,7 @@ except Exception as error:
     URL = "http://linuxchat.herokuapp.com/"
 # print('URL is:' + URL)
 '''
-URL = "http://linuxchat.herokuapp.com/"
+URL = "http://linuxchatappsha.herokuapp.com/"
 URL2 = "http://localhost:5000/"
 '''
 
