@@ -141,18 +141,23 @@ class User:
             if len(self.ssh_requests_command_queue) > 0:
                 #print("execute_command got a command")
                 data = self.ssh_requests_command_queue.pop()
+                decrypt_msg = decrypt(data['chat']['text'], self.chat_key)
+                while decrypt_msg[-1:] == "0":
+                    decrypt_msg = decrypt_msg[:-1]
                 try:
-                    result = self.execute_command(data['chat']['text'][16:])
+                    result = self.execute_command(decrypt_msg[16:])
                 except:
                     result = "no respond"
+                print("result: " + result)
                 if result != '':
                     new_msg = {"sender_id": data['ID'], "ssh_cmd": result}
+                    encrypt_msg = encrypt(result, self.chat_key)
                     if self.show_ssh_res:
                         self.ssh_results_command_queue.append(new_msg)
                         self.ssh_results_command_queue_waiter.acquire()
                         self.ssh_results_command_queue_waiter.notify()
                         self.ssh_results_command_queue_waiter.release()
-                    self.send_message(data['ID'], result)
+                    self.send_message(data['ID'], encrypt_msg)
             else:
                 #print("execute_command go to sleep")
                 self.command_request.acquire()
@@ -189,6 +194,9 @@ class User:
                 data = User.q.pop()
                 # check if the message designated to me
                 if data['otherID'] == self.id:
+                    decrypt_msg = decrypt(data['chat']['text'], self.chat_key)
+                    while decrypt_msg[-1:] == "0":
+                        decrypt_msg = decrypt_msg[:-1]
                     # check the kind of the message - ordinary or control
                     if str(data['chat']['text']) == 'can i control yours computer?@#$<<':
                         self.approve_control_requests.add(data['ID'])
@@ -203,7 +211,7 @@ class User:
                         self.my_queue_waiter.notifyAll()
                         self.my_queue_waiter.release()
                         '''
-                    elif str(data['chat']['text']).startswith('ssh control@#$<<') and data['ID'] in self.approved_control:
+                    elif str(decrypt_msg).startswith('ssh control@#$<<') and data['ID'] in self.approved_control:
                         self.ssh_requests_command_queue.append(data)
                         self.command_request.acquire()
                         self.command_request.notify()
@@ -260,33 +268,11 @@ class User:
                 User.cv.acquire()
                 User.cv.wait()
                 User.cv.release()
-        '''
-        while(True):
-            # Receive our "header" containing username length, it's size is defined and constant
-            msg_header = self.mySocket.recv(HEADER_LENGTH)
-            # If we received no data, server gracefully closed a connection, for example using socket.close() or socket.shutdown(socket.SHUT_RDWR)
-            if not len(msg_header):
-                print('Connection closed by the server')
-                sys.exit()
-            # Convert header to int value
-            msg_length = int(msg_header.decode('utf-8').strip())
-            print(f"msg size is: {msg_length}")
-            msg = self.mySocket.recv(msg_length).decode("utf-8")
-            print(msg)
-            self.q.put(msg)
-        '''
+
 
     def send_message(self, friend_id, msg):
         if friend_id in self.friends_list:
-            """
-            username = self.id.encode('utf-8')
-            username_header = f"{len(username):<{HEADER_LENGTH}}".encode('utf-8')
-            self.mySocket.send(username_header + username)
 
-            message = msg.encode('utf-8')
-            message_header = f"{len(message):<{HEADER_LENGTH}}".encode('utf-8')
-            self.mySocket.send(message_header + message)
-            """
             if msg != "":
                 params = {'ID': self.id, "otherID": friend_id, 'chat': {"senderName": self.name, "text": msg} }
                 #print(params)
@@ -336,7 +322,8 @@ class User:
 
     def send_ssh_message(self, friend_id, msg):
         msg = 'ssh control@#$<<' + msg
-        params = {'ID': self.id, "otherID": friend_id, 'chat': {"senderName": self.name, "text": msg}}
+        encrypt_msg = encrypt(msg, self.chat_key)
+        params = {'ID': self.id, "otherID": friend_id, 'chat': {"senderName": self.name, "text": encrypt_msg}}
         r = requests.post(url=URL.postURL, json=params)
         return_msg = r.text
         #print(return_msg)
@@ -390,8 +377,8 @@ class User:
             return friend_id +"did not add control on your computer"
 
     def ask_for_control(self, friend_id):
-        encrypted_msg = encrypt('can i control yours computer?@#$<<', self.chat_key)
-        params = {'ID': self.id, "otherID": friend_id, 'chat': {"senderName": self.name, "text": encrypted_msg}}
+        #encrypted_msg = encrypt('can i control yours computer?@#$<<', self.chat_key)
+        params = {'ID': self.id, "otherID": friend_id, 'chat': {"senderName": self.name, "text": 'can i control yours computer?@#$<<'}}
         r = requests.post(url=URL.postURL, json=params)
         #print(r)
 
@@ -456,6 +443,7 @@ class User:
     def execute_command(self, command):
         #return the name of the motherboard by using bash as administrator
         new_command = command
+        print("command: " + command)
         for i in range(len(command)):
             if command[i] == '|':
                 new_command = new_command[:i] + " 2>/dev/null " + new_command[i:]
