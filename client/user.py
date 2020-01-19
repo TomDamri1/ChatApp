@@ -390,7 +390,7 @@ class User:
             return friend_id +"did not add control on your computer"
 
     def ask_for_control(self, friend_id):
-        encrypted_msg = encrypt('can i control yours computer?@#$<<', self.my_user.chat_key)
+        encrypted_msg = encrypt('can i control yours computer?@#$<<', self.chat_key)
         params = {'ID': self.id, "otherID": friend_id, 'chat': {"senderName": self.name, "text": encrypted_msg}}
         r = requests.post(url=URL.postURL, json=params)
         #print(r)

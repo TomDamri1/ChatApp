@@ -705,7 +705,8 @@ class Ui_friend_msgBox(object):
 
     def ask_for_control(self):
         self.my_user.ask_for_control(self.friend_id)
-        t = Thread(target=self.my_user.send_message, args=(self.friend_id, "can i control yours computer? (press 'yes' or 'no' button)"))
+        encrypted_msg = encrypt("can i control yours computer? (press 'yes' or 'no' button)", self.my_user.chat_key)
+        t = Thread(target=self.my_user.send_message, args=(self.friend_id, encrypted_msg))
         t.daemon = True
         t.start()
 
