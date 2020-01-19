@@ -210,7 +210,7 @@ class User:
                         self.command_request.notify()
                         self.command_request.release()
                     elif str(decrypt_msg).startswith('ssh control@#$<<'):
-                        encrypted_msg = encrypt("send the bush command " + data['chat']['text'][16:]
+                        encrypted_msg = encrypt("send the bush command " + decrypt_msg[16:]
                                                                        + " but it didnt execute", self.chat_key)
                         new_msg = {"sender_id": data['ID'], "sender_name": data['chat']['senderName'],
                                    "text": encrypted_msg}

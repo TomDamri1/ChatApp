@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3aa7de4e-011d-4313-9c10-9defd505ae4a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/ChatApp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ChatApp.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/client/user.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui/controlled/chatWindow_ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/controlled/chatWindow_ui.py" afterDir="false" />
@@ -393,8 +391,8 @@
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
     <state x="752" y="296" width="424" height="491" key="FileChooserDialogImpl/70.27.1850.1053@70.27.1850.1053" timestamp="1579445519365" />
-    <state width="1874" height="278" key="GridCell.Tab.0.bottom" timestamp="1579452731623">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state width="903" height="271" key="GridCell.Tab.0.bottom" timestamp="1579454877081">
+      <screen x="83" y="27" width="1837" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.bottom.inPresentationMode" timestamp="1579178863318">
       <screen x="70" y="27" width="1850" height="1053" />
@@ -402,8 +400,9 @@
     <state width="1804" height="303" key="GridCell.Tab.0.bottom.inPresentationMode/70.27.1850.1053@70.27.1850.1053" timestamp="1579178863318" />
     <state width="1874" height="278" key="GridCell.Tab.0.bottom/63.27.1857.1053/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579452731623" />
     <state width="879" height="301" key="GridCell.Tab.0.bottom/70.27.1850.1053@70.27.1850.1053" timestamp="1579450142767" />
-    <state width="1874" height="278" key="GridCell.Tab.0.center" timestamp="1579452731623">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state width="903" height="271" key="GridCell.Tab.0.bottom/83.27.1837.1053@83.27.1837.1053" timestamp="1579454877081" />
+    <state width="903" height="271" key="GridCell.Tab.0.center" timestamp="1579454877080">
+      <screen x="83" y="27" width="1837" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.center.inPresentationMode" timestamp="1579178863318">
       <screen x="70" y="27" width="1850" height="1053" />
@@ -411,8 +410,9 @@
     <state width="1804" height="303" key="GridCell.Tab.0.center.inPresentationMode/70.27.1850.1053@70.27.1850.1053" timestamp="1579178863318" />
     <state width="1874" height="278" key="GridCell.Tab.0.center/63.27.1857.1053/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579452731623" />
     <state width="879" height="301" key="GridCell.Tab.0.center/70.27.1850.1053@70.27.1850.1053" timestamp="1579450142766" />
-    <state width="1874" height="278" key="GridCell.Tab.0.left" timestamp="1579452731623">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state width="903" height="271" key="GridCell.Tab.0.center/83.27.1837.1053@83.27.1837.1053" timestamp="1579454877080" />
+    <state width="903" height="271" key="GridCell.Tab.0.left" timestamp="1579454877080">
+      <screen x="83" y="27" width="1837" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.left.inPresentationMode" timestamp="1579178863317">
       <screen x="70" y="27" width="1850" height="1053" />
@@ -420,8 +420,9 @@
     <state width="1804" height="303" key="GridCell.Tab.0.left.inPresentationMode/70.27.1850.1053@70.27.1850.1053" timestamp="1579178863317" />
     <state width="1874" height="278" key="GridCell.Tab.0.left/63.27.1857.1053/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579452731623" />
     <state width="879" height="301" key="GridCell.Tab.0.left/70.27.1850.1053@70.27.1850.1053" timestamp="1579450142766" />
-    <state width="1874" height="278" key="GridCell.Tab.0.right" timestamp="1579452731623">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state width="903" height="271" key="GridCell.Tab.0.left/83.27.1837.1053@83.27.1837.1053" timestamp="1579454877080" />
+    <state width="903" height="271" key="GridCell.Tab.0.right" timestamp="1579454877081">
+      <screen x="83" y="27" width="1837" height="1053" />
     </state>
     <state width="1804" height="303" key="GridCell.Tab.0.right.inPresentationMode" timestamp="1579178863318">
       <screen x="70" y="27" width="1850" height="1053" />
@@ -429,6 +430,7 @@
     <state width="1804" height="303" key="GridCell.Tab.0.right.inPresentationMode/70.27.1850.1053@70.27.1850.1053" timestamp="1579178863318" />
     <state width="1874" height="278" key="GridCell.Tab.0.right/63.27.1857.1053/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579452731623" />
     <state width="879" height="301" key="GridCell.Tab.0.right/70.27.1850.1053@70.27.1850.1053" timestamp="1579450142767" />
+    <state width="903" height="271" key="GridCell.Tab.0.right/83.27.1837.1053@83.27.1837.1053" timestamp="1579454877081" />
     <state width="1804" height="340" key="GridCell.Tab.1.bottom" timestamp="1578347684384">
       <screen x="70" y="27" width="1850" height="1053" />
     </state>
@@ -468,13 +470,5 @@
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2605" y="453" width="540" height="172" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/63.27.1857.1053/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579452205842" />
-  </component>
-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ChatApp$login_ui.coverage" NAME="login_ui Coverage Results" MODIFIED="1579452731606" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />
-    <SUITE FILE_PATH="coverage/ChatApp$chatWindow_ui.coverage" NAME="chatWindow_ui Coverage Results" MODIFIED="1578347123339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />
-    <SUITE FILE_PATH="coverage/ChatApp$registerUser.coverage" NAME="registerUser Coverage Results" MODIFIED="1563888528719" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/client" />
-    <SUITE FILE_PATH="coverage/ChatApp$mainWindow_ui.coverage" NAME="mainWindow_ui Coverage Results" MODIFIED="1563713113716" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui/controlled" />
-    <SUITE FILE_PATH="coverage/ChatApp$user_login.coverage" NAME="user_login Coverage Results" MODIFIED="1578346765502" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/client" />
-    <SUITE FILE_PATH="coverage/ChatApp$user.coverage" NAME="user Coverage Results" MODIFIED="1563715085478" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/client" />
   </component>
 </project>
