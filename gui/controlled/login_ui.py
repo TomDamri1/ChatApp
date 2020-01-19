@@ -13,7 +13,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 sys.path.append("../..")
 from client import user_login
 
-
+"""
+run this file to start.
+"""
 class Ui_LoginPage(object):
     def setupUi(self, LoginPage):
         LoginPage.setObjectName("LoginPage")
