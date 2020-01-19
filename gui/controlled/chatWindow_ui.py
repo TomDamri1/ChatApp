@@ -618,12 +618,9 @@ class Ui_friend_msgBox(object):
             while True:
                 if len(my_user.ssh_results_command_queue) > 0:
                     data = self.my_user.ssh_results_command_queue.pop()
-                    decrypt_msg = decrypt(data['text'], self.my_user.chat_key)
-                    while decrypt_msg[-1:] == "0":
-                        decrypt_msg = decrypt_msg[:-1]
                     # print(self.my_user.id + "  got message from :" + data['sender_id'])
                     if self.friend_id == data['sender_id']:
-                        item = QListWidgetItem('%s' % (data['sender_id'] + " > " + decrypt_msg))
+                        item = QListWidgetItem('%s' % (data['sender_id'] + " > " + data['ssh_cmd']))
                         # item.setForeground(COLORS.white)
                         item.setBackground(QtGui.QColor(COLORS.red))
                         self.chat_text.addItem(item)
@@ -797,8 +794,7 @@ class Ui_friend_msgBox(object):
             item.setBackground(QtGui.QColor(COLORS.black))
             self.chat_text.addItem(item)
             self.ssh_text.setText("")
-            encrypt_msg = encrypt(msg_txt, self.my_user.chat_key)
-            t = Thread(target=self.my_user.send_ssh_message, args=(self.friend_id, encrypt_msg))
+            t = Thread(target=self.my_user.send_ssh_message, args=(self.friend_id, msg_txt))
             t.daemon = True
             t.start()
             #self.my_user.send_ssh_message(self.friend_id, msg_txt)

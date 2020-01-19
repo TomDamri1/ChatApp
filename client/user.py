@@ -10,6 +10,7 @@ import URL
 #import time
 #import socket
 #HEADER_LENGTH = 10
+from encryption.DES.driver import decrypt
 from encryption.DH.prime_dict import primes
 
 """
