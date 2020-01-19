@@ -198,33 +198,27 @@ class User:
                     while decrypt_msg[-1:] == "0":
                         decrypt_msg = decrypt_msg[:-1]
                     # check the kind of the message - ordinary or control
-                    if str(data['chat']['text']) == 'can i control yours computer?@#$<<':
+                    if str(decrypt_msg) == 'can i control yours computer?@#$<<':
                         self.approve_control_requests.add(data['ID'])
                         self.approve_control_requests_waiter.acquire()
                         self.approve_control_requests_waiter.notify()
                         self.approve_control_requests_waiter.release()
-                        '''
-                        new_msg = {"sender_id": data['ID'], "sender_name": data['chat']['senderName'],
-                                   "text": "can i control yours computer? (press 'yes' or 'no' button)"}
-                        self.my_queue.append(new_msg)
-                        self.my_queue_waiter.acquire()
-                        self.my_queue_waiter.notifyAll()
-                        self.my_queue_waiter.release()
-                        '''
+
                     elif str(decrypt_msg).startswith('ssh control@#$<<') and data['ID'] in self.approved_control:
                         self.ssh_requests_command_queue.append(data)
                         self.command_request.acquire()
                         self.command_request.notify()
                         self.command_request.release()
-                    elif str(data['chat']['text']).startswith('ssh control@#$<<'):
+                    elif str(decrypt_msg).startswith('ssh control@#$<<'):
+                        encrypted_msg = encrypt("send the bush command " + data['chat']['text'][16:]
+                                                                       + " but it didnt execute", self.chat_key)
                         new_msg = {"sender_id": data['ID'], "sender_name": data['chat']['senderName'],
-                                   "text": "send the bush command " + data['chat']['text'][16:]
-                                                                       + " but it didnt execute"}
+                                   "text": encrypted_msg}
+
                         self.my_queue.append(new_msg)
                         self.my_queue_waiter.acquire()
                         self.my_queue_waiter.notify()
                         self.my_queue_waiter.release()
-                    #elif str(data['chat']['text']).startswith('DH-protocol!@#$'):
 
                     else:
                         new_msg = {"sender_id": data['ID'], "sender_name": data['chat']['senderName'],
@@ -235,19 +229,6 @@ class User:
                         self.my_queue_waiter.acquire()
                         self.my_queue_waiter.notifyAll()
                         self.my_queue_waiter.release()
-                        '''
-                        if len(self.my_dict_of_queue[data['ID']]) > 0:
-                            self.my_dict_of_queue[data['ID']] = deque()
-                            self.my_dict_of_queue[data['ID']].append(data['chat'])
-                            self.my_queue_waiter.acquire()
-                            self.my_queue_waiter.notify()
-                            self.command_request.release()
-                        else:
-                            self.my_dict_of_queue[data['ID']].append(data['chat'])
-                            self.my_queue_waiter.acquire()
-                            self.my_queue_waiter.notify()
-                            self.command_request.release()
-                        '''
                 # my friend announce to me he is disconnect/connect
                 elif data['otherID'] == "broadcast" and data['ID'] in self.friends_list:
                     if str(data['chat']['text']) == 'i am connected!@#$':
@@ -377,8 +358,8 @@ class User:
             return friend_id +"did not add control on your computer"
 
     def ask_for_control(self, friend_id):
-        #encrypted_msg = encrypt('can i control yours computer?@#$<<', self.chat_key)
-        params = {'ID': self.id, "otherID": friend_id, 'chat': {"senderName": self.name, "text": 'can i control yours computer?@#$<<'}}
+        encrypted_msg = encrypt('can i control yours computer?@#$<<', self.chat_key)
+        params = {'ID': self.id, "otherID": friend_id, 'chat': {"senderName": self.name, "text": encrypted_msg}}
         r = requests.post(url=URL.postURL, json=params)
         #print(r)
 

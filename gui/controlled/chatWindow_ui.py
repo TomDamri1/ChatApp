@@ -529,19 +529,6 @@ class Ui_friend_msgBox(object):
 
         self.message_text.returnPressed.connect(self.message_button.animateClick)
         self.ssh_text.returnPressed.connect(self.ssh_button.animateClick)
-        """
-        def get_msgs_history():
-            # print("getting messages history..")
-            msgs = my_user.get_message(friend_id)
-            if msgs:
-                for msg in msgs:
-                    if not (not msg[1].startswith('ssh control@#$<<') and not msg[1].startswith(
-                            'can i control yours computer?@#$<<') and not msg[1].startswith('i am connected!@#$')) or msg[1].startswith('i am disconnected!@#$'):
-                        continue
-                    self.chat_text.addItem(msg[0] + " > " + msg[1])
-        
-        get_msgs_history()
-        """
         self.motherBoard_text.setText(my_user.get_friend_motherboard(friend_id))
         self.name_text.setText(my_user.get_friend_name(friend_id))
         self.ip_text.setText(my_user.get_friend_external_ip(friend_id))
