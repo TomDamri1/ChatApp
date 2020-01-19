@@ -10,7 +10,7 @@ import URL
 #import time
 #import socket
 #HEADER_LENGTH = 10
-from encryption.DES.driver import decrypt
+from encryption.DES.driver import decrypt, encrypt
 from encryption.DH.prime_dict import primes
 
 """
@@ -390,7 +390,8 @@ class User:
             return friend_id +"did not add control on your computer"
 
     def ask_for_control(self, friend_id):
-        params = {'ID': self.id, "otherID": friend_id, 'chat': {"senderName": self.name, "text": 'can i control yours computer?@#$<<'}}
+        encrypted_msg = encrypt('can i control yours computer?@#$<<', self.my_user.chat_key)
+        params = {'ID': self.id, "otherID": friend_id, 'chat': {"senderName": self.name, "text": encrypted_msg}}
         r = requests.post(url=URL.postURL, json=params)
         #print(r)
 
