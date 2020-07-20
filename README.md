@@ -6,6 +6,10 @@ JBM is a linux chat applictaion python3,JS based , that used for chat and contro
 ## Dependencies
 in order to install JBM, your system must support:
     as client:
+  Markup : * Bullet list
+              * Nested bullet
+                  * Sub-nested bullet etc
+          * Bullet list item 2
     Markup :    * python3
                     * pyqt5
                     * socketio
