@@ -4,13 +4,15 @@
 JBM is a linux chat applictaion python3,JS based , that used for chat and controlling your friend's computer.
 
 ## Dependencies
-in order to install JBM, your system must support:
-`
-**python3
-    ***pyqt5
-    ***socketio
-    ***requests
-`
+in order to install JBM, your system must support: <br/>
+
+##### python
+###### socketio
+###### pyqt5
+###### requests
+
+
+
 
 to install client dependencies follow this steps:
 ```Linux
