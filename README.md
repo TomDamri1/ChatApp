@@ -12,7 +12,7 @@ in order to install JBM, your system must support:
 
 
 to install client dependencies follow this steps:
-`
+```Linux
 sudo apt install python
 sudo apt install python3
 sudo apt install python-pip
@@ -22,7 +22,7 @@ sudo apt install python3-pyqt5
 sudo apt install python-requests
 sudo apt install python3-requests
 sudo -H pip3 install python-socketio
-`
+```
 you can choose either run ther server locally or otherwise.
 non local- is hosted in heroku hosting services.  
 local-with local file.  
