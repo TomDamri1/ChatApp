@@ -34,13 +34,13 @@ Server: NodeJS , -> express,mongoose,socket.io
 will be installed using 'npm install' command while on the server folder from package.json file.
 
 ## TO INSATLL:
-1.extract the files at your home directory.
-2.make sure Login folder and python-jbm_1.0-1_all.deb file are in the home directory
-3.run the file python-jbm_1.0.1_all.deb
-4.click on install after it finishes, close the window.
-5.open the terminal.
-6.run the command 'Login'
-7.enjoy!
+###### 1.extract the files at your home directory.
+###### 2.make sure Login folder and python-jbm_1.0-1_all.deb file are in the home directory
+###### 3.run the file python-jbm_1.0.1_all.deb
+###### 4.click on install after it finishes, close the window.
+###### 5.open the terminal.
+###### 6.run the command 'Login'
+###### 7.enjoy!
 
 
 
