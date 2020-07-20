@@ -5,19 +5,15 @@ JBM is a linux chat applictaion python3,JS based , that used for chat and contro
 
 ## Dependencies
 in order to install JBM, your system must support:
-    as client:
-  Markup : * Bullet list
-              * Nested bullet
-                  * Sub-nested bullet etc
-          * Bullet list item 2
-    Markup :    * python3
-                    * pyqt5
-                    * socketio
-                    * requests
+    as client: *python3
+                    *pyqt5
+                    *socketio
+                    *requests
 
-      you can choose either run ther server locally or otherwise.
-      non local- is hosted in heroku hosting services.  
-      local-with local file.  run the server locally by selceting the run local server option in login page, and run server-linux file in        Login/Login/ChatApp/server 
+    you can choose either run ther server locally or otherwise.
+    non local- is hosted in heroku hosting services.  
+    local-with local file.  
+    run the server locally by selceting the run local server option in login page, and run server-linux file in        Login/Login/ChatApp/server 
     Server: NodeJS , -> express,mongoose,socket.io 
     will be installed using 'npm install' command while on the server folder from package.json file.
 to install client dependencies follow this steps:
